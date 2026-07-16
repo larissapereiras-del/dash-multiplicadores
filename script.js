@@ -21,6 +21,8 @@ let multiplicadoresOficial = [];
 
 let tlsSemMultis = [];
 
+let registrosValidacao = [];
+
 
 /* =========================================================
    FILTROS
@@ -142,6 +144,34 @@ function escapeHtml(
 
 
 /* =========================================================
+   AUXILIAR PARA DEFINIR TEXTO
+========================================================= */
+
+function definirTexto(
+  id,
+  valor
+) {
+
+  const elemento =
+
+    document.getElementById(
+      id
+    );
+
+
+  if (
+    elemento
+  ) {
+
+    elemento.textContent =
+      valor;
+
+  }
+
+}
+
+
+/* =========================================================
    TRANSFORMA BASE VALIDADA
 ========================================================= */
 
@@ -156,70 +186,84 @@ function transformarRegistro(
         "Nome do Representante"
       ] || "",
 
+
     teamLeader:
       item[
         "Team Leader"
       ] || "",
+
 
     statusBaseHC:
       item[
         "Status Base HC"
       ] || "",
 
+
     statusPrograma:
       item[
         "Status Treinamento"
       ] || "",
+
 
     turno:
       item[
         "Turno"
       ] || "",
 
+
     cargo:
       item[
         "Cargo"
       ] || "",
+
 
     ldap:
       item[
         "LDAP"
       ] || "",
 
+
     areaMacro:
       item[
         "Área Macro"
       ] || "",
+
 
     subArea:
       item[
         "Sub Área"
       ] || "",
 
+
     processo:
       item[
         "Processo Ajustado"
       ] || "",
+
 
     escala:
       item[
         "ESCALA"
       ] || "",
 
+
     decola:
       item[
         "Decola"
       ] || "",
+
 
     bolhaMulti:
       item[
         "Tem bolha de Multi"
       ] || "",
 
+
     dataFormacao:
       item[
         "Data de Formação"
       ] || "",
+
 
     motivo:
       item[
@@ -246,30 +290,36 @@ function transformarRegistroOficial(
         "CAD_LIDER"
       ] || "",
 
+
     teamLeader:
       item[
         "TEAM LEADER"
       ] || "",
+
 
     ldap:
       item[
         "LDAP_USER"
       ] || "",
 
+
     nome:
       item[
         "NOMBRE_MULTIPLICADOR"
       ] || "",
+
 
     turno:
       item[
         "LAST_TURNO"
       ] || "",
 
+
     area:
       item[
         "AREA_MADRE"
       ] || "",
+
 
     multiplicadores:
       item[
@@ -296,20 +346,24 @@ function transformarTlSemMulti(
         "CAD"
       ] || "",
 
+
     teamLeader:
       item[
         "TEAM LEADER"
       ] || "",
+
 
     area:
       item[
         "AREA_MADRE"
       ] || "",
 
+
     totalEquipe:
       item[
         "TOTAL_EQUIPO"
       ] || "",
+
 
     totalMultis:
       item[
@@ -440,6 +494,24 @@ window.receberDadosMultiplicadores =
           [];
 
 
+      console.log(
+        "VALIDADOS:",
+        multiplicadores.length
+      );
+
+
+      console.log(
+        "OFICIAL:",
+        multiplicadoresOficial.length
+      );
+
+
+      console.log(
+        "TLS SEM MULTIS:",
+        tlsSemMultis.length
+      );
+
+
       atualizarData();
 
       atualizarDashboard();
@@ -544,9 +616,7 @@ function statusPrograma(
 ) {
 
   return normalizarTexto(
-
     pessoa.statusPrograma
-
   );
 
 }
@@ -856,7 +926,6 @@ function atualizarIndicadores() {
 
 
   const totalLideres =
-
     lideres.size;
 
 
@@ -946,7 +1015,7 @@ function atualizarIndicadores() {
 
 
 /* =========================================================
-   COMPARATIVO TURNOS
+   COMPARATIVO POR TURNO
 ========================================================= */
 
 function atualizarTurnos() {
@@ -1932,6 +2001,11 @@ function atualizarValidacao() {
     construirValidacao();
 
 
+  registrosValidacao =
+
+    validacao.registros;
+
+
   definirTexto(
 
     "validacaoTotalBase",
@@ -1968,11 +2042,7 @@ function atualizarValidacao() {
   );
 
 
-  atualizarTabelaValidacao(
-
-    validacao.registros
-
-  );
+  atualizarTabelaValidacao();
 
 }
 
@@ -1981,9 +2051,7 @@ function atualizarValidacao() {
    TABELA VALIDAÇÃO
 ========================================================= */
 
-function atualizarTabelaValidacao(
-  registros
-) {
+function atualizarTabelaValidacao() {
 
   const corpo =
 
@@ -2004,9 +2072,11 @@ function atualizarTabelaValidacao(
   let dados =
 
     [
-      ...registros
+      ...registrosValidacao
     ];
 
+
+  /* FILTRO POR TIPO */
 
   if (
     filtroValidacao !==
@@ -2026,6 +2096,8 @@ function atualizarTabelaValidacao(
 
   }
 
+
+  /* BUSCA */
 
   if (
     termoBuscaValidacao
@@ -2047,15 +2119,21 @@ function atualizarTabelaValidacao(
 
               ${item.ldap}
 
-              ${item.teamLeaderBase}
-
-              ${item.teamLeaderOficial}
-
-              ${item.areaOficial}
+              ${item.resultado}
 
               ${item.statusBase}
 
               ${item.statusCad}
+
+              ${item.noOficial}
+
+              ${item.teamLeaderBase}
+
+              ${item.turnoBase}
+
+              ${item.teamLeaderOficial}
+
+              ${item.areaOficial}
 
               `
 
@@ -2465,7 +2543,7 @@ function obterMotivo(
 
 
 /* =========================================================
-   BADGES PROGRAMA
+   BADGE STATUS PROGRAMA
 ========================================================= */
 
 function criarBadgeStatusPrograma(
@@ -2559,7 +2637,7 @@ function criarBadgeStatusPrograma(
 
 
 /* =========================================================
-   BADGE STATUS HC
+   BADGE STATUS CAD / HC
 ========================================================= */
 
 function criarBadgeStatusHC(
@@ -2634,7 +2712,7 @@ function criarBadgeStatusHC(
 
 
 /* =========================================================
-   BADGE SIM NÃO
+   BADGE SIM / NÃO
 ========================================================= */
 
 function criarBadgeSimNao(
@@ -3106,35 +3184,6 @@ function atualizarTabela() {
 
 
 /* =========================================================
-   AUXILIAR TEXTO
-========================================================= */
-
-function definirTexto(
-  id,
-  valor
-) {
-
-  const elemento =
-
-    document.getElementById(
-      id
-    );
-
-
-  if (
-    elemento
-  ) {
-
-    elemento.textContent =
-
-      valor;
-
-  }
-
-}
-
-
-/* =========================================================
    ABAS
 ========================================================= */
 
@@ -3236,6 +3285,9 @@ function configurarAbas() {
 
 function configurarFiltros() {
 
+
+  /* VISÃO GERAL */
+
   document
 
     .querySelectorAll(
@@ -3289,6 +3341,8 @@ function configurarFiltros() {
 
     );
 
+
+  /* LIDERANÇA */
 
   document
 
@@ -3345,6 +3399,8 @@ function configurarFiltros() {
     );
 
 
+  /* CONSULTA TURNO */
+
   document
 
     .querySelectorAll(
@@ -3400,6 +3456,8 @@ function configurarFiltros() {
     );
 
 
+  /* CONSULTA STATUS */
+
   document
 
     .querySelectorAll(
@@ -3454,6 +3512,8 @@ function configurarFiltros() {
     );
 
 
+  /* VALIDAÇÃO */
+
   document
 
     .querySelectorAll(
@@ -3497,7 +3557,7 @@ function configurarFiltros() {
             );
 
 
-            atualizarValidacao();
+            atualizarTabelaValidacao();
 
           }
 
@@ -3577,7 +3637,7 @@ function configurarBusca() {
           );
 
 
-        atualizarValidacao();
+        atualizarTabelaValidacao();
 
       }
 
@@ -3631,7 +3691,7 @@ function atualizarData() {
 
 
 /* =========================================================
-   ATUALIZA DASH
+   ATUALIZA DASHBOARD
 ========================================================= */
 
 function atualizarDashboard() {
