@@ -1,57 +1,136 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
-   Dados temporários para desenvolvimento
+   Dados fictícios para validação visual
 ========================================================= */
 
 const multiplicadores = [
 
   {
     nome: "Ana Souza",
+    repAtivo: "Sim",
+    statusPrograma: "Ativo",
     turno: "T1",
-    status: "Ativo",
-    gestao: "Gestão A"
+    cargo: "Representante",
+    ldap: "anasouza",
+    areaMacro: "Outbound",
+    processo: "Picking",
+    escala: "6x1",
+    decola: "Sim",
+    bolhaMulti: "Sim",
+    dataFormacao: "12/02/2026",
+    motivo: ""
   },
 
   {
     nome: "Bruno Silva",
+    repAtivo: "Sim",
+    statusPrograma: "Ativo Escola",
     turno: "T1",
-    status: "Ativo para Escola de Máquina",
-    gestao: "Gestão B"
+    cargo: "Representante",
+    ldap: "brunosilva",
+    areaMacro: "Outbound",
+    processo: "Packing",
+    escala: "6x1",
+    decola: "Não",
+    bolhaMulti: "Não",
+    dataFormacao: "",
+    motivo: ""
   },
 
   {
     nome: "Carlos Santos",
+    repAtivo: "Sim",
+    statusPrograma: "Training",
     turno: "T2",
-    status: "Ativo",
-    gestao: "Gestão C"
+    cargo: "Representante",
+    ldap: "carlossantos",
+    areaMacro: "Inbound",
+    processo: "Receiving",
+    escala: "5x2",
+    decola: "Sim",
+    bolhaMulti: "Não",
+    dataFormacao: "",
+    motivo: ""
   },
 
   {
     nome: "Daniela Oliveira",
+    repAtivo: "Sim",
+    statusPrograma: "Multi LOSS",
     turno: "T2",
-    status: "Ativo para Escola de Máquina",
-    gestao: "Gestão A"
+    cargo: "Representante",
+    ldap: "danielaoliveira",
+    areaMacro: "Outbound",
+    processo: "P2S",
+    escala: "6x1",
+    decola: "Sim",
+    bolhaMulti: "Sim",
+    dataFormacao: "08/11/2025",
+    motivo: "Indicadores abaixo dos critérios"
   },
 
   {
     nome: "Eduardo Lima",
+    repAtivo: "Sim",
+    statusPrograma: "Ativo",
     turno: "T3",
-    status: "Ativo",
-    gestao: "Gestão B"
+    cargo: "Representante",
+    ldap: "eduardolima",
+    areaMacro: "Outbound",
+    processo: "Packing",
+    escala: "6x1",
+    decola: "Sim",
+    bolhaMulti: "Sim",
+    dataFormacao: "19/03/2026",
+    motivo: ""
   },
 
   {
     nome: "Fernanda Costa",
+    repAtivo: "Não",
+    statusPrograma: "Inativo",
     turno: "T3",
-    status: "Ativo",
-    gestao: "Gestão C"
+    cargo: "Representante",
+    ldap: "fernandacosta",
+    areaMacro: "Outbound",
+    processo: "Picking",
+    escala: "6x1",
+    decola: "Sim",
+    bolhaMulti: "Não",
+    dataFormacao: "05/09/2025",
+    motivo: "Transferência de área"
   },
 
   {
     nome: "Gabriel Rocha",
+    repAtivo: "Sim",
+    statusPrograma: "Desistência",
     turno: "T3",
-    status: "Ativo para Escola de Máquina",
-    gestao: "Gestão A"
+    cargo: "Representante",
+    ldap: "gabrielrocha",
+    areaMacro: "Inbound",
+    processo: "Putaway",
+    escala: "5x2",
+    decola: "Não",
+    bolhaMulti: "Não",
+    dataFormacao: "",
+    motivo: "Desistência voluntária do programa"
+  },
+
+  {
+    nome: "Helena Martins",
+    repAtivo: "Sim",
+    statusPrograma: "Ativo Escola",
+    turno: "T3",
+    cargo: "Representante",
+    ldap: "helenamartins",
+    areaMacro: "Outbound",
+    processo: "Picking",
+    escala: "6x1",
+    decola: "Sim",
+    bolhaMulti: "Não",
+    dataFormacao: "",
+    motivo: ""
   }
 
 ];
@@ -63,6 +142,9 @@ const multiplicadores = [
 
 let turnoSelecionado =
   "todos";
+
+let statusSelecionado =
+  "principal";
 
 let termoBusca =
   "";
@@ -91,37 +173,62 @@ function normalizarTexto(texto) {
 
 
 /* =========================================================
-   REGRAS DE STATUS
+   REGRAS
 ========================================================= */
 
-function estaAtivo(pessoa) {
+function statusNormalizado(pessoa) {
 
-  return (
-    normalizarTexto(
-      pessoa.status
-    ) === "ativo"
+  return normalizarTexto(
+    pessoa.statusPrograma
   );
 
 }
 
 
-function estaAtivoParaEscola(pessoa) {
+function estaAtivo(pessoa) {
+
+  return (
+    statusNormalizado(pessoa) ===
+    "ativo"
+  );
+
+}
+
+
+function estaAtivoEscola(pessoa) {
+
+  return (
+    statusNormalizado(pessoa) ===
+    "ativo escola"
+  );
+
+}
+
+
+function estaNaVisaoPrincipal(pessoa) {
+
+  return (
+    estaAtivo(pessoa)
+    ||
+    estaAtivoEscola(pessoa)
+  );
+
+}
+
+
+function estaInativoOuDesistencia(pessoa) {
 
   const status =
-    normalizarTexto(
-      pessoa.status
-    );
+    statusNormalizado(pessoa);
 
 
   return (
 
-    status ===
-      "ativo para escola"
+    status === "inativo"
 
     ||
 
-    status ===
-      "ativo para escola de maquina"
+    status === "desistencia"
 
   );
 
@@ -129,16 +236,15 @@ function estaAtivoParaEscola(pessoa) {
 
 
 /* =========================================================
-   FILTRO POR TURNO
+   FILTRO DE TURNO
 ========================================================= */
 
 function filtrarPorTurno(
-  lista,
-  turno
+  lista
 ) {
 
   if (
-    turno === "todos"
+    turnoSelecionado === "todos"
   ) {
 
     return lista;
@@ -149,7 +255,8 @@ function filtrarPorTurno(
   return lista.filter(
 
     pessoa =>
-      pessoa.turno === turno
+      pessoa.turno ===
+      turnoSelecionado
 
   );
 
@@ -157,44 +264,39 @@ function filtrarPorTurno(
 
 
 /* =========================================================
-   INDICADORES PRINCIPAIS
+   INDICADORES
 ========================================================= */
 
 function atualizarIndicadores() {
 
-  const dadosFiltrados =
-
+  const baseTurno =
     filtrarPorTurno(
+      multiplicadores
+    );
 
-      multiplicadores,
 
-      turnoSelecionado
-
+  const principal =
+    baseTurno.filter(
+      estaNaVisaoPrincipal
     );
 
 
   const ativos =
-
-    dadosFiltrados.filter(
-
+    principal.filter(
       estaAtivo
-
     );
 
 
   const escola =
-
-    dadosFiltrados.filter(
-
-      estaAtivoParaEscola
-
+    principal.filter(
+      estaAtivoEscola
     );
 
 
   document.getElementById(
     "totalMultiplicadores"
   ).textContent =
-    dadosFiltrados.length;
+    principal.length;
 
 
   document.getElementById(
@@ -226,8 +328,7 @@ function atualizarTurnos() {
     turno => {
 
 
-      const pessoasTurno =
-
+      const baseTurno =
         multiplicadores.filter(
 
           pessoa =>
@@ -236,28 +337,28 @@ function atualizarTurnos() {
         );
 
 
+      const principal =
+        baseTurno.filter(
+          estaNaVisaoPrincipal
+        );
+
+
       const ativos =
-
-        pessoasTurno.filter(
-
+        principal.filter(
           estaAtivo
-
         );
 
 
       const escola =
-
-        pessoasTurno.filter(
-
-          estaAtivoParaEscola
-
+        principal.filter(
+          estaAtivoEscola
         );
 
 
       document.getElementById(
         `total${turno}`
       ).textContent =
-        pessoasTurno.length;
+        principal.length;
 
 
       document.getElementById(
@@ -279,45 +380,163 @@ function atualizarTurnos() {
 
 
 /* =========================================================
-   BADGE DE STATUS
+   FILTRO DE STATUS
 ========================================================= */
 
-function criarBadgeStatus(status) {
+function filtrarPorStatus(
+  lista
+) {
 
   if (
-    estaAtivo({
-      status
-    })
+    statusSelecionado ===
+    "principal"
   ) {
 
-    return `
-      <span class="badge-status ativo">
-        ● Ativo
-      </span>
-    `;
+    return lista.filter(
+      estaNaVisaoPrincipal
+    );
 
   }
 
 
   if (
-    estaAtivoParaEscola({
-      status
-    })
+    statusSelecionado ===
+    "inativos"
   ) {
 
-    return `
-      <span class="badge-status escola">
-        🎓 Ativo para Escola de Máquina
-      </span>
-    `;
+    return lista.filter(
+      estaInativoOuDesistencia
+    );
+
+  }
+
+
+  return lista.filter(
+
+    pessoa =>
+      statusNormalizado(pessoa) ===
+      statusSelecionado
+
+  );
+
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+function criarBadgeStatus(
+  status
+) {
+
+  const valor =
+    normalizarTexto(status);
+
+
+  let classe =
+    "";
+
+
+  if (
+    valor === "ativo"
+  ) {
+
+    classe =
+      "ativo";
+
+  }
+
+
+  else if (
+    valor === "ativo escola"
+  ) {
+
+    classe =
+      "escola";
+
+  }
+
+
+  else if (
+    valor === "training"
+  ) {
+
+    classe =
+      "training";
+
+  }
+
+
+  else if (
+    valor === "multi loss"
+  ) {
+
+    classe =
+      "loss";
+
+  }
+
+
+  else if (
+    valor === "inativo"
+  ) {
+
+    classe =
+      "inativo";
+
+  }
+
+
+  else if (
+    valor === "desistencia"
+  ) {
+
+    classe =
+      "desistencia";
 
   }
 
 
   return `
-    <span class="badge-status">
+
+    <span class="badge ${classe}">
+
       ${status}
+
     </span>
+
+  `;
+
+}
+
+
+function criarBadgeSimNao(
+  valor
+) {
+
+  const positivo =
+
+    normalizarTexto(valor) ===
+    "sim";
+
+
+  return `
+
+    <span class="badge ${
+      positivo
+        ? "sim"
+        : "nao"
+    }">
+
+      ${
+        positivo
+          ? "✓ Sim"
+          : "Não"
+      }
+
+    </span>
+
   `;
 
 }
@@ -339,11 +558,14 @@ function atualizarTabela() {
   let dados =
 
     filtrarPorTurno(
+      multiplicadores
+    );
 
-      multiplicadores,
 
-      turnoSelecionado
+  dados =
 
+    filtrarPorStatus(
+      dados
     );
 
 
@@ -356,24 +578,26 @@ function atualizarTabela() {
       pessoa => {
 
 
-        const textoPessoa =
+        const texto =
 
           normalizarTexto(
 
             `
             ${pessoa.nome}
+            ${pessoa.ldap}
+            ${pessoa.areaMacro}
+            ${pessoa.processo}
             ${pessoa.turno}
-            ${pessoa.status}
-            ${pessoa.gestao}
+            ${pessoa.statusPrograma}
+            ${pessoa.cargo}
+            ${pessoa.escala}
             `
 
           );
 
 
-        return textoPessoa.includes(
-
+        return texto.includes(
           termoBusca
-
         );
 
       }
@@ -391,9 +615,9 @@ function atualizarTabela() {
 
       <tr class="sem-dados">
 
-        <td colspan="4">
+        <td colspan="13">
 
-          Nenhum multiplicador encontrado.
+          Nenhum registro encontrado.
 
         </td>
 
@@ -429,6 +653,28 @@ function atualizarTabela() {
 
           <td>
 
+            ${
+              criarBadgeSimNao(
+                pessoa.repAtivo
+              )
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              criarBadgeStatus(
+                pessoa.statusPrograma
+              )
+            }
+
+          </td>
+
+
+          <td>
+
             <span class="badge-turno">
 
               ${pessoa.turno}
@@ -440,16 +686,79 @@ function atualizarTabela() {
 
           <td>
 
-            ${criarBadgeStatus(
-              pessoa.status
-            )}
+            ${pessoa.cargo || "-"}
 
           </td>
 
 
           <td>
 
-            ${pessoa.gestao}
+            ${pessoa.ldap || "-"}
+
+          </td>
+
+
+          <td>
+
+            ${pessoa.areaMacro || "-"}
+
+          </td>
+
+
+          <td>
+
+            ${pessoa.processo || "-"}
+
+          </td>
+
+
+          <td>
+
+            ${pessoa.escala || "-"}
+
+          </td>
+
+
+          <td>
+
+            ${
+              criarBadgeSimNao(
+                pessoa.decola
+              )
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              criarBadgeSimNao(
+                pessoa.bolhaMulti
+              )
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              pessoa.dataFormacao
+              ||
+              "-"
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              pessoa.motivo
+              ||
+              "-"
+            }
 
           </td>
 
@@ -464,7 +773,7 @@ function atualizarTabela() {
 
 
 /* =========================================================
-   FILTROS DE TURNO
+   BOTÕES DE TURNO
 ========================================================= */
 
 function configurarFiltrosTurno() {
@@ -523,6 +832,65 @@ function configurarFiltrosTurno() {
 
 
 /* =========================================================
+   BOTÕES DE STATUS
+========================================================= */
+
+function configurarFiltrosStatus() {
+
+  const botoes =
+
+    document.querySelectorAll(
+      ".botao-status"
+    );
+
+
+  botoes.forEach(
+
+    botao => {
+
+
+      botao.addEventListener(
+
+        "click",
+
+        () => {
+
+
+          statusSelecionado =
+
+            botao.dataset.status;
+
+
+          botoes.forEach(
+
+            item =>
+
+              item.classList.remove(
+                "ativo"
+              )
+
+          );
+
+
+          botao.classList.add(
+            "ativo"
+          );
+
+
+          atualizarTabela();
+
+        }
+
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
    BUSCA
 ========================================================= */
 
@@ -545,9 +913,7 @@ function configurarBusca() {
       termoBusca =
 
         normalizarTexto(
-
           evento.target.value
-
         );
 
 
@@ -561,17 +927,18 @@ function configurarBusca() {
 
 
 /* =========================================================
-   DATA DE ATUALIZAÇÃO
+   DATA
 ========================================================= */
 
 function atualizarData() {
 
   const agora =
-
     new Date();
 
 
-  const dataFormatada =
+  document.getElementById(
+    "ultimaAtualizacao"
+  ).textContent =
 
     agora.toLocaleString(
 
@@ -598,17 +965,11 @@ function atualizarData() {
 
     );
 
-
-  document.getElementById(
-    "ultimaAtualizacao"
-  ).textContent =
-    dataFormatada;
-
 }
 
 
 /* =========================================================
-   ATUALIZA DASHBOARD
+   DASHBOARD
 ========================================================= */
 
 function atualizarDashboard() {
@@ -634,6 +995,8 @@ document.addEventListener(
 
 
     configurarFiltrosTurno();
+
+    configurarFiltrosStatus();
 
     configurarBusca();
 
