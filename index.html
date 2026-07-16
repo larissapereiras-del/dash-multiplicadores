@@ -46,14 +46,26 @@
         </div>
 
         <div class="marca-texto">
-          <span class="marca-programa">PROGRAMA</span>
-          <h1>Multiplicadores</h1>
-          <span class="marca-unidade">SP10</span>
+
+          <span class="marca-programa">
+            PROGRAMA
+          </span>
+
+          <h1>
+            Multiplicadores
+          </h1>
+
+          <span class="marca-unidade">
+            SP10
+          </span>
+
         </div>
 
       </div>
 
+
       <div class="header-info">
+
         <span class="header-label">
           DASHBOARD
         </span>
@@ -61,6 +73,7 @@
         <strong>
           Gestão de Multiplicadores
         </strong>
+
       </div>
 
     </div>
@@ -74,11 +87,14 @@
 
   <main class="container">
 
-    <!-- TÍTULO -->
+    <!-- =========================================
+         TOPO
+    ========================================== -->
 
     <section class="boas-vindas">
 
       <div>
+
         <span class="tag-programa">
           PROGRAMA MULTIPLICADORES
         </span>
@@ -89,22 +105,29 @@
 
         <p>
           Acompanhe o quadro de multiplicadores,
-          status e elegibilidade por turno.
+          status e distribuição por turno.
         </p>
+
       </div>
 
+
       <div class="ultima-atualizacao">
-        <span>Última atualização</span>
+
+        <span>
+          Última atualização
+        </span>
+
         <strong id="ultimaAtualizacao">
           --
         </strong>
+
       </div>
 
     </section>
 
 
     <!-- =========================================
-         FILTROS DE TURNO
+         FILTROS
     ========================================== -->
 
     <section class="filtros">
@@ -112,6 +135,7 @@
       <span class="filtro-titulo">
         Visualizar turno:
       </span>
+
 
       <div class="botoes-turno">
 
@@ -122,6 +146,7 @@
           Todos
         </button>
 
+
         <button
           class="botao-turno"
           data-turno="T1"
@@ -129,12 +154,14 @@
           1º Turno
         </button>
 
+
         <button
           class="botao-turno"
           data-turno="T2"
         >
           2º Turno
         </button>
+
 
         <button
           class="botao-turno"
@@ -149,12 +176,13 @@
 
 
     <!-- =========================================
-         CARDS PRINCIPAIS
+         INDICADORES PRINCIPAIS
     ========================================== -->
 
     <section class="cards-indicadores">
 
-      <!-- TOTAL -->
+
+      <!-- TOTAL MULTIPLICADORES -->
 
       <article class="card-indicador">
 
@@ -162,7 +190,9 @@
           👥
         </div>
 
+
         <div class="card-conteudo">
+
           <span>
             Multiplicadores
           </span>
@@ -172,11 +202,13 @@
           </strong>
 
           <small>
-            Total cadastrado
+            Total de multiplicadores
           </small>
+
         </div>
 
       </article>
+
 
 
       <!-- ATIVOS -->
@@ -187,7 +219,9 @@
           ✓
         </div>
 
+
         <div class="card-conteudo">
+
           <span>
             Ativos
           </span>
@@ -199,9 +233,11 @@
           <small>
             Multiplicadores ativos
           </small>
+
         </div>
 
       </article>
+
 
 
       <!-- ESCOLA -->
@@ -212,9 +248,11 @@
           🎓
         </div>
 
+
         <div class="card-conteudo">
+
           <span>
-            Ativos para Escola
+            Ativos para Escola de Máquina
           </span>
 
           <strong id="totalEscola">
@@ -222,33 +260,9 @@
           </strong>
 
           <small>
-            Disponíveis para treinamento
+            Multiplicadores disponíveis para escola
           </small>
-        </div>
 
-      </article>
-
-
-      <!-- ELEGÍVEIS -->
-
-      <article class="card-indicador">
-
-        <div class="card-icone roxo">
-          ⚡
-        </div>
-
-        <div class="card-conteudo">
-          <span>
-            Total Elegível
-          </span>
-
-          <strong id="totalElegiveis">
-            0
-          </strong>
-
-          <small>
-            Ativos + Escola de Máquina
-          </small>
         </div>
 
       </article>
@@ -265,6 +279,7 @@
       <div class="secao-cabecalho">
 
         <div>
+
           <span class="secao-tag">
             DISTRIBUIÇÃO
           </span>
@@ -272,12 +287,14 @@
           <h3>
             Visão por Turno
           </h3>
+
         </div>
 
       </div>
 
 
       <div class="turnos-grid">
+
 
         <!-- T1 -->
 
@@ -286,31 +303,67 @@
           <div class="turno-topo">
 
             <div>
-              <span>1º TURNO</span>
-              <strong>T1</strong>
+
+              <span>
+                1º TURNO
+              </span>
+
+              <strong>
+                T1
+              </strong>
+
             </div>
 
-            <div class="turno-numero" id="totalT1">
-              0
+
+            <div class="turno-total">
+
+              <span>
+                TOTAL
+              </span>
+
+              <div
+                class="turno-numero"
+                id="totalT1"
+              >
+                0
+              </div>
+
             </div>
 
           </div>
 
+
           <div class="turno-detalhes">
 
             <div>
-              <span>Ativos</span>
-              <strong id="ativosT1">0</strong>
+
+              <span>
+                Ativos
+              </span>
+
+              <strong id="ativosT1">
+                0
+              </strong>
+
             </div>
 
+
             <div>
-              <span>Escola</span>
-              <strong id="escolaT1">0</strong>
+
+              <span>
+                Ativos para Escola
+              </span>
+
+              <strong id="escolaT1">
+                0
+              </strong>
+
             </div>
 
           </div>
 
         </article>
+
 
 
         <!-- T2 -->
@@ -320,31 +373,67 @@
           <div class="turno-topo">
 
             <div>
-              <span>2º TURNO</span>
-              <strong>T2</strong>
+
+              <span>
+                2º TURNO
+              </span>
+
+              <strong>
+                T2
+              </strong>
+
             </div>
 
-            <div class="turno-numero" id="totalT2">
-              0
+
+            <div class="turno-total">
+
+              <span>
+                TOTAL
+              </span>
+
+              <div
+                class="turno-numero"
+                id="totalT2"
+              >
+                0
+              </div>
+
             </div>
 
           </div>
 
+
           <div class="turno-detalhes">
 
             <div>
-              <span>Ativos</span>
-              <strong id="ativosT2">0</strong>
+
+              <span>
+                Ativos
+              </span>
+
+              <strong id="ativosT2">
+                0
+              </strong>
+
             </div>
 
+
             <div>
-              <span>Escola</span>
-              <strong id="escolaT2">0</strong>
+
+              <span>
+                Ativos para Escola
+              </span>
+
+              <strong id="escolaT2">
+                0
+              </strong>
+
             </div>
 
           </div>
 
         </article>
+
 
 
         <!-- T3 -->
@@ -354,26 +443,61 @@
           <div class="turno-topo">
 
             <div>
-              <span>3º TURNO</span>
-              <strong>T3</strong>
+
+              <span>
+                3º TURNO
+              </span>
+
+              <strong>
+                T3
+              </strong>
+
             </div>
 
-            <div class="turno-numero" id="totalT3">
-              0
+
+            <div class="turno-total">
+
+              <span>
+                TOTAL
+              </span>
+
+              <div
+                class="turno-numero"
+                id="totalT3"
+              >
+                0
+              </div>
+
             </div>
 
           </div>
 
+
           <div class="turno-detalhes">
 
             <div>
-              <span>Ativos</span>
-              <strong id="ativosT3">0</strong>
+
+              <span>
+                Ativos
+              </span>
+
+              <strong id="ativosT3">
+                0
+              </strong>
+
             </div>
 
+
             <div>
-              <span>Escola</span>
-              <strong id="escolaT3">0</strong>
+
+              <span>
+                Ativos para Escola
+              </span>
+
+              <strong id="escolaT3">
+                0
+              </strong>
+
             </div>
 
           </div>
@@ -386,7 +510,7 @@
 
 
     <!-- =========================================
-         LISTA DE MULTIPLICADORES
+         DETALHAMENTO
     ========================================== -->
 
     <section class="secao-dashboard">
@@ -394,6 +518,7 @@
       <div class="secao-cabecalho">
 
         <div>
+
           <span class="secao-tag">
             DETALHAMENTO
           </span>
@@ -401,6 +526,7 @@
           <h3>
             Multiplicadores
           </h3>
+
         </div>
 
 
@@ -428,13 +554,27 @@
           <thead>
 
             <tr>
-              <th>Multiplicador</th>
-              <th>Turno</th>
-              <th>Status</th>
-              <th>Gestão</th>
+
+              <th>
+                Multiplicador
+              </th>
+
+              <th>
+                Turno
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                Gestão
+              </th>
+
             </tr>
 
           </thead>
+
 
           <tbody id="tabelaMultiplicadores">
 
@@ -464,6 +604,7 @@
   <footer class="footer">
 
     <div>
+
       <strong>
         Programa Multiplicadores
       </strong>
@@ -471,7 +612,9 @@
       <span>
         SP10
       </span>
+
     </div>
+
 
     <p>
       Dashboard de acompanhamento e gestão
