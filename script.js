@@ -21,19 +21,22 @@ let multiplicadores =
 
 
 /* =========================================================
-   FILTROS
+   ESTADOS DOS FILTROS
 ========================================================= */
 
 let turnoSelecionado =
+  "todos";
+
+let turnoLiderancaSelecionado =
+  "todos";
+
+let turnoConsultaSelecionado =
   "todos";
 
 let statusSelecionado =
   "principal";
 
 let termoBusca =
-  "";
-
-let liderSelecionado =
   "";
 
 
@@ -251,17 +254,6 @@ function carregarDados() {
               ).trim() !== ""
 
           );
-
-
-      console.log(
-
-        "Base carregada:",
-
-        multiplicadores.length,
-
-        "registros"
-
-      );
 
 
       atualizarData();
@@ -499,68 +491,24 @@ function normalizarTurno(
     );
 
 
-  if (
-    valor === "t1"
-    ||
-    valor.includes(
-      "1 turno"
-    )
-  ) {
-
+  if (valor === "t1") {
     return "T1";
-
   }
 
-
-  if (
-    valor === "t2"
-    ||
-    valor.includes(
-      "2 turno"
-    )
-  ) {
-
+  if (valor === "t2") {
     return "T2";
-
   }
 
-
-  if (
-    valor === "t3"
-    ||
-    valor.includes(
-      "3 turno"
-    )
-  ) {
-
+  if (valor === "t3") {
     return "T3";
-
   }
 
-
-  if (
-    valor === "t4"
-    ||
-    valor.includes(
-      "4 turno"
-    )
-  ) {
-
+  if (valor === "t4") {
     return "T4";
-
   }
 
-
-  if (
-    valor === "t5"
-    ||
-    valor.includes(
-      "5 turno"
-    )
-  ) {
-
+  if (valor === "t5") {
     return "T5";
-
   }
 
 
@@ -572,15 +520,16 @@ function normalizarTurno(
 
 
 /* =========================================================
-   FILTRO DE TURNO
+   FILTRO GENÉRICO POR TURNO
 ========================================================= */
 
-function filtrarPorTurno(
-  lista
+function filtrarListaPorTurno(
+  lista,
+  turno
 ) {
 
   if (
-    turnoSelecionado ===
+    turno ===
     "todos"
   ) {
 
@@ -596,40 +545,7 @@ function filtrarPorTurno(
       normalizarTurno(
         pessoa.turno
       ) ===
-      turnoSelecionado
-
-  );
-
-}
-
-
-/* =========================================================
-   FILTRO DE LÍDER
-========================================================= */
-
-function filtrarPorLider(
-  lista
-) {
-
-  if (
-    !liderSelecionado
-  ) {
-
-    return lista;
-
-  }
-
-
-  return lista.filter(
-
-    pessoa =>
-
-      normalizarTexto(
-        pessoa.teamLeader
-      ) ===
-      normalizarTexto(
-        liderSelecionado
-      )
+      turno
 
   );
 
@@ -643,30 +559,39 @@ function filtrarPorLider(
 function atualizarIndicadores() {
 
   const baseTurno =
-    filtrarPorTurno(
-      multiplicadores
+
+    filtrarListaPorTurno(
+
+      multiplicadores,
+
+      turnoSelecionado
+
     );
 
 
   const principal =
+
     baseTurno.filter(
       estaNaVisaoPrincipal
     );
 
 
   const ativos =
+
     principal.filter(
       estaAtivo
     );
 
 
   const escola =
+
     principal.filter(
       estaAtivoEscola
     );
 
 
-  const lideresValidos =
+  const lideres =
+
     new Set(
 
       principal
@@ -689,7 +614,7 @@ function atualizarIndicadores() {
 
 
   const totalLideres =
-    lideresValidos.size;
+    lideres.size;
 
 
   const ratio =
@@ -763,6 +688,7 @@ function atualizarTurnos() {
 
 
       const baseTurno =
+
         multiplicadores.filter(
 
           pessoa =>
@@ -776,18 +702,21 @@ function atualizarTurnos() {
 
 
       const principal =
+
         baseTurno.filter(
           estaNaVisaoPrincipal
         );
 
 
       const ativos =
+
         principal.filter(
           estaAtivo
         );
 
 
       const escola =
+
         principal.filter(
           estaAtivoEscola
         );
@@ -818,20 +747,25 @@ function atualizarTurnos() {
 
 
 /* =========================================================
-   DISTRIBUIÇÃO POR LIDERANÇA
+   TABELA DE LIDERANÇA
 ========================================================= */
 
-function atualizarLideres() {
+function atualizarTabelaLideranca() {
 
-  const container =
+  const corpoTabela =
     document.getElementById(
-      "listaLideres"
+      "tabelaLideranca"
     );
 
 
   let base =
-    filtrarPorTurno(
-      multiplicadores
+
+    filtrarListaPorTurno(
+
+      multiplicadores,
+
+      turnoLiderancaSelecionado
+
     );
 
 
@@ -851,6 +785,7 @@ function atualizarLideres() {
 
 
       const nomeLider =
+
         String(
           pessoa.teamLeader || ""
         ).trim();
@@ -866,6 +801,7 @@ function atualizarLideres() {
 
 
       const chave =
+
         normalizarTexto(
           nomeLider
         );
@@ -902,13 +838,13 @@ function atualizarLideres() {
       }
 
 
-      const registro =
+      const lider =
         mapa.get(
           chave
         );
 
 
-      registro.total +=
+      lider.total +=
         1;
 
 
@@ -918,7 +854,7 @@ function atualizarLideres() {
         )
       ) {
 
-        registro.ativos +=
+        lider.ativos +=
           1;
 
       }
@@ -930,7 +866,7 @@ function atualizarLideres() {
         )
       ) {
 
-        registro.escola +=
+        lider.escola +=
           1;
 
       }
@@ -966,13 +902,17 @@ function atualizarLideres() {
     0
   ) {
 
-    container.innerHTML = `
+    corpoTabela.innerHTML = `
 
-      <div class="estado-carregando">
+      <tr class="sem-dados">
 
-        Nenhum líder encontrado.
+        <td colspan="5">
 
-      </div>
+          Nenhum líder encontrado.
+
+        </td>
+
+      </tr>
 
     `;
 
@@ -982,219 +922,80 @@ function atualizarLideres() {
   }
 
 
-  container.innerHTML =
+  corpoTabela.innerHTML =
 
     lideres.map(
 
-      lider => {
+      (
+        lider,
+        indice
+      ) => `
+
+        <tr>
+
+          <td>
+
+            <div class="posicao-ranking">
+
+              ${indice + 1}
+
+            </div>
+
+          </td>
 
 
-        const selecionado =
+          <td>
 
-          normalizarTexto(
-            lider.nome
-          ) ===
+            <strong>
 
-          normalizarTexto(
-            liderSelecionado
-          );
-
-
-        return `
-
-          <article
-
-            class="
-              card-lider
               ${
-                selecionado
-                  ? "selecionado"
-                  : ""
+                escapeHtml(
+                  lider.nome
+                )
               }
-            "
 
-            data-lider="
-              ${escapeHtml(
-                lider.nome
-              )}
-            "
+            </strong>
 
-          >
+          </td>
 
 
-            <div class="lider-topo">
+          <td>
+
+            <span class="numero-lideranca">
+
+              ${lider.total}
+
+            </span>
+
+          </td>
 
 
-              <div class="lider-nome">
+          <td>
 
-                ${
-                  escapeHtml(
-                    lider.nome
-                  )
-                }
+            <span class="badge ativo">
 
-              </div>
+              ${lider.ativos}
 
+            </span>
 
-              <div class="lider-total">
-
-                ${lider.total}
-
-              </div>
+          </td>
 
 
-            </div>
+          <td>
 
+            <span class="badge escola">
 
-            <div class="lider-detalhes">
+              ${lider.escola}
 
+            </span>
 
-              <div class="lider-detalhe">
+          </td>
 
-                <span>
-                  Ativos
-                </span>
+        </tr>
 
-                <strong>
-
-                  ${lider.ativos}
-
-                </strong>
-
-              </div>
-
-
-              <div class="lider-detalhe">
-
-                <span>
-                  Ativo Escola
-                </span>
-
-                <strong>
-
-                  ${lider.escola}
-
-                </strong>
-
-              </div>
-
-
-            </div>
-
-
-          </article>
-
-        `;
-
-      }
+      `
 
     ).join("");
-
-
-  configurarCliqueLider();
-
-}
-
-
-/* =========================================================
-   CLIQUE NO LÍDER
-========================================================= */
-
-function configurarCliqueLider() {
-
-  document
-
-    .querySelectorAll(
-      ".card-lider"
-    )
-
-    .forEach(
-
-      card => {
-
-
-        card.addEventListener(
-
-          "click",
-
-          () => {
-
-
-            const lider =
-              card.dataset.lider;
-
-
-            if (
-
-              normalizarTexto(
-                liderSelecionado
-              ) ===
-
-              normalizarTexto(
-                lider
-              )
-
-            ) {
-
-              liderSelecionado =
-                "";
-
-            }
-
-            else {
-
-              liderSelecionado =
-                lider;
-
-            }
-
-
-            atualizarLideres();
-
-            atualizarTabela();
-
-            atualizarBotaoLimparLider();
-
-          }
-
-        );
-
-      }
-
-    );
-
-}
-
-
-/* =========================================================
-   BOTÃO LIMPAR LÍDER
-========================================================= */
-
-function atualizarBotaoLimparLider() {
-
-  const botao =
-    document.getElementById(
-      "limparFiltroLider"
-    );
-
-
-  if (
-    liderSelecionado
-  ) {
-
-    botao.classList.remove(
-      "oculto"
-    );
-
-  }
-
-  else {
-
-    botao.classList.add(
-      "oculto"
-    );
-
-  }
 
 }
 
@@ -1269,6 +1070,7 @@ function obterMotivo(
 ) {
 
   const motivo =
+
     String(
       pessoa.motivo || ""
     ).trim();
@@ -1350,7 +1152,7 @@ function escapeHtml(
 
 
 /* =========================================================
-   BADGE STATUS PROGRAMA
+   BADGES
 ========================================================= */
 
 function criarBadgeStatusPrograma(
@@ -1445,10 +1247,6 @@ function criarBadgeStatusPrograma(
 }
 
 
-/* =========================================================
-   BADGE STATUS HC
-========================================================= */
-
 function criarBadgeStatusHC(
   statusBase
 ) {
@@ -1517,10 +1315,6 @@ function criarBadgeStatusHC(
 
 }
 
-
-/* =========================================================
-   SIM / NÃO
-========================================================= */
 
 function ehSim(
   valor
@@ -1594,7 +1388,7 @@ function criarBadgeSimNao(
 
 
 /* =========================================================
-   TABELA
+   TABELA DE CONSULTA
 ========================================================= */
 
 function atualizarTabela() {
@@ -1606,14 +1400,13 @@ function atualizarTabela() {
 
 
   let dados =
-    filtrarPorTurno(
-      multiplicadores
-    );
 
+    filtrarListaPorTurno(
 
-  dados =
-    filtrarPorLider(
-      dados
+      multiplicadores,
+
+      turnoConsultaSelecionado
+
     );
 
 
@@ -1721,7 +1514,6 @@ function atualizarTabela() {
       pessoa => `
 
         <tr>
-
 
           <td>
 
@@ -1901,7 +1693,6 @@ function atualizarTabela() {
 
           </td>
 
-
         </tr>
 
       `
@@ -1912,67 +1703,95 @@ function atualizarTabela() {
 
 
 /* =========================================================
-   CARREGAMENTO / ERRO
+   ABAS
 ========================================================= */
 
-function mostrarCarregamento() {
+function configurarAbas() {
 
-  document.getElementById(
-    "tabelaMultiplicadores"
-  ).innerHTML = `
+  document
 
-    <tr class="sem-dados">
+    .querySelectorAll(
+      ".aba-dashboard"
+    )
 
-      <td colspan="15">
+    .forEach(
 
-        Carregando dados da planilha...
-
-      </td>
-
-    </tr>
-
-  `;
-
-}
+      botao => {
 
 
-function mostrarErro(
-  mensagem
-) {
+        botao.addEventListener(
 
-  document.getElementById(
-    "tabelaMultiplicadores"
-  ).innerHTML = `
+          "click",
 
-    <tr class="sem-dados">
+          () => {
 
-      <td colspan="15">
 
-        Não foi possível carregar os dados.
+            const aba =
+              botao.dataset.aba;
 
-        <br><br>
 
-        <small>
+            document
 
-          ${
-            escapeHtml(
-              mensagem
-            )
+              .querySelectorAll(
+                ".aba-dashboard"
+              )
+
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativa"
+                  )
+
+              );
+
+
+            document
+
+              .querySelectorAll(
+                ".conteudo-aba"
+              )
+
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativo"
+                  )
+
+              );
+
+
+            botao.classList.add(
+              "ativa"
+            );
+
+
+            document
+
+              .getElementById(
+                `aba-${aba}`
+              )
+
+              .classList.add(
+                "ativo"
+              );
+
           }
 
-        </small>
+        );
 
-      </td>
+      }
 
-    </tr>
-
-  `;
+    );
 
 }
 
 
 /* =========================================================
-   FILTRO TURNO
+   FILTROS
 ========================================================= */
 
 function configurarFiltrosTurno() {
@@ -1999,10 +1818,6 @@ function configurarFiltrosTurno() {
               botao.dataset.turno;
 
 
-            liderSelecionado =
-              "";
-
-
             document
 
               .querySelectorAll(
@@ -2025,7 +1840,7 @@ function configurarFiltrosTurno() {
             );
 
 
-            atualizarDashboard();
+            atualizarIndicadores();
 
           }
 
@@ -2038,9 +1853,123 @@ function configurarFiltrosTurno() {
 }
 
 
-/* =========================================================
-   FILTRO STATUS
-========================================================= */
+function configurarFiltrosLideranca() {
+
+  document
+
+    .querySelectorAll(
+      ".botao-turno-lideranca"
+    )
+
+    .forEach(
+
+      botao => {
+
+
+        botao.addEventListener(
+
+          "click",
+
+          () => {
+
+
+            turnoLiderancaSelecionado =
+              botao.dataset.turnoLideranca;
+
+
+            document
+
+              .querySelectorAll(
+                ".botao-turno-lideranca"
+              )
+
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativo"
+                  )
+
+              );
+
+
+            botao.classList.add(
+              "ativo"
+            );
+
+
+            atualizarTabelaLideranca();
+
+          }
+
+        );
+
+      }
+
+    );
+
+}
+
+
+function configurarFiltrosConsulta() {
+
+  document
+
+    .querySelectorAll(
+      ".botao-turno-consulta"
+    )
+
+    .forEach(
+
+      botao => {
+
+
+        botao.addEventListener(
+
+          "click",
+
+          () => {
+
+
+            turnoConsultaSelecionado =
+              botao.dataset.turnoConsulta;
+
+
+            document
+
+              .querySelectorAll(
+                ".botao-turno-consulta"
+              )
+
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativo"
+                  )
+
+              );
+
+
+            botao.classList.add(
+              "ativo"
+            );
+
+
+            atualizarTabela();
+
+          }
+
+        );
+
+      }
+
+    );
+
+}
+
 
 function configurarFiltrosStatus() {
 
@@ -2136,37 +2065,61 @@ function configurarBusca() {
 
 
 /* =========================================================
-   LIMPAR LÍDER
+   CARREGAMENTO E ERRO
 ========================================================= */
 
-function configurarLimparLider() {
+function mostrarCarregamento() {
 
-  document
+  document.getElementById(
+    "tabelaMultiplicadores"
+  ).innerHTML = `
 
-    .getElementById(
-      "limparFiltroLider"
-    )
+    <tr class="sem-dados">
 
-    .addEventListener(
+      <td colspan="15">
 
-      "click",
+        Carregando dados da planilha...
 
-      () => {
+      </td>
+
+    </tr>
+
+  `;
+
+}
 
 
-        liderSelecionado =
-          "";
+function mostrarErro(
+  mensagem
+) {
 
+  document.getElementById(
+    "tabelaMultiplicadores"
+  ).innerHTML = `
 
-        atualizarLideres();
+    <tr class="sem-dados">
 
-        atualizarTabela();
+      <td colspan="15">
 
-        atualizarBotaoLimparLider();
+        Não foi possível carregar os dados.
 
-      }
+        <br><br>
 
-    );
+        <small>
+
+          ${
+            escapeHtml(
+              mensagem
+            )
+          }
+
+        </small>
+
+      </td>
+
+    </tr>
+
+  `;
 
 }
 
@@ -2219,11 +2172,9 @@ function atualizarDashboard() {
 
   atualizarTurnos();
 
-  atualizarLideres();
+  atualizarTabelaLideranca();
 
   atualizarTabela();
-
-  atualizarBotaoLimparLider();
 
 }
 
@@ -2239,13 +2190,17 @@ document.addEventListener(
   () => {
 
 
+    configurarAbas();
+
     configurarFiltrosTurno();
+
+    configurarFiltrosLideranca();
+
+    configurarFiltrosConsulta();
 
     configurarFiltrosStatus();
 
     configurarBusca();
-
-    configurarLimparLider();
 
     carregarDados();
 
