@@ -222,15 +222,6 @@ function carregarDados() {
 
     atualizarDashboard();
 
-
-    setTimeout(
-
-      configurarScrollSincronizado,
-
-      100
-
-    );
-
   };
 
 
@@ -1366,159 +1357,8 @@ function atualizarTabela() {
       `
 
     ).join("");
-
-
-  setTimeout(
-
-    atualizarLarguraScrollSuperior,
-
-    50
-
-  );
-
+  
 }
-
-
-/* =========================================================
-   SCROLL SINCRONIZADO
-========================================================= */
-
-function configurarScrollSincronizado() {
-
-  const superior =
-    document.getElementById(
-      "scrollSuperior"
-    );
-
-
-  const tabela =
-    document.getElementById(
-      "tabelaScroll"
-    );
-
-
-  if (
-    !superior
-    ||
-    !tabela
-  ) {
-
-    return;
-
-  }
-
-
-  let sincronizandoSuperior =
-    false;
-
-  let sincronizandoTabela =
-    false;
-
-
-  superior.addEventListener(
-
-    "scroll",
-
-    () => {
-
-
-      if (
-        sincronizandoTabela
-      ) {
-
-        sincronizandoTabela =
-          false;
-
-        return;
-
-      }
-
-
-      sincronizandoSuperior =
-        true;
-
-
-      tabela.scrollLeft =
-        superior.scrollLeft;
-
-    }
-
-  );
-
-
-  tabela.addEventListener(
-
-    "scroll",
-
-    () => {
-
-
-      if (
-        sincronizandoSuperior
-      ) {
-
-        sincronizandoSuperior =
-          false;
-
-        return;
-
-      }
-
-
-      sincronizandoTabela =
-        true;
-
-
-      superior.scrollLeft =
-        tabela.scrollLeft;
-
-    }
-
-  );
-
-
-  atualizarLarguraScrollSuperior();
-
-}
-
-
-/* =========================================================
-   LARGURA DO SCROLL SUPERIOR
-========================================================= */
-
-function atualizarLarguraScrollSuperior() {
-
-  const tabela =
-    document.getElementById(
-      "tabelaConsulta"
-    );
-
-
-  const conteudo =
-    document.getElementById(
-      "scrollSuperiorConteudo"
-    );
-
-
-  if (
-    !tabela
-    ||
-    !conteudo
-  ) {
-
-    return;
-
-  }
-
-
-  conteudo.style.width =
-
-    tabela.scrollWidth
-    +
-    "px";
-
-}
-
 
 /* =========================================================
    ABAS
@@ -1959,15 +1799,6 @@ document.addEventListener(
     configurarScrollSincronizado();
 
     carregarDados();
-
-
-    window.addEventListener(
-
-      "resize",
-
-      atualizarLarguraScrollSuperior
-
-    );
 
   }
 
