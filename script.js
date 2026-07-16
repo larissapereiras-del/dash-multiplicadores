@@ -1,123 +1,75 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
+   BASE REAL VIA JSONP
 ========================================================= */
 
 const API_URL =
   "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzortEzdw4UOxFqaqGIuxLC6sT-mf0yG5aMJbbCFHPk4ldG7HvX0PzlO178bNAZ_vySqg/exec";
 
 
-let multiplicadores =
-  [];
+/* =========================================================
+   BASE
+========================================================= */
 
-let turnoSelecionado =
-  "todos";
+let multiplicadores = [];
 
-let turnoLiderancaSelecionado =
-  "todos";
 
-let turnoConsultaSelecionado =
-  "todos";
+/* =========================================================
+   ESTADO DOS FILTROS
+========================================================= */
 
-let statusSelecionado =
-  "principal";
-
-let termoBusca =
-  "";
+let turnoSelecionado = "todos";
+let turnoLiderancaSelecionado = "todos";
+let turnoConsultaSelecionado = "todos";
+let statusSelecionado = "principal";
+let termoBusca = "";
 
 
 /* =========================================================
    TEXTO
 ========================================================= */
 
-function normalizarTexto(
-  texto
-) {
+function normalizarTexto(texto) {
 
-  return String(
-    texto || ""
-  )
-
-    .normalize(
-      "NFD"
-    )
-
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-
-    .replace(
-      /\s+/g,
-      " "
-    )
-
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
     .toLowerCase()
-
     .trim();
 
 }
 
 
-function textoMaiusculo(
-  texto
-) {
+function textoMaiusculo(texto) {
 
-  return String(
-    texto || "-"
-  )
+  const valor =
+    String(texto || "").trim();
 
-    .trim()
-
-    .toLocaleUpperCase(
-      "pt-BR"
-    );
+  return valor
+    ? valor.toLocaleUpperCase("pt-BR")
+    : "-";
 
 }
 
 
-function escapeHtml(
-  texto
-) {
+function escapeHtml(texto) {
 
-  return String(
-    texto || ""
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(texto || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
 
 /* =========================================================
-   MAPA
+   MAPA DA BASE
 ========================================================= */
 
-function transformarRegistro(
-  item
-) {
+function transformarRegistro(item) {
 
   return {
 
@@ -172,7 +124,7 @@ function transformarRegistro(
 
 
 /* =========================================================
-   JSONP
+   CARREGAMENTO JSONP
 ========================================================= */
 
 function carregarDados() {
@@ -181,46 +133,104 @@ function carregarDados() {
     "receberDadosMultiplicadores";
 
 
-  window[
-    callbackName
-  ] = function (
-    retorno
-  ) {
+  const scriptAnterior =
+    document.getElementById(
+      "api-multiplicadores"
+    );
 
-    if (
-      !retorno
-      ||
-      !retorno.sucesso
-    ) {
+
+  if (scriptAnterior) {
+    scriptAnterior.remove();
+  }
+
+
+  const timeout =
+    setTimeout(() => {
 
       mostrarErro(
-        "Não foi possível carregar a base."
+        "A conexão com a planilha demorou mais que o esperado."
       );
 
-      return;
+    }, 20000);
+
+
+  window[callbackName] = function(retorno) {
+
+    clearTimeout(timeout);
+
+
+    try {
+
+      if (
+        !retorno
+        ||
+        !retorno.sucesso
+      ) {
+
+        throw new Error(
+          retorno?.erro
+          ||
+          "A API não retornou os dados corretamente."
+        );
+
+      }
+
+
+      multiplicadores =
+        retorno.dados
+          .map(transformarRegistro)
+          .filter(
+            pessoa =>
+              String(
+                pessoa.nome || ""
+              ).trim() !== ""
+          );
+
+
+      console.log(
+        "Base carregada:",
+        multiplicadores.length
+      );
+
+
+      atualizarData();
+
+      atualizarDashboard();
 
     }
 
+    catch (erro) {
 
-    multiplicadores =
+      console.error(
+        "Erro ao processar dados:",
+        erro
+      );
 
-      retorno.dados
 
-        .map(
-          transformarRegistro
-        )
+      mostrarErro(
+        erro.message
+      );
 
-        .filter(
+    }
 
-          pessoa =>
-            pessoa.nome
+    finally {
 
+      delete window[
+        callbackName
+      ];
+
+
+      const scriptAPI =
+        document.getElementById(
+          "api-multiplicadores"
         );
 
 
-    atualizarData();
+      if (scriptAPI) {
+        scriptAPI.remove();
+      }
 
-    atualizarDashboard();
+    }
 
   };
 
@@ -231,25 +241,32 @@ function carregarDados() {
     );
 
 
+  script.id =
+    "api-multiplicadores";
+
+
   script.src =
-
     API_URL
-
     +
-
     "?callback="
-
     +
-
     callbackName
-
     +
-
     "&t="
-
     +
-
     Date.now();
+
+
+  script.onerror = function() {
+
+    clearTimeout(timeout);
+
+
+    mostrarErro(
+      "O navegador não conseguiu acessar a API da planilha."
+    );
+
+  };
 
 
   document.body.appendChild(
@@ -263,9 +280,7 @@ function carregarDados() {
    STATUS
 ========================================================= */
 
-function statusPrograma(
-  pessoa
-) {
+function statusPrograma(pessoa) {
 
   return normalizarTexto(
     pessoa.statusPrograma
@@ -274,83 +289,59 @@ function statusPrograma(
 }
 
 
-function estaAtivo(
-  pessoa
-) {
+function estaAtivo(pessoa) {
 
   return (
-    statusPrograma(
-      pessoa
-    ) ===
+    statusPrograma(pessoa)
+    ===
     "ativo"
   );
 
 }
 
 
-function estaAtivoEscola(
-  pessoa
-) {
-
-  return (
-    statusPrograma(
-      pessoa
-    ) ===
-    "ativo escola"
-  );
-
-}
-
-
-function estaNaVisaoPrincipal(
-  pessoa
-) {
-
-  return (
-    estaAtivo(
-      pessoa
-    )
-
-    ||
-
-    estaAtivoEscola(
-      pessoa
-    )
-  );
-
-}
-
-
-function estaNaConsultaInativos(
-  pessoa
-) {
+function estaAtivoEscola(pessoa) {
 
   const status =
-    statusPrograma(
-      pessoa
-    );
+    statusPrograma(pessoa);
 
 
   return (
-
-    status ===
-      "inativo"
-
+    status === "ativo escola"
     ||
-
-    status ===
-      "desistencia"
-
+    status === "ativo para escola"
     ||
+    status === "ativo para escola de maquina"
+  );
 
-    status ===
-      "multi loss"
+}
 
+
+function estaNaVisaoPrincipal(pessoa) {
+
+  return (
+    estaAtivo(pessoa)
     ||
+    estaAtivoEscola(pessoa)
+  );
 
-    status ===
-      "training"
+}
 
+
+function estaNaConsultaInativos(pessoa) {
+
+  const status =
+    statusPrograma(pessoa);
+
+
+  return (
+    status === "inativo"
+    ||
+    status === "desistencia"
+    ||
+    status === "multi loss"
+    ||
+    status === "training"
   );
 
 }
@@ -360,14 +351,10 @@ function estaNaConsultaInativos(
    TURNO
 ========================================================= */
 
-function normalizarTurno(
-  turno
-) {
+function normalizarTurno(turno) {
 
   const valor =
-    normalizarTexto(
-      turno
-    );
+    normalizarTexto(turno);
 
 
   if (valor === "t1") return "T1";
@@ -402,11 +389,9 @@ function filtrarListaPorTurno(
   return lista.filter(
 
     pessoa =>
-
       normalizarTurno(
         pessoa.turno
-      ) ===
-      turno
+      ) === turno
 
   );
 
@@ -420,56 +405,41 @@ function filtrarListaPorTurno(
 function atualizarIndicadores() {
 
   const base =
-
     filtrarListaPorTurno(
-
       multiplicadores,
-
       turnoSelecionado
-
     );
 
 
   const principal =
-
     base.filter(
       estaNaVisaoPrincipal
     );
 
 
   const ativos =
-
     principal.filter(
       estaAtivo
     );
 
 
   const escola =
-
     principal.filter(
       estaAtivoEscola
     );
 
 
   const lideres =
-
     new Set(
 
       principal
-
         .map(
-
           pessoa =>
-
             normalizarTexto(
               pessoa.teamLeader
             )
-
         )
-
-        .filter(
-          Boolean
-        )
+        .filter(Boolean)
 
     );
 
@@ -479,7 +449,6 @@ function atualizarIndicadores() {
 
 
   const ratio =
-
     totalLideres > 0
 
       ? principal.length
@@ -534,7 +503,7 @@ function atualizarIndicadores() {
 
 
 /* =========================================================
-   TURNOS
+   COMPARATIVO POR TURNO
 ========================================================= */
 
 function atualizarTurnos() {
@@ -557,11 +526,9 @@ function atualizarTurnos() {
           .filter(
 
             pessoa =>
-
               normalizarTurno(
                 pessoa.turno
-              ) ===
-              turno
+              ) === turno
 
           )
 
@@ -619,13 +586,9 @@ function atualizarTabelaLideranca() {
 
 
   let base =
-
     filtrarListaPorTurno(
-
       multiplicadores,
-
       turnoLiderancaSelecionado
-
     );
 
 
@@ -644,15 +607,10 @@ function atualizarTabelaLideranca() {
     pessoa => {
 
 
-      const nomeLider =
-
-        textoMaiusculo(
-          pessoa.teamLeader
-        );
-
-
       if (
-        !pessoa.teamLeader
+        !String(
+          pessoa.teamLeader || ""
+        ).trim()
       ) {
 
         return;
@@ -667,9 +625,7 @@ function atualizarTabelaLideranca() {
 
 
       if (
-        !mapa.has(
-          chave
-        )
+        !mapa.has(chave)
       ) {
 
         mapa.set(
@@ -679,7 +635,9 @@ function atualizarTabelaLideranca() {
           {
 
             nome:
-              nomeLider,
+              textoMaiusculo(
+                pessoa.teamLeader
+              ),
 
             total:
               0,
@@ -698,18 +656,14 @@ function atualizarTabelaLideranca() {
 
 
       const lider =
-        mapa.get(
-          chave
-        );
+        mapa.get(chave);
 
 
       lider.total++;
 
 
       if (
-        estaAtivo(
-          pessoa
-        )
+        estaAtivo(pessoa)
       ) {
 
         lider.ativos++;
@@ -718,9 +672,7 @@ function atualizarTabelaLideranca() {
 
 
       if (
-        estaAtivoEscola(
-          pessoa
-        )
+        estaAtivoEscola(pessoa)
       ) {
 
         lider.escola++;
@@ -734,22 +686,42 @@ function atualizarTabelaLideranca() {
 
   const lideres =
 
-    Array.from(
-      mapa.values()
-    )
+    Array
+      .from(
+        mapa.values()
+      )
 
       .sort(
 
-        (
-          a,
-          b
-        ) =>
-
+        (a, b) =>
           b.total
           -
           a.total
 
       );
+
+
+  if (
+    lideres.length === 0
+  ) {
+
+    corpo.innerHTML = `
+
+      <tr class="sem-dados">
+
+        <td colspan="5">
+
+          Nenhum líder encontrado.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
 
 
   corpo.innerHTML =
@@ -831,12 +803,10 @@ function atualizarTabelaLideranca() {
 
 
 /* =========================================================
-   STATUS
+   FILTRO DE STATUS
 ========================================================= */
 
-function filtrarPorStatus(
-  lista
-) {
+function filtrarPorStatus(lista) {
 
   if (
     statusSelecionado ===
@@ -895,33 +865,29 @@ function filtrarPorStatus(
    MOTIVO
 ========================================================= */
 
-function obterMotivo(
-  pessoa
-) {
+function obterMotivo(pessoa) {
 
-  if (
-    pessoa.motivo
-  ) {
+  const motivo =
+    String(
+      pessoa.motivo || ""
+    ).trim();
 
-    return pessoa.motivo;
+
+  if (motivo) {
+
+    return motivo;
 
   }
 
 
   const status =
-    statusPrograma(
-      pessoa
-    );
+    statusPrograma(pessoa);
 
 
   if (
-    status ===
-      "multi loss"
-
+    status === "multi loss"
     ||
-
-    status ===
-      "training"
+    status === "training"
   ) {
 
     return "MOVIMENTAÇÃO DE ÁREA";
@@ -942,14 +908,16 @@ function criarBadgeStatusPrograma(
   pessoa
 ) {
 
+  const status =
+    statusPrograma(pessoa);
+
+
   let classe =
     "inativo";
 
 
   if (
-    estaAtivo(
-      pessoa
-    )
+    estaAtivo(pessoa)
   ) {
 
     classe =
@@ -957,15 +925,33 @@ function criarBadgeStatusPrograma(
 
   }
 
-
   else if (
-    estaAtivoEscola(
-      pessoa
-    )
+    estaAtivoEscola(pessoa)
   ) {
 
     classe =
       "escola";
+
+  }
+
+  else if (
+    status ===
+    "desistencia"
+  ) {
+
+    classe =
+      "desistencia";
+
+  }
+
+  else if (
+    status === "multi loss"
+    ||
+    status === "training"
+  ) {
+
+    classe =
+      "movimentacao";
 
   }
 
@@ -994,9 +980,7 @@ function criarBadgeStatusHC(
 ) {
 
   const status =
-    normalizarTexto(
-      valor
-    );
+    normalizarTexto(valor);
 
 
   let classe =
@@ -1013,7 +997,6 @@ function criarBadgeStatusHC(
 
   }
 
-
   else if (
     status ===
     "inativo"
@@ -1023,7 +1006,6 @@ function criarBadgeStatusHC(
       "hc-inativo";
 
   }
-
 
   else if (
     status.includes(
@@ -1043,9 +1025,7 @@ function criarBadgeStatusHC(
 
       ${
         escapeHtml(
-          textoMaiusculo(
-            valor
-          )
+          textoMaiusculo(valor)
         )
       }
 
@@ -1061,10 +1041,8 @@ function criarBadgeSimNao(
 ) {
 
   const sim =
-
-    normalizarTexto(
-      valor
-    ) ===
+    normalizarTexto(valor)
+    ===
     "sim";
 
 
@@ -1090,7 +1068,7 @@ function criarBadgeSimNao(
 
 
 /* =========================================================
-   CONSULTA
+   TABELA DE CONSULTA
 ========================================================= */
 
 function atualizarTabela() {
@@ -1102,13 +1080,9 @@ function atualizarTabela() {
 
 
   let dados =
-
     filtrarListaPorTurno(
-
       multiplicadores,
-
       turnoConsultaSelecionado
-
     );
 
 
@@ -1122,28 +1096,51 @@ function atualizarTabela() {
     termoBusca
   ) {
 
-    dados =
+    dados = dados.filter(
 
-      dados.filter(
+      pessoa =>
 
-        pessoa =>
+        normalizarTexto(
 
-          normalizarTexto(
+          `
+          ${pessoa.nome}
+          ${pessoa.teamLeader}
+          ${pessoa.ldap}
+          ${pessoa.areaMacro}
+          ${pessoa.subArea}
+          ${pessoa.processo}
+          ${pessoa.statusBaseHC}
+          ${pessoa.statusPrograma}
+          `
 
-            `
-            ${pessoa.nome}
-            ${pessoa.teamLeader}
-            ${pessoa.ldap}
-            ${pessoa.areaMacro}
-            ${pessoa.subArea}
-            ${pessoa.processo}
-            `
+        ).includes(
+          termoBusca
+        )
 
-          ).includes(
-            termoBusca
-          )
+    );
 
-      );
+  }
+
+
+  if (
+    dados.length === 0
+  ) {
+
+    corpo.innerHTML = `
+
+      <tr class="sem-dados">
+
+        <td colspan="15">
+
+          Nenhum registro encontrado.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
 
   }
 
@@ -1155,7 +1152,6 @@ function atualizarTabela() {
       pessoa => `
 
         <tr>
-
 
           <td>
 
@@ -1214,8 +1210,12 @@ function atualizarTabela() {
             <span class="badge-turno">
 
               ${
-                normalizarTurno(
-                  pessoa.turno
+                escapeHtml(
+                  normalizarTurno(
+                    pessoa.turno
+                  )
+                  ||
+                  "-"
                 )
               }
 
@@ -1351,14 +1351,14 @@ function atualizarTabela() {
 
           </td>
 
-
         </tr>
 
       `
 
     ).join("");
-  
+
 }
+
 
 /* =========================================================
    ABAS
@@ -1367,15 +1367,12 @@ function atualizarTabela() {
 function configurarAbas() {
 
   document
-
     .querySelectorAll(
       ".aba-dashboard"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -1383,21 +1380,17 @@ function configurarAbas() {
 
           () => {
 
-
             const aba =
               botao.dataset.aba;
 
 
             document
-
               .querySelectorAll(
                 ".aba-dashboard"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativa"
                   )
@@ -1406,15 +1399,12 @@ function configurarAbas() {
 
 
             document
-
               .querySelectorAll(
                 ".conteudo-aba"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -1428,30 +1418,12 @@ function configurarAbas() {
 
 
             document
-
               .getElementById(
                 `aba-${aba}`
               )
-
               .classList.add(
                 "ativo"
               );
-
-
-            if (
-              aba ===
-              "consulta"
-            ) {
-
-              setTimeout(
-
-                atualizarLarguraScrollSuperior,
-
-                100
-
-              );
-
-            }
 
           }
 
@@ -1471,14 +1443,12 @@ function configurarAbas() {
 function configurarFiltros() {
 
   document
-
     .querySelectorAll(
       ".botao-turno"
     )
-
     .forEach(
 
-      botao =>
+      botao => {
 
         botao.addEventListener(
 
@@ -1486,21 +1456,17 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoSelecionado =
               botao.dataset.turno;
 
 
             document
-
               .querySelectorAll(
                 ".botao-turno"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -1517,20 +1483,20 @@ function configurarFiltros() {
 
           }
 
-        )
+        );
+
+      }
 
     );
 
 
   document
-
     .querySelectorAll(
       ".botao-turno-lideranca"
     )
-
     .forEach(
 
-      botao =>
+      botao => {
 
         botao.addEventListener(
 
@@ -1538,21 +1504,18 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoLiderancaSelecionado =
-              botao.dataset.turnoLideranca;
+              botao.dataset
+                .turnoLideranca;
 
 
             document
-
               .querySelectorAll(
                 ".botao-turno-lideranca"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -1569,20 +1532,20 @@ function configurarFiltros() {
 
           }
 
-        )
+        );
+
+      }
 
     );
 
 
   document
-
     .querySelectorAll(
       ".botao-turno-consulta"
     )
-
     .forEach(
 
-      botao =>
+      botao => {
 
         botao.addEventListener(
 
@@ -1590,21 +1553,18 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoConsultaSelecionado =
-              botao.dataset.turnoConsulta;
+              botao.dataset
+                .turnoConsulta;
 
 
             document
-
               .querySelectorAll(
                 ".botao-turno-consulta"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -1621,42 +1581,38 @@ function configurarFiltros() {
 
           }
 
-        )
+        );
+
+      }
 
     );
 
 
   document
-
     .querySelectorAll(
       ".botao-status"
     )
-
     .forEach(
 
-      botao =>
+      botao => {
 
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             statusSelecionado =
               botao.dataset.status;
 
 
             document
-
               .querySelectorAll(
                 ".botao-status"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -1673,7 +1629,9 @@ function configurarFiltros() {
 
           }
 
-        )
+        );
+
+      }
 
     );
 
@@ -1686,30 +1644,34 @@ function configurarFiltros() {
 
 function configurarBusca() {
 
-  document
-
-    .getElementById(
+  const campo =
+    document.getElementById(
       "campoBusca"
-    )
-
-    .addEventListener(
-
-      "input",
-
-      evento => {
-
-
-        termoBusca =
-          normalizarTexto(
-            evento.target.value
-          );
-
-
-        atualizarTabela();
-
-      }
-
     );
+
+
+  if (!campo) {
+    return;
+  }
+
+
+  campo.addEventListener(
+
+    "input",
+
+    evento => {
+
+      termoBusca =
+        normalizarTexto(
+          evento.target.value
+        );
+
+
+      atualizarTabela();
+
+    }
+
+  );
 
 }
 
@@ -1724,9 +1686,10 @@ function atualizarData() {
     "ultimaAtualizacao"
   ).textContent =
 
-    new Date().toLocaleString(
-      "pt-BR"
-    );
+    new Date()
+      .toLocaleString(
+        "pt-BR"
+      );
 
 }
 
@@ -1756,25 +1719,38 @@ function mostrarErro(
   mensagem
 ) {
 
-  document.getElementById(
-    "tabelaMultiplicadores"
-  ).innerHTML = `
+  console.error(
+    mensagem
+  );
 
-    <tr class="sem-dados">
 
-      <td colspan="15">
+  const tabela =
+    document.getElementById(
+      "tabelaMultiplicadores"
+    );
 
-        ${
-          escapeHtml(
-            mensagem
-          )
-        }
 
-      </td>
+  if (tabela) {
 
-    </tr>
+    tabela.innerHTML = `
 
-  `;
+      <tr class="sem-dados">
+
+        <td colspan="15">
+
+          ${
+            escapeHtml(
+              mensagem
+            )
+          }
+
+        </td>
+
+      </tr>
+
+    `;
+
+  }
 
 }
 
@@ -1789,14 +1765,11 @@ document.addEventListener(
 
   () => {
 
-
     configurarAbas();
 
     configurarFiltros();
 
     configurarBusca();
-
-    configurarScrollSincronizado();
 
     carregarDados();
 
