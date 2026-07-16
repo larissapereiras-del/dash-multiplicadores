@@ -15,14 +15,11 @@ const API_URL =
    BASES
 ========================================================= */
 
-let multiplicadores =
-  [];
+let multiplicadores = [];
 
-let multiplicadoresOficial =
-  [];
+let multiplicadoresOficial = [];
 
-let tlsSemMultis =
-  [];
+let tlsSemMultis = [];
 
 
 /* =========================================================
@@ -159,84 +156,70 @@ function transformarRegistro(
         "Nome do Representante"
       ] || "",
 
-
     teamLeader:
       item[
         "Team Leader"
       ] || "",
-
 
     statusBaseHC:
       item[
         "Status Base HC"
       ] || "",
 
-
     statusPrograma:
       item[
         "Status Treinamento"
       ] || "",
-
 
     turno:
       item[
         "Turno"
       ] || "",
 
-
     cargo:
       item[
         "Cargo"
       ] || "",
-
 
     ldap:
       item[
         "LDAP"
       ] || "",
 
-
     areaMacro:
       item[
         "Área Macro"
       ] || "",
-
 
     subArea:
       item[
         "Sub Área"
       ] || "",
 
-
     processo:
       item[
         "Processo Ajustado"
       ] || "",
-
 
     escala:
       item[
         "ESCALA"
       ] || "",
 
-
     decola:
       item[
         "Decola"
       ] || "",
-
 
     bolhaMulti:
       item[
         "Tem bolha de Multi"
       ] || "",
 
-
     dataFormacao:
       item[
         "Data de Formação"
       ] || "",
-
 
     motivo:
       item[
@@ -263,36 +246,30 @@ function transformarRegistroOficial(
         "CAD_LIDER"
       ] || "",
 
-
     teamLeader:
       item[
         "TEAM LEADER"
       ] || "",
-
 
     ldap:
       item[
         "LDAP_USER"
       ] || "",
 
-
     nome:
       item[
         "NOMBRE_MULTIPLICADOR"
       ] || "",
-
 
     turno:
       item[
         "LAST_TURNO"
       ] || "",
 
-
     area:
       item[
         "AREA_MADRE"
       ] || "",
-
 
     multiplicadores:
       item[
@@ -319,24 +296,20 @@ function transformarTlSemMulti(
         "CAD"
       ] || "",
 
-
     teamLeader:
       item[
         "TEAM LEADER"
       ] || "",
-
 
     area:
       item[
         "AREA_MADRE"
       ] || "",
 
-
     totalEquipe:
       item[
         "TOTAL_EQUIPO"
       ] || "",
-
 
     totalMultis:
       item[
@@ -360,13 +333,9 @@ window.receberDadosMultiplicadores =
 
     try {
 
-
       console.log(
-
         "Resposta recebida:",
-
         retorno
-
       );
 
 
@@ -471,37 +440,9 @@ window.receberDadosMultiplicadores =
           [];
 
 
-      console.log(
-
-        "VALIDADOS:",
-
-        multiplicadores.length
-
-      );
-
-
-      console.log(
-
-        "OFICIAL:",
-
-        multiplicadoresOficial.length
-
-      );
-
-
-      console.log(
-
-        "TLS SEM MULTIS:",
-
-        tlsSemMultis.length
-
-      );
-
-
       atualizarData();
 
       atualizarDashboard();
-
 
     }
 
@@ -509,20 +450,15 @@ window.receberDadosMultiplicadores =
       erro
     ) {
 
-
       console.error(
-
         "Erro ao processar dados:",
-
         erro
-
       );
 
 
       mostrarErro(
         erro.message
       );
-
 
     }
 
@@ -534,7 +470,6 @@ window.receberDadosMultiplicadores =
 ========================================================= */
 
 function carregarDados() {
-
 
   const scriptAnterior =
 
@@ -560,7 +495,6 @@ function carregarDados() {
 
 
   script.id =
-
     "api-multiplicadores";
 
 
@@ -585,13 +519,11 @@ function carregarDados() {
 
     function() {
 
-
       mostrarErro(
 
         "Não foi possível conectar com a API da planilha."
 
       );
-
 
     };
 
@@ -866,7 +798,6 @@ function filtrarListaPorTurno(
 
 function atualizarIndicadores() {
 
-
   const base =
 
     filtrarListaPorTurno(
@@ -1020,7 +951,6 @@ function atualizarIndicadores() {
 
 function atualizarTurnos() {
 
-
   [
 
     "T1",
@@ -1036,7 +966,6 @@ function atualizarTurnos() {
   ].forEach(
 
     turno => {
-
 
       const base =
 
@@ -1101,7 +1030,6 @@ function atualizarTurnos() {
 
       );
 
-
     }
 
   );
@@ -1114,7 +1042,6 @@ function atualizarTurnos() {
 ========================================================= */
 
 function atualizarTabelaLideranca() {
-
 
   const corpo =
 
@@ -1159,7 +1086,6 @@ function atualizarTabelaLideranca() {
 
     pessoa => {
 
-
       const nomeLider =
 
         String(
@@ -1203,14 +1129,11 @@ function atualizarTabelaLideranca() {
                 nomeLider
               ),
 
-
             total:
               0,
 
-
             ativos:
               0,
-
 
             escola:
               0
@@ -1252,7 +1175,6 @@ function atualizarTabelaLideranca() {
         lider.escola++;
 
       }
-
 
     }
 
@@ -1394,7 +1316,6 @@ function atualizarTabelaLideranca() {
 
 function atualizarTlsSemMultis() {
 
-
   const corpo =
 
     document.getElementById(
@@ -1418,7 +1339,6 @@ function atualizarTlsSemMultis() {
       .filter(
 
         item => {
-
 
           const total =
 
@@ -1600,7 +1520,6 @@ function atualizarTlsSemMultis() {
 
 function construirValidacao() {
 
-
   const ativosBase =
 
     multiplicadores
@@ -1618,7 +1537,6 @@ function construirValidacao() {
   ativosBase.forEach(
 
     pessoa => {
-
 
       const ldap =
 
@@ -1654,7 +1572,6 @@ function construirValidacao() {
 
       }
 
-
     }
 
   );
@@ -1668,7 +1585,6 @@ function construirValidacao() {
   multiplicadoresOficial.forEach(
 
     pessoa => {
-
 
       const ldap =
 
@@ -1704,7 +1620,6 @@ function construirValidacao() {
 
       }
 
-
     }
 
   );
@@ -1730,7 +1645,6 @@ function construirValidacao() {
 
     ldap => {
 
-
       const base =
 
         mapaBase.get(
@@ -1746,12 +1660,9 @@ function construirValidacao() {
 
 
       let tipo =
-
         "";
 
-
       let descricao =
-
         "";
 
 
@@ -1842,6 +1753,15 @@ function construirValidacao() {
           "FORA DOS ATIVOS",
 
 
+        statusCad:
+
+          base?.statusBaseHC
+
+          ||
+
+          "-",
+
+
         noOficial:
 
           oficial
@@ -1892,7 +1812,6 @@ function construirValidacao() {
 
       });
 
-
     }
 
   );
@@ -1918,7 +1837,6 @@ function construirValidacao() {
       a,
       b
     ) => {
-
 
       const ordemResultado =
 
@@ -1955,7 +1873,6 @@ function construirValidacao() {
           "pt-BR"
 
         );
-
 
     }
 
@@ -2009,7 +1926,6 @@ function construirValidacao() {
 ========================================================= */
 
 function atualizarValidacao() {
-
 
   const validacao =
 
@@ -2069,7 +1985,6 @@ function atualizarTabelaValidacao(
   registros
 ) {
 
-
   const corpo =
 
     document.getElementById(
@@ -2122,7 +2037,6 @@ function atualizarTabelaValidacao(
 
         item => {
 
-
           const texto =
 
             normalizarTexto(
@@ -2141,6 +2055,8 @@ function atualizarTabelaValidacao(
 
               ${item.statusBase}
 
+              ${item.statusCad}
+
               `
 
             );
@@ -2151,7 +2067,6 @@ function atualizarTabelaValidacao(
             termoBuscaValidacao
 
           );
-
 
         }
 
@@ -2169,7 +2084,7 @@ function atualizarTabelaValidacao(
 
       <tr class="sem-dados">
 
-        <td colspan="9">
+        <td colspan="10">
 
           Nenhum registro encontrado.
 
@@ -2255,6 +2170,19 @@ function atualizarTabelaValidacao(
                     item.statusBase
 
                   )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                criarBadgeStatusHC(
+
+                  item.statusCad
 
                 )
               }
@@ -2375,9 +2303,7 @@ function criarBadgeValidacao(
   item
 ) {
 
-
   let texto =
-
     "";
 
 
@@ -2431,7 +2357,6 @@ function criarBadgeValidacao(
 function filtrarPorStatus(
   lista
 ) {
-
 
   if (
     statusSelecionado ===
@@ -2494,7 +2419,6 @@ function obterMotivo(
   pessoa
 ) {
 
-
   const motivo =
 
     String(
@@ -2547,7 +2471,6 @@ function obterMotivo(
 function criarBadgeStatusPrograma(
   pessoa
 ) {
-
 
   const status =
 
@@ -2643,7 +2566,6 @@ function criarBadgeStatusHC(
   valor
 ) {
 
-
   const status =
 
     normalizarTexto(
@@ -2719,7 +2641,6 @@ function criarBadgeSimNao(
   valor
 ) {
 
-
   const sim =
 
     normalizarTexto(
@@ -2770,7 +2691,6 @@ function criarBadgeSimNao(
 
 function atualizarTabela() {
 
-
   const corpo =
 
     document.getElementById(
@@ -2815,7 +2735,6 @@ function atualizarTabela() {
 
         pessoa => {
 
-
           const texto =
 
             normalizarTexto(
@@ -2852,7 +2771,6 @@ function atualizarTabela() {
             termoBusca
 
           );
-
 
         }
 
@@ -3196,7 +3114,6 @@ function definirTexto(
   valor
 ) {
 
-
   const elemento =
 
     document.getElementById(
@@ -3223,7 +3140,6 @@ function definirTexto(
 
 function configurarAbas() {
 
-
   document
 
     .querySelectorAll(
@@ -3234,13 +3150,11 @@ function configurarAbas() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             const aba =
 
@@ -3305,11 +3219,9 @@ function configurarAbas() {
 
             }
 
-
           }
 
         );
-
 
       }
 
@@ -3324,9 +3236,6 @@ function configurarAbas() {
 
 function configurarFiltros() {
 
-
-  /* VISÃO GERAL */
-
   document
 
     .querySelectorAll(
@@ -3337,13 +3246,11 @@ function configurarFiltros() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             turnoSelecionado =
 
@@ -3374,18 +3281,14 @@ function configurarFiltros() {
 
             atualizarIndicadores();
 
-
           }
 
         );
-
 
       }
 
     );
 
-
-  /* LIDERANÇA */
 
   document
 
@@ -3397,13 +3300,11 @@ function configurarFiltros() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             turnoLiderancaSelecionado =
 
@@ -3435,18 +3336,14 @@ function configurarFiltros() {
 
             atualizarTabelaLideranca();
 
-
           }
 
         );
-
 
       }
 
     );
 
-
-  /* CONSULTA TURNO */
 
   document
 
@@ -3458,13 +3355,11 @@ function configurarFiltros() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             turnoConsultaSelecionado =
 
@@ -3496,18 +3391,14 @@ function configurarFiltros() {
 
             atualizarTabela();
 
-
           }
 
         );
-
 
       }
 
     );
 
-
-  /* CONSULTA STATUS */
 
   document
 
@@ -3519,13 +3410,11 @@ function configurarFiltros() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             statusSelecionado =
 
@@ -3556,18 +3445,14 @@ function configurarFiltros() {
 
             atualizarTabela();
 
-
           }
 
         );
-
 
       }
 
     );
 
-
-  /* VALIDAÇÃO */
 
   document
 
@@ -3579,13 +3464,11 @@ function configurarFiltros() {
 
       botao => {
 
-
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             filtroValidacao =
 
@@ -3616,11 +3499,9 @@ function configurarFiltros() {
 
             atualizarValidacao();
 
-
           }
 
         );
-
 
       }
 
@@ -3635,7 +3516,6 @@ function configurarFiltros() {
 
 function configurarBusca() {
 
-
   const campo =
 
     document.getElementById(
@@ -3647,13 +3527,11 @@ function configurarBusca() {
     campo
   ) {
 
-
     campo.addEventListener(
 
       "input",
 
       evento => {
-
 
         termoBusca =
 
@@ -3666,11 +3544,9 @@ function configurarBusca() {
 
         atualizarTabela();
 
-
       }
 
     );
-
 
   }
 
@@ -3686,13 +3562,11 @@ function configurarBusca() {
     campoValidacao
   ) {
 
-
     campoValidacao.addEventListener(
 
       "input",
 
       evento => {
-
 
         termoBuscaValidacao =
 
@@ -3705,11 +3579,9 @@ function configurarBusca() {
 
         atualizarValidacao();
 
-
       }
 
     );
-
 
   }
 
@@ -3721,7 +3593,6 @@ function configurarBusca() {
 ========================================================= */
 
 function atualizarData() {
-
 
   definirTexto(
 
@@ -3765,7 +3636,6 @@ function atualizarData() {
 
 function atualizarDashboard() {
 
-
   atualizarIndicadores();
 
   atualizarTurnos();
@@ -3788,7 +3658,6 @@ function atualizarDashboard() {
 function mostrarErro(
   mensagem
 ) {
-
 
   console.error(
     mensagem
@@ -3842,7 +3711,7 @@ function mostrarErro(
         "corpoTabelaValidacao",
 
       colspan:
-        9
+        10
 
     }
 
@@ -3852,7 +3721,6 @@ function mostrarErro(
   tabelas.forEach(
 
     item => {
-
 
       const tabela =
 
@@ -3864,7 +3732,6 @@ function mostrarErro(
       if (
         tabela
       ) {
-
 
         tabela.innerHTML = `
 
@@ -3884,9 +3751,7 @@ function mostrarErro(
 
         `;
 
-
       }
-
 
     }
 
@@ -3905,7 +3770,6 @@ document.addEventListener(
 
   () => {
 
-
     configurarAbas();
 
     configurarFiltros();
@@ -3913,7 +3777,6 @@ document.addEventListener(
     configurarBusca();
 
     carregarDados();
-
 
   }
 
