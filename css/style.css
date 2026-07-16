@@ -1049,44 +1049,6 @@ body {
     transparent;
 }
 
-
-/* =========================================
-   BARRA SUPERIOR
-========================================= */
-
-.scroll-superior {
-  width:
-    100%;
-
-  overflow-x:
-    auto;
-
-  overflow-y:
-    hidden;
-
-  height:
-    18px;
-
-  margin-bottom:
-    6px;
-
-  border:
-    1px solid
-    var(--cinza-borda);
-
-  border-radius:
-    8px;
-
-  background:
-    #f5f6f7;
-}
-
-.scroll-superior-conteudo {
-  height:
-    1px;
-}
-
-
 /* =========================================
    TABELAS
 ========================================= */
