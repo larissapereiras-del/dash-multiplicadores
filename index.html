@@ -82,6 +82,40 @@
 
 
   <!-- =========================================
+       NAVEGAÇÃO ENTRE ABAS
+  ========================================== -->
+
+  <nav class="navegacao-dashboard">
+
+    <div class="navegacao-conteudo">
+
+      <button
+        class="aba-dashboard ativa"
+        data-aba="visao-geral"
+      >
+        📊 Visão Geral
+      </button>
+
+      <button
+        class="aba-dashboard"
+        data-aba="lideranca"
+      >
+        👥 Liderança
+      </button>
+
+      <button
+        class="aba-dashboard"
+        data-aba="consulta"
+      >
+        🔎 Consulta
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =========================================
        CONTEÚDO
   ========================================== -->
 
@@ -89,600 +123,801 @@
 
 
     <!-- =========================================
-         INTRODUÇÃO
+         ABA — VISÃO GERAL
     ========================================== -->
 
-    <section class="boas-vindas">
-
-      <div>
-
-        <span class="tag-programa">
-          PROGRAMA MULTIPLICADORES
-        </span>
-
-        <h2>
-          Visão Geral
-        </h2>
-
-        <p>
-          Acompanhe o quadro de multiplicadores,
-          liderança, formação e distribuição por turno.
-        </p>
-
-      </div>
-
-
-      <div class="ultima-atualizacao">
-
-        <span>
-          Última atualização
-        </span>
-
-        <strong id="ultimaAtualizacao">
-          Carregando...
-        </strong>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         FILTRO DE TURNO
-    ========================================== -->
-
-    <section class="filtros-bloco">
-
-      <div class="grupo-filtro">
-
-        <span class="filtro-titulo">
-          Visualizar turno:
-        </span>
-
-
-        <div class="botoes-turno">
-
-          <button
-            class="botao-turno ativo"
-            data-turno="todos"
-          >
-            Todos
-          </button>
-
-          <button
-            class="botao-turno"
-            data-turno="T1"
-          >
-            1º Turno
-          </button>
-
-          <button
-            class="botao-turno"
-            data-turno="T2"
-          >
-            2º Turno
-          </button>
-
-          <button
-            class="botao-turno"
-            data-turno="T3"
-          >
-            3º Turno
-          </button>
-
-          <button
-            class="botao-turno"
-            data-turno="T4"
-          >
-            4º Turno
-          </button>
-
-          <button
-            class="botao-turno"
-            data-turno="T5"
-          >
-            5º Turno
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         INDICADORES
-    ========================================== -->
-
-    <section class="cards-indicadores">
-
-      <article class="card-indicador">
-
-        <div class="card-icone azul">
-          👥
-        </div>
-
-        <div class="card-conteudo">
-
-          <span>
-            Multiplicadores
-          </span>
-
-          <strong id="totalMultiplicadores">
-            -
-          </strong>
-
-          <small>
-            Ativos + Ativos Escola
-          </small>
-
-        </div>
-
-      </article>
-
-
-      <article class="card-indicador">
-
-        <div class="card-icone verde">
-          ✓
-        </div>
-
-        <div class="card-conteudo">
-
-          <span>
-            Ativos
-          </span>
-
-          <strong id="totalAtivos">
-            -
-          </strong>
-
-          <small>
-            Multiplicadores formados
-          </small>
-
-        </div>
-
-      </article>
-
-
-      <article class="card-indicador destaque">
-
-        <div class="card-icone amarelo">
-          🎓
-        </div>
-
-        <div class="card-conteudo">
-
-          <span>
-            Ativos para Escola de Máquina
-          </span>
-
-          <strong id="totalEscola">
-            -
-          </strong>
-
-          <small>
-            Disponíveis para formação
-          </small>
-
-        </div>
-
-      </article>
-
-
-      <article class="card-indicador">
-
-        <div class="card-icone roxo">
-          📊
-        </div>
-
-        <div class="card-conteudo">
-
-          <span>
-            Ratio Geral Multi/TL
-          </span>
-
-          <strong id="ratioGeral">
-            -
-          </strong>
-
-          <small id="ratioDetalhe">
-            Multiplicadores por líder
-          </small>
-
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- =========================================
-         COMPARATIVO POR TURNO
-    ========================================== -->
-
-    <section class="secao-dashboard comparativo-turnos">
-
-      <div class="secao-cabecalho comparativo-cabecalho">
+    <section
+      id="aba-visao-geral"
+      class="conteudo-aba ativo"
+    >
+
+      <section class="boas-vindas">
 
         <div>
 
-          <span class="secao-tag">
-            DISTRIBUIÇÃO
+          <span class="tag-programa">
+            PROGRAMA MULTIPLICADORES
           </span>
 
-          <h3>
-            Comparativo por Turno
-          </h3>
+          <h2>
+            Visão Geral
+          </h2>
 
           <p>
-            Visão rápida da distribuição dos multiplicadores.
+            Acompanhe o quadro de multiplicadores,
+            formação e distribuição por turno.
           </p>
 
         </div>
 
-      </div>
 
+        <div class="ultima-atualizacao">
 
-      <div class="turnos-grid">
-
-
-        <article class="card-turno">
-
-          <div class="turno-identificacao">
-            <span>1º TURNO</span>
-            <strong>T1</strong>
-          </div>
-
-          <div class="turno-total-compacto">
-            <span>Total</span>
-            <strong id="totalT1">0</strong>
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto ativo"></span>
-
-            <div>
-              <span>Ativos</span>
-              <strong id="ativosT1">0</strong>
-            </div>
-
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto escola"></span>
-
-            <div>
-              <span>Ativo Escola</span>
-              <strong id="escolaT1">0</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="card-turno">
-
-          <div class="turno-identificacao">
-            <span>2º TURNO</span>
-            <strong>T2</strong>
-          </div>
-
-          <div class="turno-total-compacto">
-            <span>Total</span>
-            <strong id="totalT2">0</strong>
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto ativo"></span>
-
-            <div>
-              <span>Ativos</span>
-              <strong id="ativosT2">0</strong>
-            </div>
-
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto escola"></span>
-
-            <div>
-              <span>Ativo Escola</span>
-              <strong id="escolaT2">0</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="card-turno">
-
-          <div class="turno-identificacao">
-            <span>3º TURNO</span>
-            <strong>T3</strong>
-          </div>
-
-          <div class="turno-total-compacto">
-            <span>Total</span>
-            <strong id="totalT3">0</strong>
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto ativo"></span>
-
-            <div>
-              <span>Ativos</span>
-              <strong id="ativosT3">0</strong>
-            </div>
-
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto escola"></span>
-
-            <div>
-              <span>Ativo Escola</span>
-              <strong id="escolaT3">0</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="card-turno">
-
-          <div class="turno-identificacao">
-            <span>4º TURNO</span>
-            <strong>T4</strong>
-          </div>
-
-          <div class="turno-total-compacto">
-            <span>Total</span>
-            <strong id="totalT4">0</strong>
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto ativo"></span>
-
-            <div>
-              <span>Ativos</span>
-              <strong id="ativosT4">0</strong>
-            </div>
-
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto escola"></span>
-
-            <div>
-              <span>Ativo Escola</span>
-              <strong id="escolaT4">0</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="card-turno">
-
-          <div class="turno-identificacao">
-            <span>5º TURNO</span>
-            <strong>T5</strong>
-          </div>
-
-          <div class="turno-total-compacto">
-            <span>Total</span>
-            <strong id="totalT5">0</strong>
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto ativo"></span>
-
-            <div>
-              <span>Ativos</span>
-              <strong id="ativosT5">0</strong>
-            </div>
-
-          </div>
-
-          <div class="turno-indicador">
-
-            <span class="indicador-ponto escola"></span>
-
-            <div>
-              <span>Ativo Escola</span>
-              <strong id="escolaT5">0</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         DISTRIBUIÇÃO POR LIDERANÇA
-    ========================================== -->
-
-    <section class="secao-dashboard">
-
-      <div class="secao-cabecalho">
-
-        <div>
-
-          <span class="secao-tag">
-            LIDERANÇA
+          <span>
+            Última atualização
           </span>
 
-          <h3>
-            Distribuição por Liderança
-          </h3>
+          <strong id="ultimaAtualizacao">
+            Carregando...
+          </strong>
 
-          <p class="secao-descricao">
-            Quantidade de multiplicadores ativos por Team Leader.
-          </p>
+        </div>
+
+      </section>
+
+
+      <!-- FILTRO DA VISÃO GERAL -->
+
+      <section class="filtros-bloco">
+
+        <div class="grupo-filtro">
+
+          <span class="filtro-titulo">
+            Visualizar turno:
+          </span>
+
+
+          <div class="botoes-turno">
+
+            <button
+              class="botao-turno ativo"
+              data-turno="todos"
+            >
+              Todos
+            </button>
+
+            <button
+              class="botao-turno"
+              data-turno="T1"
+            >
+              1º Turno
+            </button>
+
+            <button
+              class="botao-turno"
+              data-turno="T2"
+            >
+              2º Turno
+            </button>
+
+            <button
+              class="botao-turno"
+              data-turno="T3"
+            >
+              3º Turno
+            </button>
+
+            <button
+              class="botao-turno"
+              data-turno="T4"
+            >
+              4º Turno
+            </button>
+
+            <button
+              class="botao-turno"
+              data-turno="T5"
+            >
+              5º Turno
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- INDICADORES -->
+
+      <section class="cards-indicadores">
+
+        <article class="card-indicador">
+
+          <div class="card-icone azul">
+            👥
+          </div>
+
+          <div class="card-conteudo">
+
+            <span>
+              Multiplicadores
+            </span>
+
+            <strong id="totalMultiplicadores">
+              -
+            </strong>
+
+            <small>
+              Ativos + Ativos Escola
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <article class="card-indicador">
+
+          <div class="card-icone verde">
+            ✓
+          </div>
+
+          <div class="card-conteudo">
+
+            <span>
+              Ativos
+            </span>
+
+            <strong id="totalAtivos">
+              -
+            </strong>
+
+            <small>
+              Multiplicadores formados
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <article class="card-indicador destaque">
+
+          <div class="card-icone amarelo">
+            🎓
+          </div>
+
+          <div class="card-conteudo">
+
+            <span>
+              Ativos para Escola de Máquina
+            </span>
+
+            <strong id="totalEscola">
+              -
+            </strong>
+
+            <small>
+              Disponíveis para formação
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <article class="card-indicador">
+
+          <div class="card-icone roxo">
+            📊
+          </div>
+
+          <div class="card-conteudo">
+
+            <span>
+              Ratio Geral Multi/TL
+            </span>
+
+            <strong id="ratioGeral">
+              -
+            </strong>
+
+            <small id="ratioDetalhe">
+              Multiplicadores por líder
+            </small>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- COMPARATIVO POR TURNO -->
+
+      <section class="secao-dashboard comparativo-turnos">
+
+        <div class="secao-cabecalho comparativo-cabecalho">
+
+          <div>
+
+            <span class="secao-tag">
+              DISTRIBUIÇÃO
+            </span>
+
+            <h3>
+              Comparativo por Turno
+            </h3>
+
+            <p class="secao-descricao">
+              Visão rápida da distribuição dos multiplicadores.
+            </p>
+
+          </div>
 
         </div>
 
 
-        <button
-          id="limparFiltroLider"
-          class="botao-limpar-lider oculto"
-          type="button"
-        >
-          Limpar filtro de líder
-        </button>
-
-      </div>
+        <div class="turnos-grid">
 
 
-      <div
-        id="listaLideres"
-        class="lideres-grid"
-      >
+          <article class="card-turno">
 
-        <div class="estado-carregando">
-          Carregando liderança...
+            <div class="turno-identificacao">
+              <span>1º TURNO</span>
+              <strong>T1</strong>
+            </div>
+
+            <div class="turno-total-compacto">
+              <span>Total</span>
+              <strong id="totalT1">0</strong>
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto ativo"></span>
+
+              <div>
+                <span>Ativos</span>
+                <strong id="ativosT1">0</strong>
+              </div>
+
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto escola"></span>
+
+              <div>
+                <span>Ativo Escola</span>
+                <strong id="escolaT1">0</strong>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="card-turno">
+
+            <div class="turno-identificacao">
+              <span>2º TURNO</span>
+              <strong>T2</strong>
+            </div>
+
+            <div class="turno-total-compacto">
+              <span>Total</span>
+              <strong id="totalT2">0</strong>
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto ativo"></span>
+
+              <div>
+                <span>Ativos</span>
+                <strong id="ativosT2">0</strong>
+              </div>
+
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto escola"></span>
+
+              <div>
+                <span>Ativo Escola</span>
+                <strong id="escolaT2">0</strong>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="card-turno">
+
+            <div class="turno-identificacao">
+              <span>3º TURNO</span>
+              <strong>T3</strong>
+            </div>
+
+            <div class="turno-total-compacto">
+              <span>Total</span>
+              <strong id="totalT3">0</strong>
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto ativo"></span>
+
+              <div>
+                <span>Ativos</span>
+                <strong id="ativosT3">0</strong>
+              </div>
+
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto escola"></span>
+
+              <div>
+                <span>Ativo Escola</span>
+                <strong id="escolaT3">0</strong>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="card-turno">
+
+            <div class="turno-identificacao">
+              <span>4º TURNO</span>
+              <strong>T4</strong>
+            </div>
+
+            <div class="turno-total-compacto">
+              <span>Total</span>
+              <strong id="totalT4">0</strong>
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto ativo"></span>
+
+              <div>
+                <span>Ativos</span>
+                <strong id="ativosT4">0</strong>
+              </div>
+
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto escola"></span>
+
+              <div>
+                <span>Ativo Escola</span>
+                <strong id="escolaT4">0</strong>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="card-turno">
+
+            <div class="turno-identificacao">
+              <span>5º TURNO</span>
+              <strong>T5</strong>
+            </div>
+
+            <div class="turno-total-compacto">
+              <span>Total</span>
+              <strong id="totalT5">0</strong>
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto ativo"></span>
+
+              <div>
+                <span>Ativos</span>
+                <strong id="ativosT5">0</strong>
+              </div>
+
+            </div>
+
+            <div class="turno-indicador">
+
+              <span class="indicador-ponto escola"></span>
+
+              <div>
+                <span>Ativo Escola</span>
+                <strong id="escolaT5">0</strong>
+              </div>
+
+            </div>
+
+          </article>
+
         </div>
 
-      </div>
+      </section>
 
     </section>
 
 
     <!-- =========================================
-         CONSULTA
+         ABA — LIDERANÇA
     ========================================== -->
 
-    <section class="secao-dashboard">
+    <section
+      id="aba-lideranca"
+      class="conteudo-aba"
+    >
 
-      <div class="secao-cabecalho secao-consulta">
+      <section class="boas-vindas">
 
         <div>
 
-          <span class="secao-tag">
+          <span class="tag-programa">
+            GESTÃO POR LIDERANÇA
+          </span>
+
+          <h2>
+            Distribuição por Liderança
+          </h2>
+
+          <p>
+            Compare a quantidade de multiplicadores
+            por Team Leader e por turno.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- FILTRO PRÓPRIO DA LIDERANÇA -->
+
+      <section class="filtros-bloco">
+
+        <div class="grupo-filtro">
+
+          <span class="filtro-titulo">
+            Visualizar turno:
+          </span>
+
+
+          <div class="botoes-turno-lideranca">
+
+            <button
+              class="botao-turno-lideranca ativo"
+              data-turno-lideranca="todos"
+            >
+              Todos
+            </button>
+
+            <button
+              class="botao-turno-lideranca"
+              data-turno-lideranca="T1"
+            >
+              1º Turno
+            </button>
+
+            <button
+              class="botao-turno-lideranca"
+              data-turno-lideranca="T2"
+            >
+              2º Turno
+            </button>
+
+            <button
+              class="botao-turno-lideranca"
+              data-turno-lideranca="T3"
+            >
+              3º Turno
+            </button>
+
+            <button
+              class="botao-turno-lideranca"
+              data-turno-lideranca="T4"
+            >
+              4º Turno
+            </button>
+
+            <button
+              class="botao-turno-lideranca"
+              data-turno-lideranca="T5"
+            >
+              5º Turno
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="secao-dashboard">
+
+        <div class="secao-cabecalho">
+
+          <div>
+
+            <span class="secao-tag">
+              RANKING
+            </span>
+
+            <h3>
+              Multiplicadores por Team Leader
+            </h3>
+
+            <p class="secao-descricao">
+              Ordenado do maior para o menor quadro de multis.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="tabela-lideranca-container">
+
+          <table class="tabela-lideranca">
+
+            <thead>
+
+              <tr>
+
+                <th>Posição</th>
+
+                <th>Team Leader</th>
+
+                <th>Total Multis</th>
+
+                <th>Ativos</th>
+
+                <th>Ativo Escola</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="tabelaLideranca">
+
+              <tr class="sem-dados">
+
+                <td colspan="5">
+                  Carregando liderança...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- =========================================
+         ABA — CONSULTA
+    ========================================== -->
+
+    <section
+      id="aba-consulta"
+      class="conteudo-aba"
+    >
+
+      <section class="boas-vindas">
+
+        <div>
+
+          <span class="tag-programa">
             CONSULTA
           </span>
 
-          <h3>
+          <h2>
             Base de Multiplicadores
-          </h3>
+          </h2>
+
+          <p>
+            Consulte os dados individuais dos multiplicadores.
+          </p>
 
         </div>
 
+      </section>
 
-        <div class="busca">
 
-          <span>
-            🔎
+      <!-- FILTRO DA CONSULTA -->
+
+      <section class="filtros-bloco">
+
+        <div class="grupo-filtro">
+
+          <span class="filtro-titulo">
+            Visualizar turno:
           </span>
 
-          <input
-            type="text"
-            id="campoBusca"
-            placeholder="Buscar nome, LDAP, líder ou processo..."
-          >
+
+          <div class="botoes-turno-consulta">
+
+            <button
+              class="botao-turno-consulta ativo"
+              data-turno-consulta="todos"
+            >
+              Todos
+            </button>
+
+            <button
+              class="botao-turno-consulta"
+              data-turno-consulta="T1"
+            >
+              1º Turno
+            </button>
+
+            <button
+              class="botao-turno-consulta"
+              data-turno-consulta="T2"
+            >
+              2º Turno
+            </button>
+
+            <button
+              class="botao-turno-consulta"
+              data-turno-consulta="T3"
+            >
+              3º Turno
+            </button>
+
+            <button
+              class="botao-turno-consulta"
+              data-turno-consulta="T4"
+            >
+              4º Turno
+            </button>
+
+            <button
+              class="botao-turno-consulta"
+              data-turno-consulta="T5"
+            >
+              5º Turno
+            </button>
+
+          </div>
 
         </div>
 
-      </div>
+      </section>
 
 
-      <div class="filtros-status">
+      <section class="secao-dashboard">
 
-        <button
-          class="botao-status ativo"
-          data-status="principal"
-        >
-          Visão Principal
-        </button>
+        <div class="secao-cabecalho secao-consulta">
 
-        <button
-          class="botao-status"
-          data-status="ativo"
-        >
-          Ativos
-        </button>
+          <div>
 
-        <button
-          class="botao-status"
-          data-status="ativo-escola"
-        >
-          Ativo Escola
-        </button>
+            <span class="secao-tag">
+              DETALHAMENTO
+            </span>
 
-        <button
-          class="botao-status consulta-inativos"
-          data-status="inativos"
-        >
-          Consultar Inativos
-        </button>
+            <h3>
+              Multiplicadores
+            </h3>
 
-      </div>
+          </div>
 
 
-      <div class="tabela-container">
+          <div class="busca">
 
-        <table>
+            <span>
+              🔎
+            </span>
 
-          <thead>
+            <input
+              type="text"
+              id="campoBusca"
+              placeholder="Buscar nome, LDAP, líder ou processo..."
+            >
 
-            <tr>
+          </div>
 
-              <th>Multiplicador</th>
-              <th>Team Leader</th>
-              <th>Status Rep</th>
-              <th>Status Programa</th>
-              <th>Turno</th>
-              <th>Cargo</th>
-              <th>LDAP</th>
-              <th>Área Macro</th>
-              <th>Sub Área</th>
-              <th>Processo</th>
-              <th>Escala</th>
-              <th>Decola</th>
-              <th>Bolha Multi</th>
-              <th>Data de Formação</th>
-              <th>Motivo</th>
-
-            </tr>
-
-          </thead>
+        </div>
 
 
-          <tbody id="tabelaMultiplicadores">
+        <div class="filtros-status">
 
-            <tr class="sem-dados">
+          <button
+            class="botao-status ativo"
+            data-status="principal"
+          >
+            Visão Principal
+          </button>
 
-              <td colspan="15">
-                Carregando dados...
-              </td>
+          <button
+            class="botao-status"
+            data-status="ativo"
+          >
+            Ativos
+          </button>
 
-            </tr>
+          <button
+            class="botao-status"
+            data-status="ativo-escola"
+          >
+            Ativo Escola
+          </button>
 
-          </tbody>
+          <button
+            class="botao-status consulta-inativos"
+            data-status="inativos"
+          >
+            Consultar Inativos
+          </button>
 
-        </table>
+        </div>
 
-      </div>
+
+        <div class="tabela-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Multiplicador</th>
+                <th>Team Leader</th>
+                <th>Status Rep</th>
+                <th>Status Programa</th>
+                <th>Turno</th>
+                <th>Cargo</th>
+                <th>LDAP</th>
+                <th>Área Macro</th>
+                <th>Sub Área</th>
+                <th>Processo</th>
+                <th>Escala</th>
+                <th>Decola</th>
+                <th>Bolha Multi</th>
+                <th>Data de Formação</th>
+                <th>Motivo</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="tabelaMultiplicadores">
+
+              <tr class="sem-dados">
+
+                <td colspan="15">
+                  Carregando dados...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
 
     </section>
 
