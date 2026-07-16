@@ -1417,3 +1417,18 @@ tbody td {
   }
 
 }
+/* =========================================
+   CABEÇALHO FIXO DA TABELA DE CONSULTA
+========================================= */
+
+#tabelaConsulta thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  background: #f8fafc;
+
+  box-shadow:
+    0 1px 0
+    var(--cinza-borda);
+}
