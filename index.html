@@ -82,7 +82,7 @@
 
 
   <!-- =========================================
-       NAVEGAÇÃO ENTRE ABAS
+       NAVEGAÇÃO
   ========================================== -->
 
   <nav class="navegacao-dashboard">
@@ -115,15 +115,11 @@
   </nav>
 
 
-  <!-- =========================================
-       CONTEÚDO
-  ========================================== -->
-
   <main class="container">
 
 
     <!-- =========================================
-         ABA — VISÃO GERAL
+         VISÃO GERAL
     ========================================== -->
 
     <section
@@ -166,7 +162,7 @@
       </section>
 
 
-      <!-- FILTRO DA VISÃO GERAL -->
+      <!-- FILTRO -->
 
       <section class="filtros-bloco">
 
@@ -228,7 +224,7 @@
       </section>
 
 
-      <!-- INDICADORES -->
+      <!-- CARDS -->
 
       <section class="cards-indicadores">
 
@@ -334,7 +330,7 @@
       </section>
 
 
-      <!-- COMPARATIVO POR TURNO -->
+      <!-- COMPARATIVO -->
 
       <section class="secao-dashboard comparativo-turnos">
 
@@ -361,7 +357,6 @@
 
         <div class="turnos-grid">
 
-
           <article class="card-turno">
 
             <div class="turno-identificacao">
@@ -375,25 +370,21 @@
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto ativo"></span>
 
               <div>
                 <span>Ativos</span>
                 <strong id="ativosT1">0</strong>
               </div>
-
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto escola"></span>
 
               <div>
                 <span>Ativo Escola</span>
                 <strong id="escolaT1">0</strong>
               </div>
-
             </div>
 
           </article>
@@ -412,25 +403,21 @@
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto ativo"></span>
 
               <div>
                 <span>Ativos</span>
                 <strong id="ativosT2">0</strong>
               </div>
-
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto escola"></span>
 
               <div>
                 <span>Ativo Escola</span>
                 <strong id="escolaT2">0</strong>
               </div>
-
             </div>
 
           </article>
@@ -449,25 +436,21 @@
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto ativo"></span>
 
               <div>
                 <span>Ativos</span>
                 <strong id="ativosT3">0</strong>
               </div>
-
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto escola"></span>
 
               <div>
                 <span>Ativo Escola</span>
                 <strong id="escolaT3">0</strong>
               </div>
-
             </div>
 
           </article>
@@ -486,25 +469,21 @@
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto ativo"></span>
 
               <div>
                 <span>Ativos</span>
                 <strong id="ativosT4">0</strong>
               </div>
-
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto escola"></span>
 
               <div>
                 <span>Ativo Escola</span>
                 <strong id="escolaT4">0</strong>
               </div>
-
             </div>
 
           </article>
@@ -523,25 +502,21 @@
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto ativo"></span>
 
               <div>
                 <span>Ativos</span>
                 <strong id="ativosT5">0</strong>
               </div>
-
             </div>
 
             <div class="turno-indicador">
-
               <span class="indicador-ponto escola"></span>
 
               <div>
                 <span>Ativo Escola</span>
                 <strong id="escolaT5">0</strong>
               </div>
-
             </div>
 
           </article>
@@ -554,7 +529,7 @@
 
 
     <!-- =========================================
-         ABA — LIDERANÇA
+         LIDERANÇA
     ========================================== -->
 
     <section
@@ -583,8 +558,6 @@
 
       </section>
 
-
-      <!-- FILTRO PRÓPRIO DA LIDERANÇA -->
 
       <section class="filtros-bloco">
 
@@ -678,13 +651,9 @@
               <tr>
 
                 <th>Posição</th>
-
                 <th>Team Leader</th>
-
                 <th>Total Multis</th>
-
                 <th>Ativos</th>
-
                 <th>Ativo Escola</th>
 
               </tr>
@@ -714,7 +683,7 @@
 
 
     <!-- =========================================
-         ABA — CONSULTA
+         CONSULTA
     ========================================== -->
 
     <section
@@ -742,8 +711,6 @@
 
       </section>
 
-
-      <!-- FILTRO DA CONSULTA -->
 
       <section class="filtros-bloco">
 
@@ -872,9 +839,34 @@
         </div>
 
 
-        <div class="tabela-container">
+        <!-- =========================================
+             BARRA HORIZONTAL SUPERIOR
+        ========================================== -->
 
-          <table>
+        <div
+          id="scrollSuperior"
+          class="scroll-superior"
+        >
+
+          <div
+            id="scrollSuperiorConteudo"
+            class="scroll-superior-conteudo"
+          >
+          </div>
+
+        </div>
+
+
+        <!-- =========================================
+             TABELA
+        ========================================== -->
+
+        <div
+          id="tabelaScroll"
+          class="tabela-container"
+        >
+
+          <table id="tabelaConsulta">
 
             <thead>
 
