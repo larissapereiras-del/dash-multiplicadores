@@ -1,28 +1,13 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
-   BASE REAL VIA JSONP
-========================================================= */
-
-
-/* =========================================================
-   API
 ========================================================= */
 
 const API_URL =
   "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzortEzdw4UOxFqaqGIuxLC6sT-mf0yG5aMJbbCFHPk4ldG7HvX0PzlO178bNAZ_vySqg/exec";
 
 
-/* =========================================================
-   BASE
-========================================================= */
-
 let multiplicadores =
   [];
-
-
-/* =========================================================
-   ESTADOS DOS FILTROS
-========================================================= */
 
 let turnoSelecionado =
   "todos";
@@ -41,7 +26,7 @@ let termoBusca =
 
 
 /* =========================================================
-   NORMALIZA TEXTO
+   TEXTO
 ========================================================= */
 
 function normalizarTexto(
@@ -73,8 +58,61 @@ function normalizarTexto(
 }
 
 
+function textoMaiusculo(
+  texto
+) {
+
+  return String(
+    texto || "-"
+  )
+
+    .trim()
+
+    .toLocaleUpperCase(
+      "pt-BR"
+    );
+
+}
+
+
+function escapeHtml(
+  texto
+) {
+
+  return String(
+    texto || ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
 /* =========================================================
-   MAPA DA BASE
+   MAPA
 ========================================================= */
 
 function transformarRegistro(
@@ -84,79 +122,49 @@ function transformarRegistro(
   return {
 
     nome:
-      item[
-        "Nome do Representante"
-      ] || "",
+      item["Nome do Representante"] || "",
 
     teamLeader:
-      item[
-        "Team Leader"
-      ] || "",
+      item["Team Leader"] || "",
 
     statusBaseHC:
-      item[
-        "Status Base HC"
-      ] || "",
+      item["Status Base HC"] || "",
 
     statusPrograma:
-      item[
-        "Status Treinamento"
-      ] || "",
+      item["Status Treinamento"] || "",
 
     turno:
-      item[
-        "Turno"
-      ] || "",
+      item["Turno"] || "",
 
     cargo:
-      item[
-        "Cargo"
-      ] || "",
+      item["Cargo"] || "",
 
     ldap:
-      item[
-        "LDAP"
-      ] || "",
+      item["LDAP"] || "",
 
     areaMacro:
-      item[
-        "Área Macro"
-      ] || "",
+      item["Área Macro"] || "",
 
     subArea:
-      item[
-        "Sub Área"
-      ] || "",
+      item["Sub Área"] || "",
 
     processo:
-      item[
-        "Processo Ajustado"
-      ] || "",
+      item["Processo Ajustado"] || "",
 
     escala:
-      item[
-        "ESCALA"
-      ] || "",
+      item["ESCALA"] || "",
 
     decola:
-      item[
-        "Decola"
-      ] || "",
+      item["Decola"] || "",
 
     bolhaMulti:
-      item[
-        "Tem bolha de Multi"
-      ] || "",
+      item["Tem bolha de Multi"] || "",
 
     dataFormacao:
-      item[
-        "Data de Formação"
-      ] || "",
+      item["Data de Formação"] || "",
 
     motivo:
-      item[
-        "Motivo"
-      ] || ""
+      item["Motivo"] || ""
 
   };
 
@@ -164,47 +172,13 @@ function transformarRegistro(
 
 
 /* =========================================================
-   CARREGA DADOS VIA JSONP
+   JSONP
 ========================================================= */
 
 function carregarDados() {
 
-  mostrarCarregamento();
-
-
   const callbackName =
     "receberDadosMultiplicadores";
-
-
-  const scriptAnterior =
-    document.getElementById(
-      "api-multiplicadores"
-    );
-
-
-  if (
-    scriptAnterior
-  ) {
-
-    scriptAnterior.remove();
-
-  }
-
-
-  const timeout =
-    setTimeout(
-
-      () => {
-
-        mostrarErro(
-          "A conexão com a planilha demorou mais que o esperado."
-        );
-
-      },
-
-      20000
-
-    );
 
 
   window[
@@ -213,94 +187,49 @@ function carregarDados() {
     retorno
   ) {
 
-    clearTimeout(
-      timeout
-    );
-
-
-    try {
-
-      if (
-        !retorno
-        ||
-        !retorno.sucesso
-      ) {
-
-        throw new Error(
-
-          retorno?.erro
-          ||
-          "A API não retornou os dados corretamente."
-
-        );
-
-      }
-
-
-      multiplicadores =
-
-        retorno.dados
-
-          .map(
-            transformarRegistro
-          )
-
-          .filter(
-
-            pessoa =>
-
-              String(
-                pessoa.nome || ""
-              ).trim() !== ""
-
-          );
-
-
-      atualizarData();
-
-      atualizarDashboard();
-
-    }
-
-
-    catch (
-      erro
+    if (
+      !retorno
+      ||
+      !retorno.sucesso
     ) {
 
-      console.error(
-        erro
-      );
-
-
       mostrarErro(
-        erro.message
+        "Não foi possível carregar a base."
       );
+
+      return;
 
     }
 
 
-    finally {
+    multiplicadores =
 
-      delete window[
-        callbackName
-      ];
+      retorno.dados
 
+        .map(
+          transformarRegistro
+        )
 
-      const scriptAPI =
-        document.getElementById(
-          "api-multiplicadores"
+        .filter(
+
+          pessoa =>
+            pessoa.nome
+
         );
 
 
-      if (
-        scriptAPI
-      ) {
+    atualizarData();
 
-        scriptAPI.remove();
+    atualizarDashboard();
 
-      }
 
-    }
+    setTimeout(
+
+      configurarScrollSincronizado,
+
+      100
+
+    );
 
   };
 
@@ -309,10 +238,6 @@ function carregarDados() {
     document.createElement(
       "script"
     );
-
-
-  script.id =
-    "api-multiplicadores";
 
 
   script.src =
@@ -334,23 +259,6 @@ function carregarDados() {
     +
 
     Date.now();
-
-
-  script.onerror =
-    function () {
-
-      clearTimeout(
-        timeout
-      );
-
-
-      mostrarErro(
-
-        "O navegador não conseguiu acessar a API da planilha."
-
-      );
-
-    };
 
 
   document.body.appendChild(
@@ -380,12 +288,10 @@ function estaAtivo(
 ) {
 
   return (
-
     statusPrograma(
       pessoa
     ) ===
     "ativo"
-
   );
 
 }
@@ -395,27 +301,11 @@ function estaAtivoEscola(
   pessoa
 ) {
 
-  const status =
+  return (
     statusPrograma(
       pessoa
-    );
-
-
-  return (
-
-    status ===
-      "ativo escola"
-
-    ||
-
-    status ===
-      "ativo para escola"
-
-    ||
-
-    status ===
-      "ativo para escola de maquina"
-
+    ) ===
+    "ativo escola"
   );
 
 }
@@ -426,7 +316,6 @@ function estaNaVisaoPrincipal(
 ) {
 
   return (
-
     estaAtivo(
       pessoa
     )
@@ -436,7 +325,6 @@ function estaNaVisaoPrincipal(
     estaAtivoEscola(
       pessoa
     )
-
   );
 
 }
@@ -491,25 +379,11 @@ function normalizarTurno(
     );
 
 
-  if (valor === "t1") {
-    return "T1";
-  }
-
-  if (valor === "t2") {
-    return "T2";
-  }
-
-  if (valor === "t3") {
-    return "T3";
-  }
-
-  if (valor === "t4") {
-    return "T4";
-  }
-
-  if (valor === "t5") {
-    return "T5";
-  }
+  if (valor === "t1") return "T1";
+  if (valor === "t2") return "T2";
+  if (valor === "t3") return "T3";
+  if (valor === "t4") return "T4";
+  if (valor === "t5") return "T5";
 
 
   return String(
@@ -518,10 +392,6 @@ function normalizarTurno(
 
 }
 
-
-/* =========================================================
-   FILTRO GENÉRICO POR TURNO
-========================================================= */
 
 function filtrarListaPorTurno(
   lista,
@@ -558,7 +428,7 @@ function filtrarListaPorTurno(
 
 function atualizarIndicadores() {
 
-  const baseTurno =
+  const base =
 
     filtrarListaPorTurno(
 
@@ -571,7 +441,7 @@ function atualizarIndicadores() {
 
   const principal =
 
-    baseTurno.filter(
+    base.filter(
       estaNaVisaoPrincipal
     );
 
@@ -645,17 +515,18 @@ function atualizarIndicadores() {
   ).textContent =
     escola.length;
 
-document.getElementById(
-  "ratioGeral"
-).textContent =
 
-  totalLideres > 0
+  document.getElementById(
+    "ratioGeral"
+  ).textContent =
 
-    ? ratio
-        .toFixed(2)
-        .replace(".", ",")
+    totalLideres > 0
 
-    : "-";
+      ? ratio
+          .toFixed(2)
+          .replace(".", ",")
+
+      : "-";
 
 
   document.getElementById(
@@ -672,7 +543,7 @@ document.getElementById(
 
 
 /* =========================================================
-   COMPARATIVO POR TURNO
+   TURNOS
 ========================================================= */
 
 function atualizarTurnos() {
@@ -688,37 +559,34 @@ function atualizarTurnos() {
     turno => {
 
 
-      const baseTurno =
+      const base =
 
-        multiplicadores.filter(
+        multiplicadores
 
-          pessoa =>
+          .filter(
 
-            normalizarTurno(
-              pessoa.turno
-            ) ===
-            turno
+            pessoa =>
 
-        );
+              normalizarTurno(
+                pessoa.turno
+              ) ===
+              turno
 
+          )
 
-      const principal =
-
-        baseTurno.filter(
-          estaNaVisaoPrincipal
-        );
+          .filter(
+            estaNaVisaoPrincipal
+          );
 
 
       const ativos =
-
-        principal.filter(
+        base.filter(
           estaAtivo
         );
 
 
       const escola =
-
-        principal.filter(
+        base.filter(
           estaAtivoEscola
         );
 
@@ -726,7 +594,7 @@ function atualizarTurnos() {
       document.getElementById(
         `total${turno}`
       ).textContent =
-        principal.length;
+        base.length;
 
 
       document.getElementById(
@@ -748,12 +616,12 @@ function atualizarTurnos() {
 
 
 /* =========================================================
-   TABELA DE LIDERANÇA
+   LIDERANÇA
 ========================================================= */
 
 function atualizarTabelaLideranca() {
 
-  const corpoTabela =
+  const corpo =
     document.getElementById(
       "tabelaLideranca"
     );
@@ -787,13 +655,13 @@ function atualizarTabelaLideranca() {
 
       const nomeLider =
 
-        String(
-          pessoa.teamLeader || ""
-        ).trim();
+        textoMaiusculo(
+          pessoa.teamLeader
+        );
 
 
       if (
-        !nomeLider
+        !pessoa.teamLeader
       ) {
 
         return;
@@ -802,9 +670,8 @@ function atualizarTabelaLideranca() {
 
 
       const chave =
-
         normalizarTexto(
-          nomeLider
+          pessoa.teamLeader
         );
 
 
@@ -845,8 +712,7 @@ function atualizarTabelaLideranca() {
         );
 
 
-      lider.total +=
-        1;
+      lider.total++;
 
 
       if (
@@ -855,8 +721,7 @@ function atualizarTabelaLideranca() {
         )
       ) {
 
-        lider.ativos +=
-          1;
+        lider.ativos++;
 
       }
 
@@ -867,8 +732,7 @@ function atualizarTabelaLideranca() {
         )
       ) {
 
-        lider.escola +=
-          1;
+        lider.escola++;
 
       }
 
@@ -879,10 +743,9 @@ function atualizarTabelaLideranca() {
 
   const lideres =
 
-    Array
-      .from(
-        mapa.values()
-      )
+    Array.from(
+      mapa.values()
+    )
 
       .sort(
 
@@ -898,32 +761,7 @@ function atualizarTabelaLideranca() {
       );
 
 
-  if (
-    lideres.length ===
-    0
-  ) {
-
-    corpoTabela.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="5">
-
-          Nenhum líder encontrado.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
-
-  }
-
-
-  corpoTabela.innerHTML =
+  corpo.innerHTML =
 
     lideres.map(
 
@@ -962,11 +800,11 @@ function atualizarTabelaLideranca() {
 
           <td>
 
-            <span class="numero-lideranca">
+            <strong>
 
               ${lider.total}
 
-            </span>
+            </strong>
 
           </td>
 
@@ -1002,7 +840,7 @@ function atualizarTabelaLideranca() {
 
 
 /* =========================================================
-   FILTRO DE STATUS
+   STATUS
 ========================================================= */
 
 function filtrarPorStatus(
@@ -1070,18 +908,11 @@ function obterMotivo(
   pessoa
 ) {
 
-  const motivo =
-
-    String(
-      pessoa.motivo || ""
-    ).trim();
-
-
   if (
-    motivo
+    pessoa.motivo
   ) {
 
-    return motivo;
+    return pessoa.motivo;
 
   }
 
@@ -1102,52 +933,12 @@ function obterMotivo(
       "training"
   ) {
 
-    return "Movimentação de área";
+    return "MOVIMENTAÇÃO DE ÁREA";
 
   }
 
 
   return "-";
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(
-  texto
-) {
-
-  return String(
-    texto || ""
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
 
 }
 
@@ -1160,20 +951,8 @@ function criarBadgeStatusPrograma(
   pessoa
 ) {
 
-  const statusOriginal =
-    String(
-      pessoa.statusPrograma || "-"
-    ).trim();
-
-
-  const status =
-    statusPrograma(
-      pessoa
-    );
-
-
   let classe =
-    "";
+    "inativo";
 
 
   if (
@@ -1187,6 +966,7 @@ function criarBadgeStatusPrograma(
 
   }
 
+
   else if (
     estaAtivoEscola(
       pessoa
@@ -1198,38 +978,6 @@ function criarBadgeStatusPrograma(
 
   }
 
-  else if (
-    status ===
-      "desistencia"
-  ) {
-
-    classe =
-      "desistencia";
-
-  }
-
-  else if (
-    status ===
-      "multi loss"
-
-    ||
-
-    status ===
-      "training"
-  ) {
-
-    classe =
-      "movimentacao";
-
-  }
-
-  else {
-
-    classe =
-      "inativo";
-
-  }
-
 
   return `
 
@@ -1237,7 +985,9 @@ function criarBadgeStatusPrograma(
 
       ${
         escapeHtml(
-          statusOriginal
+          textoMaiusculo(
+            pessoa.statusPrograma
+          )
         )
       }
 
@@ -1249,18 +999,12 @@ function criarBadgeStatusPrograma(
 
 
 function criarBadgeStatusHC(
-  statusBase
+  valor
 ) {
-
-  const original =
-    String(
-      statusBase || "-"
-    ).trim();
-
 
   const status =
     normalizarTexto(
-      original
+      valor
     );
 
 
@@ -1270,7 +1014,7 @@ function criarBadgeStatusHC(
 
   if (
     status ===
-      "ativo"
+    "ativo"
   ) {
 
     classe =
@@ -1278,15 +1022,17 @@ function criarBadgeStatusHC(
 
   }
 
+
   else if (
     status ===
-      "inativo"
+    "inativo"
   ) {
 
     classe =
       "hc-inativo";
 
   }
+
 
   else if (
     status.includes(
@@ -1306,7 +1052,9 @@ function criarBadgeStatusHC(
 
       ${
         escapeHtml(
-          original
+          textoMaiusculo(
+            valor
+          )
         )
       }
 
@@ -1317,68 +1065,30 @@ function criarBadgeStatusHC(
 }
 
 
-function ehSim(
-  valor
-) {
-
-  const texto =
-    normalizarTexto(
-      valor
-    );
-
-
-  return (
-
-    texto ===
-      "sim"
-
-    ||
-
-    texto ===
-      "s"
-
-    ||
-
-    texto ===
-      "yes"
-
-    ||
-
-    texto ===
-      "1"
-
-    ||
-
-    texto ===
-      "true"
-
-  );
-
-}
-
-
 function criarBadgeSimNao(
   valor
 ) {
 
-  const positivo =
-    ehSim(
+  const sim =
+
+    normalizarTexto(
       valor
-    );
+    ) ===
+    "sim";
 
 
   return `
 
     <span class="badge ${
-      positivo
+      sim
         ? "sim"
         : "nao"
     }">
 
       ${
-        positivo
-          ? "✓ Sim"
-          : "Não"
+        sim
+          ? "SIM"
+          : "NÃO"
       }
 
     </span>
@@ -1389,12 +1099,12 @@ function criarBadgeSimNao(
 
 
 /* =========================================================
-   TABELA DE CONSULTA
+   CONSULTA
 ========================================================= */
 
 function atualizarTabela() {
 
-  const corpoTabela =
+  const corpo =
     document.getElementById(
       "tabelaMultiplicadores"
     );
@@ -1425,90 +1135,29 @@ function atualizarTabela() {
 
       dados.filter(
 
-        pessoa => {
+        pessoa =>
 
+          normalizarTexto(
 
-          const texto =
+            `
+            ${pessoa.nome}
+            ${pessoa.teamLeader}
+            ${pessoa.ldap}
+            ${pessoa.areaMacro}
+            ${pessoa.subArea}
+            ${pessoa.processo}
+            `
 
-            normalizarTexto(
-
-              `
-              ${pessoa.nome}
-              ${pessoa.teamLeader}
-              ${pessoa.ldap}
-              ${pessoa.areaMacro}
-              ${pessoa.subArea}
-              ${pessoa.processo}
-              ${pessoa.turno}
-              ${pessoa.statusBaseHC}
-              ${pessoa.statusPrograma}
-              ${pessoa.cargo}
-              ${pessoa.escala}
-              ${pessoa.motivo}
-              `
-
-            );
-
-
-          return texto.includes(
+          ).includes(
             termoBusca
-          );
-
-        }
+          )
 
       );
 
   }
 
 
-  dados.sort(
-
-    (
-      a,
-      b
-    ) =>
-
-      String(
-        a.nome
-      ).localeCompare(
-
-        String(
-          b.nome
-        ),
-
-        "pt-BR"
-
-      )
-
-  );
-
-
-  if (
-    dados.length ===
-    0
-  ) {
-
-    corpoTabela.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="15">
-
-          Nenhum registro encontrado.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
-
-  }
-
-
-  corpoTabela.innerHTML =
+  corpo.innerHTML =
 
     dados.map(
 
@@ -1516,13 +1165,16 @@ function atualizarTabela() {
 
         <tr>
 
+
           <td>
 
             <strong>
 
               ${
                 escapeHtml(
-                  pessoa.nome || "-"
+                  textoMaiusculo(
+                    pessoa.nome
+                  )
                 )
               }
 
@@ -1535,7 +1187,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.teamLeader || "-"
+                textoMaiusculo(
+                  pessoa.teamLeader
+                )
               )
             }
 
@@ -1569,12 +1223,8 @@ function atualizarTabela() {
             <span class="badge-turno">
 
               ${
-                escapeHtml(
-                  normalizarTurno(
-                    pessoa.turno
-                  )
-                  ||
-                  "-"
+                normalizarTurno(
+                  pessoa.turno
                 )
               }
 
@@ -1587,7 +1237,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.cargo || "-"
+                textoMaiusculo(
+                  pessoa.cargo
+                )
               )
             }
 
@@ -1598,7 +1250,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.ldap || "-"
+                textoMaiusculo(
+                  pessoa.ldap
+                )
               )
             }
 
@@ -1609,7 +1263,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.areaMacro || "-"
+                textoMaiusculo(
+                  pessoa.areaMacro
+                )
               )
             }
 
@@ -1620,7 +1276,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.subArea || "-"
+                textoMaiusculo(
+                  pessoa.subArea
+                )
               )
             }
 
@@ -1631,7 +1289,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.processo || "-"
+                textoMaiusculo(
+                  pessoa.processo
+                )
               )
             }
 
@@ -1642,7 +1302,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.escala || "-"
+                textoMaiusculo(
+                  pessoa.escala
+                )
               )
             }
 
@@ -1675,7 +1337,9 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                pessoa.dataFormacao || "-"
+                pessoa.dataFormacao
+                ||
+                "-"
               )
             }
 
@@ -1686,19 +1350,172 @@ function atualizarTabela() {
 
             ${
               escapeHtml(
-                obterMotivo(
-                  pessoa
+                textoMaiusculo(
+                  obterMotivo(
+                    pessoa
+                  )
                 )
               )
             }
 
           </td>
 
+
         </tr>
 
       `
 
     ).join("");
+
+
+  setTimeout(
+
+    atualizarLarguraScrollSuperior,
+
+    50
+
+  );
+
+}
+
+
+/* =========================================================
+   SCROLL SINCRONIZADO
+========================================================= */
+
+function configurarScrollSincronizado() {
+
+  const superior =
+    document.getElementById(
+      "scrollSuperior"
+    );
+
+
+  const tabela =
+    document.getElementById(
+      "tabelaScroll"
+    );
+
+
+  if (
+    !superior
+    ||
+    !tabela
+  ) {
+
+    return;
+
+  }
+
+
+  let sincronizandoSuperior =
+    false;
+
+  let sincronizandoTabela =
+    false;
+
+
+  superior.addEventListener(
+
+    "scroll",
+
+    () => {
+
+
+      if (
+        sincronizandoTabela
+      ) {
+
+        sincronizandoTabela =
+          false;
+
+        return;
+
+      }
+
+
+      sincronizandoSuperior =
+        true;
+
+
+      tabela.scrollLeft =
+        superior.scrollLeft;
+
+    }
+
+  );
+
+
+  tabela.addEventListener(
+
+    "scroll",
+
+    () => {
+
+
+      if (
+        sincronizandoSuperior
+      ) {
+
+        sincronizandoSuperior =
+          false;
+
+        return;
+
+      }
+
+
+      sincronizandoTabela =
+        true;
+
+
+      superior.scrollLeft =
+        tabela.scrollLeft;
+
+    }
+
+  );
+
+
+  atualizarLarguraScrollSuperior();
+
+}
+
+
+/* =========================================================
+   LARGURA DO SCROLL SUPERIOR
+========================================================= */
+
+function atualizarLarguraScrollSuperior() {
+
+  const tabela =
+    document.getElementById(
+      "tabelaConsulta"
+    );
+
+
+  const conteudo =
+    document.getElementById(
+      "scrollSuperiorConteudo"
+    );
+
+
+  if (
+    !tabela
+    ||
+    !conteudo
+  ) {
+
+    return;
+
+  }
+
+
+  conteudo.style.width =
+
+    tabela.scrollWidth
+    +
+    "px";
 
 }
 
@@ -1780,6 +1597,22 @@ function configurarAbas() {
                 "ativo"
               );
 
+
+            if (
+              aba ===
+              "consulta"
+            ) {
+
+              setTimeout(
+
+                atualizarLarguraScrollSuperior,
+
+                100
+
+              );
+
+            }
+
           }
 
         );
@@ -1795,7 +1628,7 @@ function configurarAbas() {
    FILTROS
 ========================================================= */
 
-function configurarFiltrosTurno() {
+function configurarFiltros() {
 
   document
 
@@ -1805,8 +1638,7 @@ function configurarFiltrosTurno() {
 
     .forEach(
 
-      botao => {
-
+      botao =>
 
         botao.addEventListener(
 
@@ -1845,16 +1677,10 @@ function configurarFiltrosTurno() {
 
           }
 
-        );
-
-      }
+        )
 
     );
 
-}
-
-
-function configurarFiltrosLideranca() {
 
   document
 
@@ -1864,8 +1690,7 @@ function configurarFiltrosLideranca() {
 
     .forEach(
 
-      botao => {
-
+      botao =>
 
         botao.addEventListener(
 
@@ -1904,16 +1729,10 @@ function configurarFiltrosLideranca() {
 
           }
 
-        );
-
-      }
+        )
 
     );
 
-}
-
-
-function configurarFiltrosConsulta() {
 
   document
 
@@ -1923,8 +1742,7 @@ function configurarFiltrosConsulta() {
 
     .forEach(
 
-      botao => {
-
+      botao =>
 
         botao.addEventListener(
 
@@ -1963,16 +1781,10 @@ function configurarFiltrosConsulta() {
 
           }
 
-        );
-
-      }
+        )
 
     );
 
-}
-
-
-function configurarFiltrosStatus() {
 
   document
 
@@ -1982,8 +1794,7 @@ function configurarFiltrosStatus() {
 
     .forEach(
 
-      botao => {
-
+      botao =>
 
         botao.addEventListener(
 
@@ -2022,9 +1833,7 @@ function configurarFiltrosStatus() {
 
           }
 
-        );
-
-      }
+        )
 
     );
 
@@ -2066,66 +1875,6 @@ function configurarBusca() {
 
 
 /* =========================================================
-   CARREGAMENTO E ERRO
-========================================================= */
-
-function mostrarCarregamento() {
-
-  document.getElementById(
-    "tabelaMultiplicadores"
-  ).innerHTML = `
-
-    <tr class="sem-dados">
-
-      <td colspan="15">
-
-        Carregando dados da planilha...
-
-      </td>
-
-    </tr>
-
-  `;
-
-}
-
-
-function mostrarErro(
-  mensagem
-) {
-
-  document.getElementById(
-    "tabelaMultiplicadores"
-  ).innerHTML = `
-
-    <tr class="sem-dados">
-
-      <td colspan="15">
-
-        Não foi possível carregar os dados.
-
-        <br><br>
-
-        <small>
-
-          ${
-            escapeHtml(
-              mensagem
-            )
-          }
-
-        </small>
-
-      </td>
-
-    </tr>
-
-  `;
-
-}
-
-
-/* =========================================================
    DATA
 ========================================================= */
 
@@ -2136,28 +1885,7 @@ function atualizarData() {
   ).textContent =
 
     new Date().toLocaleString(
-
-      "pt-BR",
-
-      {
-
-        day:
-          "2-digit",
-
-        month:
-          "2-digit",
-
-        year:
-          "numeric",
-
-        hour:
-          "2-digit",
-
-        minute:
-          "2-digit"
-
-      }
-
+      "pt-BR"
     );
 
 }
@@ -2181,6 +1909,37 @@ function atualizarDashboard() {
 
 
 /* =========================================================
+   ERRO
+========================================================= */
+
+function mostrarErro(
+  mensagem
+) {
+
+  document.getElementById(
+    "tabelaMultiplicadores"
+  ).innerHTML = `
+
+    <tr class="sem-dados">
+
+      <td colspan="15">
+
+        ${
+          escapeHtml(
+            mensagem
+          )
+        }
+
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+/* =========================================================
    INICIALIZAÇÃO
 ========================================================= */
 
@@ -2193,17 +1952,22 @@ document.addEventListener(
 
     configurarAbas();
 
-    configurarFiltrosTurno();
-
-    configurarFiltrosLideranca();
-
-    configurarFiltrosConsulta();
-
-    configurarFiltrosStatus();
+    configurarFiltros();
 
     configurarBusca();
 
+    configurarScrollSincronizado();
+
     carregarDados();
+
+
+    window.addEventListener(
+
+      "resize",
+
+      atualizarLarguraScrollSuperior
+
+    );
 
   }
 
