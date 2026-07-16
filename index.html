@@ -82,7 +82,7 @@
 
 
   <!-- =========================================
-       CONTEÚDO PRINCIPAL
+       CONTEÚDO
   ========================================== -->
 
   <main class="container">
@@ -106,7 +106,7 @@
 
         <p>
           Acompanhe o quadro de multiplicadores,
-          status, formação e distribuição por turno.
+          formação e distribuição por turno.
         </p>
 
       </div>
@@ -119,7 +119,7 @@
         </span>
 
         <strong id="ultimaAtualizacao">
-          --
+          Carregando...
         </strong>
 
       </div>
@@ -170,6 +170,20 @@
             3º Turno
           </button>
 
+          <button
+            class="botao-turno"
+            data-turno="T4"
+          >
+            4º Turno
+          </button>
+
+          <button
+            class="botao-turno"
+            data-turno="T5"
+          >
+            5º Turno
+          </button>
+
         </div>
 
       </div>
@@ -178,7 +192,7 @@
 
 
     <!-- =========================================
-         INDICADORES PRINCIPAIS
+         INDICADORES
     ========================================== -->
 
     <section class="cards-indicadores">
@@ -197,7 +211,7 @@
           </span>
 
           <strong id="totalMultiplicadores">
-            0
+            -
           </strong>
 
           <small>
@@ -207,7 +221,6 @@
         </div>
 
       </article>
-
 
 
       <article class="card-indicador">
@@ -223,17 +236,16 @@
           </span>
 
           <strong id="totalAtivos">
-            0
+            -
           </strong>
 
           <small>
-            Multiplicadores ativos
+            Multiplicadores formados
           </small>
 
         </div>
 
       </article>
-
 
 
       <article class="card-indicador destaque">
@@ -249,7 +261,7 @@
           </span>
 
           <strong id="totalEscola">
-            0
+            -
           </strong>
 
           <small>
@@ -289,28 +301,20 @@
       <div class="turnos-grid">
 
 
+        <!-- T1 -->
+
         <article class="card-turno">
 
           <div class="turno-topo">
 
             <div>
-
-              <span>
-                1º TURNO
-              </span>
-
-              <strong>
-                T1
-              </strong>
-
+              <span>1º TURNO</span>
+              <strong>T1</strong>
             </div>
-
 
             <div class="turno-total">
 
-              <span>
-                TOTAL
-              </span>
+              <span>TOTAL</span>
 
               <div
                 class="turno-numero"
@@ -323,32 +327,16 @@
 
           </div>
 
-
           <div class="turno-detalhes">
 
             <div>
-
-              <span>
-                Ativos
-              </span>
-
-              <strong id="ativosT1">
-                0
-              </strong>
-
+              <span>Ativos</span>
+              <strong id="ativosT1">0</strong>
             </div>
 
-
             <div>
-
-              <span>
-                Ativo Escola
-              </span>
-
-              <strong id="escolaT1">
-                0
-              </strong>
-
+              <span>Ativo Escola</span>
+              <strong id="escolaT1">0</strong>
             </div>
 
           </div>
@@ -356,29 +344,20 @@
         </article>
 
 
+        <!-- T2 -->
 
         <article class="card-turno">
 
           <div class="turno-topo">
 
             <div>
-
-              <span>
-                2º TURNO
-              </span>
-
-              <strong>
-                T2
-              </strong>
-
+              <span>2º TURNO</span>
+              <strong>T2</strong>
             </div>
-
 
             <div class="turno-total">
 
-              <span>
-                TOTAL
-              </span>
+              <span>TOTAL</span>
 
               <div
                 class="turno-numero"
@@ -391,32 +370,16 @@
 
           </div>
 
-
           <div class="turno-detalhes">
 
             <div>
-
-              <span>
-                Ativos
-              </span>
-
-              <strong id="ativosT2">
-                0
-              </strong>
-
+              <span>Ativos</span>
+              <strong id="ativosT2">0</strong>
             </div>
 
-
             <div>
-
-              <span>
-                Ativo Escola
-              </span>
-
-              <strong id="escolaT2">
-                0
-              </strong>
-
+              <span>Ativo Escola</span>
+              <strong id="escolaT2">0</strong>
             </div>
 
           </div>
@@ -424,29 +387,20 @@
         </article>
 
 
+        <!-- T3 -->
 
         <article class="card-turno">
 
           <div class="turno-topo">
 
             <div>
-
-              <span>
-                3º TURNO
-              </span>
-
-              <strong>
-                T3
-              </strong>
-
+              <span>3º TURNO</span>
+              <strong>T3</strong>
             </div>
-
 
             <div class="turno-total">
 
-              <span>
-                TOTAL
-              </span>
+              <span>TOTAL</span>
 
               <div
                 class="turno-numero"
@@ -459,32 +413,102 @@
 
           </div>
 
+          <div class="turno-detalhes">
+
+            <div>
+              <span>Ativos</span>
+              <strong id="ativosT3">0</strong>
+            </div>
+
+            <div>
+              <span>Ativo Escola</span>
+              <strong id="escolaT3">0</strong>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- T4 -->
+
+        <article class="card-turno">
+
+          <div class="turno-topo">
+
+            <div>
+              <span>4º TURNO</span>
+              <strong>T4</strong>
+            </div>
+
+            <div class="turno-total">
+
+              <span>TOTAL</span>
+
+              <div
+                class="turno-numero"
+                id="totalT4"
+              >
+                0
+              </div>
+
+            </div>
+
+          </div>
 
           <div class="turno-detalhes">
 
             <div>
+              <span>Ativos</span>
+              <strong id="ativosT4">0</strong>
+            </div>
 
-              <span>
-                Ativos
-              </span>
+            <div>
+              <span>Ativo Escola</span>
+              <strong id="escolaT4">0</strong>
+            </div>
 
-              <strong id="ativosT3">
+          </div>
+
+        </article>
+
+
+        <!-- T5 -->
+
+        <article class="card-turno">
+
+          <div class="turno-topo">
+
+            <div>
+              <span>5º TURNO</span>
+              <strong>T5</strong>
+            </div>
+
+            <div class="turno-total">
+
+              <span>TOTAL</span>
+
+              <div
+                class="turno-numero"
+                id="totalT5"
+              >
                 0
-              </strong>
+              </div>
 
             </div>
 
+          </div>
+
+          <div class="turno-detalhes">
 
             <div>
+              <span>Ativos</span>
+              <strong id="ativosT5">0</strong>
+            </div>
 
-              <span>
-                Ativo Escola
-              </span>
-
-              <strong id="escolaT3">
-                0
-              </strong>
-
+            <div>
+              <span>Ativo Escola</span>
+              <strong id="escolaT5">0</strong>
             </div>
 
           </div>
@@ -526,7 +550,7 @@
           <input
             type="text"
             id="campoBusca"
-            placeholder="Buscar por nome, LDAP ou processo..."
+            placeholder="Buscar nome, LDAP ou processo..."
           >
 
         </div>
@@ -534,7 +558,7 @@
       </div>
 
 
-      <!-- FILTROS DE STATUS -->
+      <!-- FILTROS DA CONSULTA -->
 
       <div class="filtros-status">
 
@@ -545,7 +569,6 @@
           Visão Principal
         </button>
 
-
         <button
           class="botao-status"
           data-status="ativo"
@@ -553,30 +576,12 @@
           Ativos
         </button>
 
-
         <button
           class="botao-status"
-          data-status="ativo escola"
+          data-status="ativo-escola"
         >
           Ativo Escola
         </button>
-
-
-        <button
-          class="botao-status"
-          data-status="training"
-        >
-          Training
-        </button>
-
-
-        <button
-          class="botao-status"
-          data-status="multi loss"
-        >
-          Multi LOSS
-        </button>
-
 
         <button
           class="botao-status consulta-inativos"
@@ -598,57 +603,33 @@
 
             <tr>
 
-              <th>
-                Multiplicador
-              </th>
+              <th>Multiplicador</th>
 
-              <th>
-                Rep Ativo?
-              </th>
+              <th>Status Rep</th>
 
-              <th>
-                Status Programa
-              </th>
+              <th>Status Programa</th>
 
-              <th>
-                Turno
-              </th>
+              <th>Turno</th>
 
-              <th>
-                Cargo
-              </th>
+              <th>Cargo</th>
 
-              <th>
-                LDAP
-              </th>
+              <th>LDAP</th>
 
-              <th>
-                Área Macro
-              </th>
+              <th>Área Macro</th>
 
-              <th>
-                Processo
-              </th>
+              <th>Sub Área</th>
 
-              <th>
-                Escala
-              </th>
+              <th>Processo</th>
 
-              <th>
-                Decola
-              </th>
+              <th>Escala</th>
 
-              <th>
-                Bolha Multi
-              </th>
+              <th>Decola</th>
 
-              <th>
-                Data de Formação
-              </th>
+              <th>Bolha Multi</th>
 
-              <th class="coluna-motivo">
-                Motivo
-              </th>
+              <th>Data de Formação</th>
+
+              <th>Motivo</th>
 
             </tr>
 
@@ -659,9 +640,9 @@
 
             <tr class="sem-dados">
 
-              <td colspan="13">
+              <td colspan="14">
 
-                Os dados serão carregados aqui.
+                Carregando dados...
 
               </td>
 
