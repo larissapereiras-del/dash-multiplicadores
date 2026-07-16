@@ -1,143 +1,26 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
-   Dados fictícios para validação visual
+   Conectado à base real via Google Apps Script
 ========================================================= */
-
-const multiplicadores = [
-
-  {
-    nome: "Ana Souza",
-    repAtivo: "Sim",
-    statusPrograma: "Ativo",
-    turno: "T1",
-    cargo: "Representante",
-    ldap: "anasouza",
-    areaMacro: "Outbound",
-    processo: "Picking",
-    escala: "6x1",
-    decola: "Sim",
-    bolhaMulti: "Sim",
-    dataFormacao: "12/02/2026",
-    motivo: ""
-  },
-
-  {
-    nome: "Bruno Silva",
-    repAtivo: "Sim",
-    statusPrograma: "Ativo Escola",
-    turno: "T1",
-    cargo: "Representante",
-    ldap: "brunosilva",
-    areaMacro: "Outbound",
-    processo: "Packing",
-    escala: "6x1",
-    decola: "Não",
-    bolhaMulti: "Não",
-    dataFormacao: "",
-    motivo: ""
-  },
-
-  {
-    nome: "Carlos Santos",
-    repAtivo: "Sim",
-    statusPrograma: "Training",
-    turno: "T2",
-    cargo: "Representante",
-    ldap: "carlossantos",
-    areaMacro: "Inbound",
-    processo: "Receiving",
-    escala: "5x2",
-    decola: "Sim",
-    bolhaMulti: "Não",
-    dataFormacao: "",
-    motivo: ""
-  },
-
-  {
-    nome: "Daniela Oliveira",
-    repAtivo: "Sim",
-    statusPrograma: "Multi LOSS",
-    turno: "T2",
-    cargo: "Representante",
-    ldap: "danielaoliveira",
-    areaMacro: "Outbound",
-    processo: "P2S",
-    escala: "6x1",
-    decola: "Sim",
-    bolhaMulti: "Sim",
-    dataFormacao: "08/11/2025",
-    motivo: "Indicadores abaixo dos critérios"
-  },
-
-  {
-    nome: "Eduardo Lima",
-    repAtivo: "Sim",
-    statusPrograma: "Ativo",
-    turno: "T3",
-    cargo: "Representante",
-    ldap: "eduardolima",
-    areaMacro: "Outbound",
-    processo: "Packing",
-    escala: "6x1",
-    decola: "Sim",
-    bolhaMulti: "Sim",
-    dataFormacao: "19/03/2026",
-    motivo: ""
-  },
-
-  {
-    nome: "Fernanda Costa",
-    repAtivo: "Não",
-    statusPrograma: "Inativo",
-    turno: "T3",
-    cargo: "Representante",
-    ldap: "fernandacosta",
-    areaMacro: "Outbound",
-    processo: "Picking",
-    escala: "6x1",
-    decola: "Sim",
-    bolhaMulti: "Não",
-    dataFormacao: "05/09/2025",
-    motivo: "Transferência de área"
-  },
-
-  {
-    nome: "Gabriel Rocha",
-    repAtivo: "Sim",
-    statusPrograma: "Desistência",
-    turno: "T3",
-    cargo: "Representante",
-    ldap: "gabrielrocha",
-    areaMacro: "Inbound",
-    processo: "Putaway",
-    escala: "5x2",
-    decola: "Não",
-    bolhaMulti: "Não",
-    dataFormacao: "",
-    motivo: "Desistência voluntária do programa"
-  },
-
-  {
-    nome: "Helena Martins",
-    repAtivo: "Sim",
-    statusPrograma: "Ativo Escola",
-    turno: "T3",
-    cargo: "Representante",
-    ldap: "helenamartins",
-    areaMacro: "Outbound",
-    processo: "Picking",
-    escala: "6x1",
-    decola: "Sim",
-    bolhaMulti: "Não",
-    dataFormacao: "",
-    motivo: ""
-  }
-
-];
 
 
 /* =========================================================
-   VARIÁVEIS
+   CONFIGURAÇÃO DA API
+========================================================= */
+
+const API_URL =
+  "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzortEzdw4UOxFqaqGIuxLC6sT-mf0yG5aMJbbCFHPk4ldG7HvX0PzlO178bNAZ_vySqg/exec";
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+let multiplicadores = [];
+
+
+/* =========================================================
+   FILTROS
 ========================================================= */
 
 let turnoSelecionado =
@@ -167,16 +50,278 @@ function normalizarTexto(texto) {
 
     .toLowerCase()
 
+    .replace(
+      /\s+/g,
+      " "
+    )
+
     .trim();
 
 }
 
 
 /* =========================================================
-   REGRAS
+   BUSCA SEGURA DE COLUNA
 ========================================================= */
 
-function statusNormalizado(pessoa) {
+function pegarValor(
+  objeto,
+  nomesPossiveis
+) {
+
+  for (
+    const nome
+    of nomesPossiveis
+  ) {
+
+    if (
+      objeto[nome] !== undefined
+    ) {
+
+      return String(
+        objeto[nome] || ""
+      ).trim();
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =========================================================
+   CONVERTE LINHA DA PLANILHA
+   PARA O FORMATO DO DASH
+========================================================= */
+
+function transformarRegistro(
+  item
+) {
+
+  return {
+
+    nome:
+      pegarValor(
+        item,
+        [
+          "Nome do Representante"
+        ]
+      ),
+
+    repAtivo:
+      pegarValor(
+        item,
+        [
+          "Status Base HC"
+        ]
+      ),
+
+    statusPrograma:
+      pegarValor(
+        item,
+        [
+          "Status Treinamento"
+        ]
+      ),
+
+    turno:
+      pegarValor(
+        item,
+        [
+          "Turno"
+        ]
+      ),
+
+    cargo:
+      pegarValor(
+        item,
+        [
+          "Cargo"
+        ]
+      ),
+
+    ldap:
+      pegarValor(
+        item,
+        [
+          "LDAP"
+        ]
+      ),
+
+    areaMacro:
+      pegarValor(
+        item,
+        [
+          "Área Macro",
+          "Area Macro"
+        ]
+      ),
+
+    subArea:
+      pegarValor(
+        item,
+        [
+          "Sub Área",
+          "Sub Area"
+        ]
+      ),
+
+    processo:
+      pegarValor(
+        item,
+        [
+          "Processo Ajustado"
+        ]
+      ),
+
+    escala:
+      pegarValor(
+        item,
+        [
+          "ESCALA",
+          "Escala"
+        ]
+      ),
+
+    decola:
+      pegarValor(
+        item,
+        [
+          "Decola"
+        ]
+      ),
+
+    bolhaMulti:
+      pegarValor(
+        item,
+        [
+          "Tem bolha de Multi"
+        ]
+      ),
+
+    dataFormacao:
+      pegarValor(
+        item,
+        [
+          "Data de Formação",
+          "Data de Formacao"
+        ]
+      ),
+
+    motivo:
+      pegarValor(
+        item,
+        [
+          "Motivo"
+        ]
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   CARREGAMENTO DA API
+========================================================= */
+
+async function carregarDados() {
+
+  try {
+
+    mostrarCarregamento();
+
+
+    const resposta =
+      await fetch(
+        API_URL,
+        {
+          method:
+            "GET",
+
+          cache:
+            "no-store"
+        }
+      );
+
+
+    if (
+      !resposta.ok
+    ) {
+
+      throw new Error(
+        `Erro HTTP: ${resposta.status}`
+      );
+
+    }
+
+
+    const retorno =
+      await resposta.json();
+
+
+    if (
+      !retorno.sucesso
+    ) {
+
+      throw new Error(
+        retorno.erro
+        ||
+        "Erro ao carregar a base."
+      );
+
+    }
+
+
+    multiplicadores =
+
+      retorno.dados
+
+        .map(
+          transformarRegistro
+        )
+
+        .filter(
+          pessoa =>
+            pessoa.nome
+        );
+
+
+    atualizarData();
+
+    atualizarDashboard();
+
+  }
+
+  catch (
+    erro
+  ) {
+
+    console.error(
+      "Erro ao carregar dados:",
+      erro
+    );
+
+
+    mostrarErro(
+      erro.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   STATUS DO PROGRAMA
+========================================================= */
+
+function statusNormalizado(
+  pessoa
+) {
 
   return normalizarTexto(
     pessoa.statusPrograma
@@ -185,50 +330,90 @@ function statusNormalizado(pessoa) {
 }
 
 
-function estaAtivo(pessoa) {
+function estaAtivo(
+  pessoa
+) {
 
   return (
-    statusNormalizado(pessoa) ===
+    statusNormalizado(
+      pessoa
+    ) ===
     "ativo"
   );
 
 }
 
 
-function estaAtivoEscola(pessoa) {
-
-  return (
-    statusNormalizado(pessoa) ===
-    "ativo escola"
-  );
-
-}
-
-
-function estaNaVisaoPrincipal(pessoa) {
-
-  return (
-    estaAtivo(pessoa)
-    ||
-    estaAtivoEscola(pessoa)
-  );
-
-}
-
-
-function estaInativoOuDesistencia(pessoa) {
+function estaAtivoEscola(
+  pessoa
+) {
 
   const status =
-    statusNormalizado(pessoa);
+    statusNormalizado(
+      pessoa
+    );
 
 
   return (
 
-    status === "inativo"
+    status ===
+      "ativo escola"
 
     ||
 
-    status === "desistencia"
+    status ===
+      "ativo para escola"
+
+    ||
+
+    status ===
+      "ativo para escola de maquina"
+
+  );
+
+}
+
+
+function estaNaVisaoPrincipal(
+  pessoa
+) {
+
+  return (
+
+    estaAtivo(
+      pessoa
+    )
+
+    ||
+
+    estaAtivoEscola(
+      pessoa
+    )
+
+  );
+
+}
+
+
+function estaInativoOuDesistencia(
+  pessoa
+) {
+
+  const status =
+    statusNormalizado(
+      pessoa
+    );
+
+
+  return (
+
+    status ===
+      "inativo"
+
+    ||
+
+    status ===
+      "desistencia"
 
   );
 
@@ -236,7 +421,89 @@ function estaInativoOuDesistencia(pessoa) {
 
 
 /* =========================================================
-   FILTRO DE TURNO
+   NORMALIZAÇÃO DE TURNO
+========================================================= */
+
+function normalizarTurno(
+  turno
+) {
+
+  const valor =
+    normalizarTexto(
+      turno
+    );
+
+
+  if (
+    valor === "t1"
+    ||
+    valor.includes(
+      "1 turno"
+    )
+    ||
+    valor.includes(
+      "1º turno"
+    )
+    ||
+    valor.includes(
+      "1° turno"
+    )
+  ) {
+
+    return "T1";
+
+  }
+
+
+  if (
+    valor === "t2"
+    ||
+    valor.includes(
+      "2 turno"
+    )
+    ||
+    valor.includes(
+      "2º turno"
+    )
+    ||
+    valor.includes(
+      "2° turno"
+    )
+  ) {
+
+    return "T2";
+
+  }
+
+
+  if (
+    valor === "t3"
+    ||
+    valor.includes(
+      "3 turno"
+    )
+    ||
+    valor.includes(
+      "3º turno"
+    )
+    ||
+    valor.includes(
+      "3° turno"
+    )
+  ) {
+
+    return "T3";
+
+  }
+
+
+  return turno;
+
+}
+
+
+/* =========================================================
+   FILTRO POR TURNO
 ========================================================= */
 
 function filtrarPorTurno(
@@ -244,7 +511,8 @@ function filtrarPorTurno(
 ) {
 
   if (
-    turnoSelecionado === "todos"
+    turnoSelecionado ===
+    "todos"
   ) {
 
     return lista;
@@ -255,7 +523,9 @@ function filtrarPorTurno(
   return lista.filter(
 
     pessoa =>
-      pessoa.turno ===
+      normalizarTurno(
+        pessoa.turno
+      ) ===
       turnoSelecionado
 
   );
@@ -264,30 +534,34 @@ function filtrarPorTurno(
 
 
 /* =========================================================
-   INDICADORES
+   INDICADORES PRINCIPAIS
 ========================================================= */
 
 function atualizarIndicadores() {
 
   const baseTurno =
+
     filtrarPorTurno(
       multiplicadores
     );
 
 
   const principal =
+
     baseTurno.filter(
       estaNaVisaoPrincipal
     );
 
 
   const ativos =
+
     principal.filter(
       estaAtivo
     );
 
 
   const escola =
+
     principal.filter(
       estaAtivoEscola
     );
@@ -329,27 +603,34 @@ function atualizarTurnos() {
 
 
       const baseTurno =
+
         multiplicadores.filter(
 
           pessoa =>
-            pessoa.turno === turno
+            normalizarTurno(
+              pessoa.turno
+            ) ===
+            turno
 
         );
 
 
       const principal =
+
         baseTurno.filter(
           estaNaVisaoPrincipal
         );
 
 
       const ativos =
+
         principal.filter(
           estaAtivo
         );
 
 
       const escola =
+
         principal.filter(
           estaAtivoEscola
         );
@@ -414,8 +695,83 @@ function filtrarPorStatus(
   return lista.filter(
 
     pessoa =>
-      statusNormalizado(pessoa) ===
+      statusNormalizado(
+        pessoa
+      ) ===
       statusSelecionado
+
+  );
+
+}
+
+
+/* =========================================================
+   STATUS DO REP NA BASE HC
+========================================================= */
+
+function repEstaAtivo(
+  pessoa
+) {
+
+  const status =
+    normalizarTexto(
+      pessoa.repAtivo
+    );
+
+
+  return (
+
+    status ===
+      "ativo"
+
+    ||
+
+    status ===
+      "sim"
+
+  );
+
+}
+
+
+/* =========================================================
+   SIM / NÃO
+========================================================= */
+
+function valorEhSim(
+  valor
+) {
+
+  const texto =
+    normalizarTexto(
+      valor
+    );
+
+
+  return (
+
+    texto ===
+      "sim"
+
+    ||
+
+    texto ===
+      "yes"
+
+    ||
+
+    texto ===
+      "s"
+
+    ||
+
+    texto ===
+      "1"
+
+    ||
+
+    texto ===
+      "true"
 
   );
 
@@ -431,7 +787,9 @@ function criarBadgeStatus(
 ) {
 
   const valor =
-    normalizarTexto(status);
+    normalizarTexto(
+      status
+    );
 
 
   let classe =
@@ -439,7 +797,8 @@ function criarBadgeStatus(
 
 
   if (
-    valor === "ativo"
+    valor ===
+    "ativo"
   ) {
 
     classe =
@@ -449,7 +808,18 @@ function criarBadgeStatus(
 
 
   else if (
-    valor === "ativo escola"
+    valor ===
+      "ativo escola"
+
+    ||
+
+    valor ===
+      "ativo para escola"
+
+    ||
+
+    valor ===
+      "ativo para escola de maquina"
   ) {
 
     classe =
@@ -459,7 +829,8 @@ function criarBadgeStatus(
 
 
   else if (
-    valor === "training"
+    valor ===
+      "training"
   ) {
 
     classe =
@@ -469,7 +840,8 @@ function criarBadgeStatus(
 
 
   else if (
-    valor === "multi loss"
+    valor ===
+      "multi loss"
   ) {
 
     classe =
@@ -479,7 +851,8 @@ function criarBadgeStatus(
 
 
   else if (
-    valor === "inativo"
+    valor ===
+      "inativo"
   ) {
 
     classe =
@@ -489,7 +862,8 @@ function criarBadgeStatus(
 
 
   else if (
-    valor === "desistencia"
+    valor ===
+      "desistencia"
   ) {
 
     classe =
@@ -502,7 +876,11 @@ function criarBadgeStatus(
 
     <span class="badge ${classe}">
 
-      ${status}
+      ${
+        status
+        ||
+        "-"
+      }
 
     </span>
 
@@ -511,14 +889,53 @@ function criarBadgeStatus(
 }
 
 
+/* =========================================================
+   BADGE STATUS REP
+========================================================= */
+
+function criarBadgeRepAtivo(
+  pessoa
+) {
+
+  const ativo =
+    repEstaAtivo(
+      pessoa
+    );
+
+
+  return `
+
+    <span class="badge ${
+      ativo
+        ? "sim"
+        : "nao"
+    }">
+
+      ${
+        ativo
+          ? "✓ Ativo"
+          : "Inativo"
+      }
+
+    </span>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BADGE SIM / NÃO
+========================================================= */
+
 function criarBadgeSimNao(
   valor
 ) {
 
   const positivo =
-
-    normalizarTexto(valor) ===
-    "sim";
+    valorEhSim(
+      valor
+    );
 
 
   return `
@@ -586,11 +1003,13 @@ function atualizarTabela() {
             ${pessoa.nome}
             ${pessoa.ldap}
             ${pessoa.areaMacro}
+            ${pessoa.subArea}
             ${pessoa.processo}
             ${pessoa.turno}
             ${pessoa.statusPrograma}
             ${pessoa.cargo}
             ${pessoa.escala}
+            ${pessoa.motivo}
             `
 
           );
@@ -608,7 +1027,8 @@ function atualizarTabela() {
 
 
   if (
-    dados.length === 0
+    dados.length ===
+    0
   ) {
 
     corpoTabela.innerHTML = `
@@ -644,7 +1064,11 @@ function atualizarTabela() {
 
             <strong>
 
-              ${pessoa.nome}
+              ${
+                pessoa.nome
+                ||
+                "-"
+              }
 
             </strong>
 
@@ -654,8 +1078,8 @@ function atualizarTabela() {
           <td>
 
             ${
-              criarBadgeSimNao(
-                pessoa.repAtivo
+              criarBadgeRepAtivo(
+                pessoa
               )
             }
 
@@ -677,7 +1101,13 @@ function atualizarTabela() {
 
             <span class="badge-turno">
 
-              ${pessoa.turno}
+              ${
+                normalizarTurno(
+                  pessoa.turno
+                )
+                ||
+                "-"
+              }
 
             </span>
 
@@ -686,35 +1116,84 @@ function atualizarTabela() {
 
           <td>
 
-            ${pessoa.cargo || "-"}
+            ${
+              pessoa.cargo
+              ||
+              "-"
+            }
 
           </td>
 
 
           <td>
 
-            ${pessoa.ldap || "-"}
+            ${
+              pessoa.ldap
+              ||
+              "-"
+            }
 
           </td>
 
 
           <td>
 
-            ${pessoa.areaMacro || "-"}
+            ${
+              pessoa.areaMacro
+              ||
+              "-"
+            }
 
           </td>
 
 
           <td>
 
-            ${pessoa.processo || "-"}
+            <div>
+
+              <strong>
+
+                ${
+                  pessoa.processo
+                  ||
+                  "-"
+                }
+
+              </strong>
+
+              ${
+                pessoa.subArea
+                  ?
+
+                  `
+                  <div
+                    style="
+                      margin-top:4px;
+                      font-size:10px;
+                      color:#98a2b3;
+                    "
+                  >
+                    ${pessoa.subArea}
+                  </div>
+                  `
+
+                  :
+
+                  ""
+              }
+
+            </div>
 
           </td>
 
 
           <td>
 
-            ${pessoa.escala || "-"}
+            ${
+              pessoa.escala
+              ||
+              "-"
+            }
 
           </td>
 
@@ -773,7 +1252,72 @@ function atualizarTabela() {
 
 
 /* =========================================================
-   BOTÕES DE TURNO
+   CARREGANDO
+========================================================= */
+
+function mostrarCarregamento() {
+
+  const corpoTabela =
+
+    document.getElementById(
+      "tabelaMultiplicadores"
+    );
+
+
+  corpoTabela.innerHTML = `
+
+    <tr class="sem-dados">
+
+      <td colspan="13">
+
+        Carregando dados da base...
+
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ERRO
+========================================================= */
+
+function mostrarErro(
+  mensagem
+) {
+
+  document.getElementById(
+    "tabelaMultiplicadores"
+  ).innerHTML = `
+
+    <tr class="sem-dados">
+
+      <td colspan="13">
+
+        Não foi possível carregar os dados.
+
+        <br><br>
+
+        <small>
+
+          ${mensagem}
+
+        </small>
+
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+/* =========================================================
+   FILTROS DE TURNO
 ========================================================= */
 
 function configurarFiltrosTurno() {
@@ -832,7 +1376,7 @@ function configurarFiltrosTurno() {
 
 
 /* =========================================================
-   BOTÕES DE STATUS
+   FILTROS DE STATUS
 ========================================================= */
 
 function configurarFiltrosStatus() {
@@ -1000,9 +1544,7 @@ document.addEventListener(
 
     configurarBusca();
 
-    atualizarData();
-
-    atualizarDashboard();
+    carregarDados();
 
   }
 
