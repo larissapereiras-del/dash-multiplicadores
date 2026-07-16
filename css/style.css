@@ -1,59 +1,128 @@
 :root {
-  --azul-claro: #dcebf2;
-  --azul-claro-2: #eef6f9;
-  --azul-meli: #3483fa;
-  --azul-escuro: #16325c;
-  --azul-profundo: #0f2747;
 
-  --amarelo-meli: #ffe600;
+  --azul-claro:
+    #dcebf2;
 
-  --verde: #00a650;
-  --verde-claro: #e2f7ec;
+  --azul-claro-2:
+    #eef6f9;
 
-  --vermelho-claro: #fdecec;
-  --laranja-claro: #fff4db;
-  --roxo-claro: #efeaff;
+  --azul-meli:
+    #3483fa;
 
-  --azul-status-claro: #e8f1ff;
+  --azul-escuro:
+    #16325c;
 
-  --cinza: #667085;
-  --cinza-claro: #f2f4f7;
-  --cinza-borda: #e6eaf0;
+  --azul-profundo:
+    #0f2747;
 
-  --branco: #ffffff;
+  --amarelo-meli:
+    #ffe600;
+
+  --verde:
+    #00a650;
+
+  --verde-claro:
+    #e2f7ec;
+
+  --vermelho:
+    #d92d20;
+
+  --vermelho-claro:
+    #fdecec;
+
+  --laranja:
+    #f79009;
+
+  --laranja-claro:
+    #fff4db;
+
+  --roxo:
+    #7f56d9;
+
+  --roxo-claro:
+    #efeaff;
+
+  --azul-status-claro:
+    #e8f1ff;
+
+  --cinza:
+    #667085;
+
+  --cinza-claro:
+    #f2f4f7;
+
+  --cinza-borda:
+    #e6eaf0;
+
+  --branco:
+    #ffffff;
 
   --sombra:
     0 12px 30px
     rgba(15, 39, 71, 0.08);
+
 }
 
 
-/* =========================================
+/* =========================================================
    GERAL
-========================================= */
+========================================================= */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  box-sizing:
+    border-box;
+
 }
 
+
+html {
+
+  scroll-behavior:
+    smooth;
+
+}
+
+
 body {
+
   font-family:
     "Inter",
     sans-serif;
 
   background:
+
     radial-gradient(
+
       circle at top right,
-      rgba(255, 230, 0, 0.12),
+
+      rgba(
+        255,
+        230,
+        0,
+        0.12
+      ),
+
       transparent 24%
+
     ),
+
     linear-gradient(
+
       180deg,
+
       #edf5f8 0%,
+
       #f7f9fb 45%,
+
       #f7f9fb 100%
+
     );
 
   color:
@@ -61,35 +130,54 @@ body {
 
   min-height:
     100vh;
+
 }
 
 
-/* =========================================
+/* =========================================================
    CABEÇALHO
-========================================= */
+========================================================= */
 
 .header {
+
   background:
+
     linear-gradient(
+
       110deg,
+
       #c8dde7 0%,
+
       #dcebf2 55%,
+
       #eef6f9 100%
+
     );
 
   border-bottom:
+
     1px solid
-    rgba(15, 39, 71, 0.08);
+
+    rgba(
+      15,
+      39,
+      71,
+      0.08
+    );
 
   position:
     relative;
 
   overflow:
     hidden;
+
 }
 
+
 .header::before {
-  content: "";
+
+  content:
+    "";
 
   position:
     absolute;
@@ -114,10 +202,14 @@ body {
 
   right:
     5%;
+
 }
 
+
 .header::after {
-  content: "";
+
+  content:
+    "";
 
   position:
     absolute;
@@ -129,8 +221,15 @@ body {
     115px;
 
   border:
+
     20px solid
-    rgba(52, 131, 250, 0.08);
+
+    rgba(
+      52,
+      131,
+      250,
+      0.08
+    );
 
   border-radius:
     50%;
@@ -140,9 +239,12 @@ body {
 
   bottom:
     -85px;
+
 }
 
+
 .header-conteudo {
+
   max-width:
     1500px;
 
@@ -169,9 +271,12 @@ body {
 
   z-index:
     2;
+
 }
 
+
 .marca {
+
   display:
     flex;
 
@@ -180,9 +285,12 @@ body {
 
   gap:
     16px;
+
 }
 
+
 .marca-icone {
+
   width:
     62px;
 
@@ -208,20 +316,40 @@ body {
     30px;
 
   box-shadow:
+
     0 10px 24px
-    rgba(255, 230, 0, 0.28);
+
+    rgba(
+      255,
+      230,
+      0,
+      0.28
+    );
 
   border:
+
     4px solid
-    rgba(255, 255, 255, 0.8);
+
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
 }
+
 
 .marca-texto {
+
   position:
     relative;
+
 }
 
+
 .marca-programa {
+
   display:
     block;
 
@@ -239,9 +367,12 @@ body {
 
   margin-bottom:
     2px;
+
 }
 
+
 .marca-texto h1 {
+
   font-size:
     31px;
 
@@ -253,9 +384,12 @@ body {
 
   letter-spacing:
     -1.4px;
+
 }
 
+
 .marca-unidade {
+
   position:
     absolute;
 
@@ -282,9 +416,12 @@ body {
 
   border-radius:
     7px;
+
 }
 
+
 .header-info {
+
   display:
     flex;
 
@@ -296,15 +433,31 @@ body {
 
   gap:
     4px;
+
 }
 
+
 .header-label {
+
   background:
-    rgba(255, 255, 255, 0.75);
+
+    rgba(
+      255,
+      255,
+      255,
+      0.75
+    );
 
   border:
+
     1px solid
-    rgba(15, 39, 71, 0.08);
+
+    rgba(
+      15,
+      39,
+      71,
+      0.08
+    );
 
   padding:
     6px 10px;
@@ -320,24 +473,37 @@ body {
 
   letter-spacing:
     0.14em;
+
 }
+
 
 .header-info strong {
+
   font-size:
     17px;
+
 }
 
 
-/* =========================================
+/* =========================================================
    NAVEGAÇÃO
-========================================= */
+========================================================= */
 
 .navegacao-dashboard {
+
   background:
-    rgba(255, 255, 255, 0.9);
+
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
 
   border-bottom:
+
     1px solid
+
     var(--cinza-borda);
 
   position:
@@ -351,9 +517,12 @@ body {
 
   backdrop-filter:
     blur(12px);
+
 }
 
+
 .navegacao-conteudo {
+
   max-width:
     1500px;
 
@@ -368,9 +537,15 @@ body {
 
   gap:
     8px;
+
+  overflow-x:
+    auto;
+
 }
 
+
 .aba-dashboard {
+
   border:
     none;
 
@@ -397,37 +572,61 @@ body {
 
   cursor:
     pointer;
+
+  white-space:
+    nowrap;
+
+  transition:
+    0.2s ease;
+
 }
 
+
+.aba-dashboard:hover {
+
+  background:
+    var(--azul-claro-2);
+
+}
+
+
 .aba-dashboard.ativa {
+
   background:
     var(--azul-profundo);
 
   color:
     white;
+
 }
 
 
-/* =========================================
+/* =========================================================
    ABAS
-========================================= */
+========================================================= */
 
 .conteudo-aba {
+
   display:
     none;
+
 }
+
 
 .conteudo-aba.ativo {
+
   display:
     block;
+
 }
 
 
-/* =========================================
+/* =========================================================
    CONTAINER
-========================================= */
+========================================================= */
 
 .container {
+
   max-width:
     1500px;
 
@@ -436,14 +635,16 @@ body {
 
   padding:
     28px 36px;
+
 }
 
 
-/* =========================================
+/* =========================================================
    INTRODUÇÃO
-========================================= */
+========================================================= */
 
 .boas-vindas {
+
   display:
     flex;
 
@@ -458,10 +659,13 @@ body {
 
   margin-bottom:
     20px;
+
 }
+
 
 .tag-programa,
 .secao-tag {
+
   display:
     inline-flex;
 
@@ -479,9 +683,20 @@ body {
 
   margin-bottom:
     6px;
+
 }
 
+
+.secao-tag.alerta {
+
+  color:
+    var(--laranja);
+
+}
+
+
 .boas-vindas h2 {
+
   font-size:
     32px;
 
@@ -490,10 +705,13 @@ body {
 
   margin-bottom:
     6px;
+
 }
+
 
 .boas-vindas p,
 .secao-descricao {
+
   color:
     var(--cinza);
 
@@ -502,11 +720,20 @@ body {
 
   font-size:
     13px;
+
 }
 
+
 .ultima-atualizacao {
+
   background:
-    rgba(255, 255, 255, 0.76);
+
+    rgba(
+      255,
+      255,
+      255,
+      0.76
+    );
 
   padding:
     12px 16px;
@@ -515,7 +742,9 @@ body {
     15px;
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   min-width:
@@ -523,9 +752,12 @@ body {
 
   box-shadow:
     var(--sombra);
+
 }
 
+
 .ultima-atualizacao span {
+
   display:
     block;
 
@@ -537,24 +769,32 @@ body {
 
   margin-bottom:
     4px;
+
 }
+
 
 .ultima-atualizacao strong {
+
   font-size:
     14px;
+
 }
 
 
-/* =========================================
+/* =========================================================
    FILTROS
-========================================= */
+========================================================= */
 
 .filtros-bloco {
+
   margin-bottom:
     20px;
+
 }
 
+
 .grupo-filtro {
+
   display:
     flex;
 
@@ -566,9 +806,12 @@ body {
 
   flex-wrap:
     wrap;
+
 }
 
+
 .filtro-titulo {
+
   font-size:
     13px;
 
@@ -577,12 +820,16 @@ body {
 
   color:
     var(--cinza);
+
 }
+
 
 .botoes-turno,
 .botoes-turno-lideranca,
 .botoes-turno-consulta,
-.filtros-status {
+.filtros-status,
+.filtros-validacao {
+
   display:
     flex;
 
@@ -591,14 +838,20 @@ body {
 
   flex-wrap:
     wrap;
+
 }
+
 
 .botao-turno,
 .botao-turno-lideranca,
 .botao-turno-consulta,
-.botao-status {
+.botao-status,
+.botao-validacao {
+
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   background:
@@ -624,12 +877,31 @@ body {
 
   cursor:
     pointer;
+
+  transition:
+    0.2s ease;
+
 }
+
+
+.botao-turno:hover,
+.botao-turno-lideranca:hover,
+.botao-turno-consulta:hover,
+.botao-status:hover,
+.botao-validacao:hover {
+
+  transform:
+    translateY(-1px);
+
+}
+
 
 .botao-turno.ativo,
 .botao-turno-lideranca.ativo,
 .botao-turno-consulta.ativo,
-.botao-status.ativo {
+.botao-status.ativo,
+.botao-validacao.ativo {
+
   background:
     var(--azul-profundo);
 
@@ -638,49 +910,80 @@ body {
 
   border-color:
     var(--azul-profundo);
+
 }
 
+
 .botao-status.consulta-inativos {
+
   margin-left:
     auto;
 
   color:
     #b4232b;
+
 }
 
+
 .botao-status.consulta-inativos.ativo {
+
   background:
     #b4232b;
 
   color:
     white;
+
 }
 
 
-/* =========================================
-   CARDS
-========================================= */
+.filtros-validacao {
+
+  margin-bottom:
+    18px;
+
+}
+
+
+/* =========================================================
+   CARDS PRINCIPAIS
+========================================================= */
 
 .cards-indicadores {
+
   display:
     grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+
+    repeat(
+      4,
+      1fr
+    );
 
   gap:
     18px;
 
   margin-bottom:
     24px;
+
 }
 
+
 .card-indicador {
+
   background:
-    rgba(255, 255, 255, 0.94);
+
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   border-radius:
@@ -703,9 +1006,12 @@ body {
 
   box-shadow:
     var(--sombra);
+
 }
 
+
 .card-icone {
+
   width:
     64px;
 
@@ -729,29 +1035,70 @@ body {
 
   flex-shrink:
     0;
+
 }
+
 
 .card-icone.azul {
+
   background:
-    rgba(52, 131, 250, 0.12);
+
+    rgba(
+      52,
+      131,
+      250,
+      0.12
+    );
+
 }
+
 
 .card-icone.verde {
+
   background:
-    rgba(0, 166, 80, 0.12);
+
+    rgba(
+      0,
+      166,
+      80,
+      0.12
+    );
+
 }
+
 
 .card-icone.amarelo {
+
   background:
-    rgba(255, 230, 0, 0.3);
+
+    rgba(
+      255,
+      230,
+      0,
+      0.3
+    );
+
 }
+
 
 .card-icone.roxo {
+
   background:
     var(--roxo-claro);
+
 }
 
+
+.card-conteudo {
+
+  min-width:
+    0;
+
+}
+
+
 .card-conteudo span {
+
   display:
     block;
 
@@ -766,9 +1113,12 @@ body {
 
   margin-bottom:
     6px;
+
 }
 
+
 .card-conteudo strong {
+
   display:
     block;
 
@@ -780,27 +1130,167 @@ body {
 
   margin-bottom:
     8px;
+
 }
 
+
 .card-conteudo small {
+
   color:
     #98a2b3;
 
   font-size:
     11px;
+
 }
 
 
-/* =========================================
-   SEÇÕES
-========================================= */
+/* =========================================================
+   CARDS VALIDAÇÃO
+========================================================= */
 
-.secao-dashboard {
+.cards-validacao {
+
+  display:
+    grid;
+
+  grid-template-columns:
+
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:
+    16px;
+
+  margin-bottom:
+    24px;
+
+}
+
+
+.card-validacao {
+
   background:
-    rgba(255, 255, 255, 0.94);
+    var(--branco);
 
   border:
+
     1px solid
+
+    var(--cinza-borda);
+
+  border-radius:
+    20px;
+
+  padding:
+    20px;
+
+  box-shadow:
+    var(--sombra);
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+}
+
+
+.card-validacao.sucesso {
+
+  border-color:
+
+    rgba(
+      0,
+      166,
+      80,
+      0.3
+    );
+
+}
+
+
+.card-validacao.alerta {
+
+  border-color:
+
+    rgba(
+      247,
+      144,
+      9,
+      0.4
+    );
+
+}
+
+
+.card-validacao-label {
+
+  display:
+    block;
+
+  color:
+    var(--cinza);
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  margin-bottom:
+    10px;
+
+}
+
+
+.card-validacao strong {
+
+  display:
+    block;
+
+  font-size:
+    34px;
+
+  margin-bottom:
+    6px;
+
+}
+
+
+.card-validacao small {
+
+  color:
+    #98a2b3;
+
+  font-size:
+    11px;
+
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.secao-dashboard {
+
+  background:
+
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+
+  border:
+
+    1px solid
+
     var(--cinza-borda);
 
   border-radius:
@@ -814,9 +1304,12 @@ body {
 
   margin-bottom:
     24px;
+
 }
 
+
 .secao-cabecalho {
+
   display:
     flex;
 
@@ -831,35 +1324,118 @@ body {
 
   margin-bottom:
     20px;
+
 }
+
 
 .secao-cabecalho h3 {
+
   font-size:
     22px;
+
 }
 
 
-/* =========================================
+.secao-validacao-cabecalho {
+
+  align-items:
+    flex-end;
+
+}
+
+
+/* =========================================================
+   CONTADOR TL SEM MULTI
+========================================================= */
+
+.contador-destaque {
+
+  min-width:
+    90px;
+
+  padding:
+    12px 16px;
+
+  border-radius:
+    16px;
+
+  background:
+    var(--laranja-claro);
+
+  text-align:
+    center;
+
+}
+
+
+.contador-destaque span {
+
+  display:
+    block;
+
+  color:
+    #a15c00;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  margin-bottom:
+    3px;
+
+}
+
+
+.contador-destaque strong {
+
+  font-size:
+    26px;
+
+  color:
+    #8c4f00;
+
+}
+
+
+/* =========================================================
    TURNOS
-========================================= */
+========================================================= */
 
 .turnos-grid {
+
   display:
     grid;
 
   grid-template-columns:
-    repeat(5, minmax(0, 1fr));
+
+    repeat(
+      5,
+      minmax(
+        0,
+        1fr
+      )
+    );
 
   gap:
     12px;
+
 }
 
+
 .card-turno {
+
   background:
     #fff;
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   border-radius:
@@ -873,14 +1449,20 @@ body {
 
   position:
     relative;
+
 }
+
 
 .turno-identificacao {
+
   margin-bottom:
     18px;
+
 }
 
+
 .turno-identificacao span {
+
   display:
     block;
 
@@ -892,14 +1474,20 @@ body {
 
   font-weight:
     800;
+
 }
+
 
 .turno-identificacao strong {
+
   font-size:
     24px;
+
 }
 
+
 .turno-total-compacto {
+
   position:
     absolute;
 
@@ -917,9 +1505,26 @@ body {
 
   gap:
     6px;
+
 }
 
+
+.turno-total-compacto span {
+
+  color:
+    var(--cinza);
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+}
+
+
 .turno-total-compacto strong {
+
   width:
     34px;
 
@@ -943,9 +1548,12 @@ body {
 
   justify-content:
     center;
+
 }
 
+
 .turno-indicador {
+
   display:
     flex;
 
@@ -966,9 +1574,12 @@ body {
 
   margin-top:
     7px;
+
 }
 
+
 .indicador-ponto {
+
   width:
     8px;
 
@@ -977,19 +1588,31 @@ body {
 
   border-radius:
     50%;
+
+  flex-shrink:
+    0;
+
 }
+
 
 .indicador-ponto.ativo {
+
   background:
     var(--verde);
+
 }
+
 
 .indicador-ponto.escola {
+
   background:
     var(--amarelo-meli);
+
 }
 
+
 .turno-indicador div {
+
   display:
     flex;
 
@@ -998,14 +1621,19 @@ body {
 
   width:
     100%;
+
+  gap:
+    8px;
+
 }
 
 
-/* =========================================
+/* =========================================================
    BUSCA
-========================================= */
+========================================================= */
 
 .busca {
+
   width:
     340px;
 
@@ -1022,7 +1650,9 @@ body {
     #f7f9fb;
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   border-radius:
@@ -1030,9 +1660,12 @@ body {
 
   padding:
     0 14px;
+
 }
 
+
 .busca input {
+
   width:
     100%;
 
@@ -1047,39 +1680,62 @@ body {
 
   background:
     transparent;
+
+  font-family:
+    inherit;
+
+  color:
+    var(--azul-profundo);
+
 }
 
-/* =========================================
+
+/* =========================================================
    TABELAS
-========================================= */
+========================================================= */
 
 .tabela-container {
-  overflow-x: auto;
-  overflow-y: visible;
+
+  overflow-x:
+    auto;
+
+  overflow-y:
+    visible;
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   border-radius:
     16px;
 
-  position: relative;
+  position:
+    relative;
+
 }
+
 
 .tabela-lideranca-container {
-  overflow:
-    hidden;
+
+  overflow-x:
+    auto;
 
   border:
+
     1px solid
+
     var(--cinza-borda);
 
   border-radius:
     16px;
+
 }
 
+
 table {
+
   width:
     100%;
 
@@ -1088,19 +1744,44 @@ table {
 
   border-collapse:
     collapse;
+
 }
+
 
 .tabela-lideranca {
+
   min-width:
-    0;
+    700px;
+
 }
+
+
+.tabela-tl-sem-multis {
+
+  min-width:
+    700px;
+
+}
+
+
+.tabela-validacao {
+
+  min-width:
+    1350px;
+
+}
+
 
 thead {
+
   background:
     #f8fafc;
+
 }
 
+
 thead th {
+
   text-align:
     left;
 
@@ -1117,19 +1798,26 @@ thead th {
     uppercase;
 
   border-bottom:
+
     1px solid
+
     var(--cinza-borda);
 
   white-space:
     nowrap;
+
 }
 
+
 tbody td {
+
   padding:
     14px;
 
   border-bottom:
+
     1px solid
+
     #f0f2f5;
 
   font-size:
@@ -1137,9 +1825,20 @@ tbody td {
 
   white-space:
     nowrap;
+
 }
 
+
+tbody tr:hover {
+
+  background:
+    #fbfcfd;
+
+}
+
+
 .sem-dados td {
+
   text-align:
     center;
 
@@ -1148,9 +1847,12 @@ tbody td {
 
   padding:
     34px;
+
 }
 
+
 .posicao-ranking {
+
   width:
     42px;
 
@@ -1177,24 +1879,43 @@ tbody td {
 
   font-weight:
     800;
+
 }
 
 
-/* =========================================
-   PADRONIZAÇÃO EM MAIÚSCULO
-========================================= */
+/* =========================================================
+   CABEÇALHO FIXO DA CONSULTA
+========================================================= */
 
-.texto-maiusculo {
-  text-transform:
-    uppercase;
+#tabelaConsulta thead th {
+
+  position:
+    sticky;
+
+  top:
+    62px;
+
+  z-index:
+    10;
+
+  background:
+    #f8fafc;
+
+  box-shadow:
+
+    0 1px 0
+
+    var(--cinza-borda);
+
 }
 
 
-/* =========================================
+/* =========================================================
    BADGES
-========================================= */
+========================================================= */
 
 .badge {
+
   display:
     inline-flex;
 
@@ -1218,69 +1939,99 @@ tbody td {
 
   white-space:
     nowrap;
+
 }
+
 
 .badge.ativo,
 .badge.hc-ativo,
 .badge.sim {
+
   background:
     var(--verde-claro);
 
   color:
     #08783d;
+
 }
 
+
 .badge.escola {
+
   background:
-    rgba(255, 230, 0, 0.28);
+
+    rgba(
+      255,
+      230,
+      0,
+      0.28
+    );
 
   color:
     #756600;
+
 }
+
 
 .badge.inativo,
 .badge.hc-inativo {
+
   background:
     var(--vermelho-claro);
 
   color:
     #b4232b;
+
 }
 
+
 .badge.desistencia {
+
   background:
     var(--laranja-claro);
 
   color:
     #a15c00;
+
 }
 
+
 .badge.movimentacao {
+
   background:
     var(--roxo-claro);
 
   color:
     #5d45c7;
+
 }
 
+
 .badge.hc-ferias {
+
   background:
     var(--azul-status-claro);
 
   color:
     #215db0;
+
 }
+
 
 .badge.hc-outro,
 .badge.nao {
+
   background:
     var(--cinza-claro);
 
   color:
     #667085;
+
 }
 
+
 .badge-turno {
+
   display:
     inline-flex;
 
@@ -1301,14 +2052,91 @@ tbody td {
 
   font-weight:
     700;
+
 }
 
 
-/* =========================================
+/* =========================================================
+   BADGES VALIDAÇÃO
+========================================================= */
+
+.badge-validacao {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  padding:
+    7px 11px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.badge-validacao.alinhado {
+
+  background:
+    var(--verde-claro);
+
+  color:
+    #08783d;
+
+}
+
+
+.badge-validacao.base-sem-oficial {
+
+  background:
+    var(--laranja-claro);
+
+  color:
+    #a15c00;
+
+}
+
+
+.badge-validacao.oficial-sem-base {
+
+  background:
+    var(--vermelho-claro);
+
+  color:
+    #b4232b;
+
+}
+
+
+/* =========================================================
+   PADRONIZAÇÃO TEXTO
+========================================================= */
+
+.texto-maiusculo {
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* =========================================================
    FOOTER
-========================================= */
+========================================================= */
 
 .footer {
+
   max-width:
     1500px;
 
@@ -1324,75 +2152,136 @@ tbody td {
   justify-content:
     space-between;
 
+  gap:
+    20px;
+
   color:
     var(--cinza);
 
   font-size:
     12px;
+
 }
 
 
-/* =========================================
+/* =========================================================
    RESPONSIVO
-========================================= */
+========================================================= */
 
 @media (
-  max-width: 1250px
-) {
-
-  .cards-indicadores {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-  .turnos-grid {
-    grid-template-columns:
-      repeat(3, 1fr);
-  }
-
-}
-
-
-@media (
-  max-width: 800px
+  max-width:
+  1250px
 ) {
 
   .cards-indicadores,
-  .turnos-grid {
+  .cards-validacao {
+
     grid-template-columns:
-      1fr;
+
+      repeat(
+        2,
+        1fr
+      );
+
+  }
+
+
+  .turnos-grid {
+
+    grid-template-columns:
+
+      repeat(
+        3,
+        1fr
+      );
+
   }
 
 }
 
 
 @media (
-  max-width: 760px
+  max-width:
+  800px
 ) {
 
-  .container {
-    padding:
-      24px 18px;
+  .cards-indicadores,
+  .cards-validacao,
+  .turnos-grid {
+
+    grid-template-columns:
+      1fr;
+
   }
 
+
+  .secao-cabecalho,
+  .boas-vindas {
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+  }
+
+
   .busca {
+
     width:
       100%;
+
   }
 
 }
-/* =========================================
-   CABEÇALHO FIXO DA TABELA DE CONSULTA
-========================================= */
 
-#tabelaConsulta thead th {
-  position: sticky;
-  top: 62px;
-  z-index: 10;
 
-  background: #f8fafc;
+@media (
+  max-width:
+  760px
+) {
 
-  box-shadow:
-    0 1px 0
-    var(--cinza-borda);
+  .header-conteudo {
+
+    padding:
+      18px;
+
+  }
+
+
+  .header-info {
+
+    display:
+      none;
+
+  }
+
+
+  .navegacao-conteudo {
+
+    padding:
+      10px 18px;
+
+  }
+
+
+  .container {
+
+    padding:
+      24px 18px;
+
+  }
+
+
+  .footer {
+
+    padding:
+      8px 18px 30px;
+
+    flex-direction:
+      column;
+
+  }
+
 }
