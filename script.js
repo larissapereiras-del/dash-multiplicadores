@@ -1,11 +1,11 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
-   Conectado à base real via Google Apps Script
+   BASE REAL
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURAÇÃO DA API
+   API
 ========================================================= */
 
 const API_URL =
@@ -16,7 +16,8 @@ const API_URL =
    BASE
 ========================================================= */
 
-let multiplicadores = [];
+let multiplicadores =
+  [];
 
 
 /* =========================================================
@@ -34,26 +35,32 @@ let termoBusca =
 
 
 /* =========================================================
-   NORMALIZAÇÃO
+   NORMALIZA TEXTO
 ========================================================= */
 
-function normalizarTexto(texto) {
+function normalizarTexto(
+  texto
+) {
 
-  return String(texto || "")
+  return String(
+    texto || ""
+  )
 
-    .normalize("NFD")
+    .normalize(
+      "NFD"
+    )
 
     .replace(
       /[\u0300-\u036f]/g,
       ""
     )
 
-    .toLowerCase()
-
     .replace(
       /\s+/g,
       " "
     )
+
+    .toLowerCase()
 
     .trim();
 
@@ -61,40 +68,7 @@ function normalizarTexto(texto) {
 
 
 /* =========================================================
-   BUSCA SEGURA DE COLUNA
-========================================================= */
-
-function pegarValor(
-  objeto,
-  nomesPossiveis
-) {
-
-  for (
-    const nome
-    of nomesPossiveis
-  ) {
-
-    if (
-      objeto[nome] !== undefined
-    ) {
-
-      return String(
-        objeto[nome] || ""
-      ).trim();
-
-    }
-
-  }
-
-
-  return "";
-
-}
-
-
-/* =========================================================
-   CONVERTE LINHA DA PLANILHA
-   PARA O FORMATO DO DASH
+   MAPA DA BASE
 ========================================================= */
 
 function transformarRegistro(
@@ -104,120 +78,87 @@ function transformarRegistro(
   return {
 
     nome:
-      pegarValor(
-        item,
-        [
-          "Nome do Representante"
-        ]
-      ),
+      item[
+        "Nome do Representante"
+      ] || "",
 
-    repAtivo:
-      pegarValor(
-        item,
-        [
-          "Status Base HC"
-        ]
-      ),
+
+    statusBaseHC:
+      item[
+        "Status Base HC"
+      ] || "",
+
 
     statusPrograma:
-      pegarValor(
-        item,
-        [
-          "Status Treinamento"
-        ]
-      ),
+      item[
+        "Status Treinamento"
+      ] || "",
+
 
     turno:
-      pegarValor(
-        item,
-        [
-          "Turno"
-        ]
-      ),
+      item[
+        "Turno"
+      ] || "",
+
 
     cargo:
-      pegarValor(
-        item,
-        [
-          "Cargo"
-        ]
-      ),
+      item[
+        "Cargo"
+      ] || "",
+
 
     ldap:
-      pegarValor(
-        item,
-        [
-          "LDAP"
-        ]
-      ),
+      item[
+        "LDAP"
+      ] || "",
+
 
     areaMacro:
-      pegarValor(
-        item,
-        [
-          "Área Macro",
-          "Area Macro"
-        ]
-      ),
+      item[
+        "Área Macro"
+      ] || "",
+
 
     subArea:
-      pegarValor(
-        item,
-        [
-          "Sub Área",
-          "Sub Area"
-        ]
-      ),
+      item[
+        "Sub Área"
+      ] || "",
+
 
     processo:
-      pegarValor(
-        item,
-        [
-          "Processo Ajustado"
-        ]
-      ),
+      item[
+        "Processo Ajustado"
+      ] || "",
+
 
     escala:
-      pegarValor(
-        item,
-        [
-          "ESCALA",
-          "Escala"
-        ]
-      ),
+      item[
+        "ESCALA"
+      ] || "",
+
 
     decola:
-      pegarValor(
-        item,
-        [
-          "Decola"
-        ]
-      ),
+      item[
+        "Decola"
+      ] || "",
+
 
     bolhaMulti:
-      pegarValor(
-        item,
-        [
-          "Tem bolha de Multi"
-        ]
-      ),
+      item[
+        "Tem bolha de Multi"
+      ] || "",
+
 
     dataFormacao:
-      pegarValor(
-        item,
-        [
-          "Data de Formação",
-          "Data de Formacao"
-        ]
-      ),
+      item[
+        "Data de Formação"
+      ] || "",
+
 
     motivo:
-      pegarValor(
-        item,
-        [
-          "Motivo"
-        ]
-      )
+      item[
+        "Motivo"
+      ] || ""
 
   };
 
@@ -225,26 +166,28 @@ function transformarRegistro(
 
 
 /* =========================================================
-   CARREGAMENTO DA API
+   CARREGA DADOS
 ========================================================= */
 
 async function carregarDados() {
 
+  mostrarCarregamento();
+
+
   try {
-
-    mostrarCarregamento();
-
 
     const resposta =
       await fetch(
+
         API_URL,
+
         {
-          method:
-            "GET",
 
           cache:
             "no-store"
+
         }
+
       );
 
 
@@ -253,7 +196,7 @@ async function carregarDados() {
     ) {
 
       throw new Error(
-        `Erro HTTP: ${resposta.status}`
+        `Erro HTTP ${resposta.status}`
       );
 
     }
@@ -268,9 +211,11 @@ async function carregarDados() {
     ) {
 
       throw new Error(
+
         retorno.erro
         ||
-        "Erro ao carregar a base."
+        "Erro ao carregar os dados."
+
       );
 
     }
@@ -285,8 +230,13 @@ async function carregarDados() {
         )
 
         .filter(
+
           pessoa =>
-            pessoa.nome
+
+            String(
+              pessoa.nome
+            ).trim() !== ""
+
         );
 
 
@@ -294,14 +244,25 @@ async function carregarDados() {
 
     atualizarDashboard();
 
+
+    console.log(
+
+      "Base carregada:",
+
+      multiplicadores.length,
+
+      "registros"
+
+    );
+
   }
+
 
   catch (
     erro
   ) {
 
     console.error(
-      "Erro ao carregar dados:",
       erro
     );
 
@@ -316,10 +277,10 @@ async function carregarDados() {
 
 
 /* =========================================================
-   STATUS DO PROGRAMA
+   STATUS
 ========================================================= */
 
-function statusNormalizado(
+function statusPrograma(
   pessoa
 ) {
 
@@ -330,26 +291,37 @@ function statusNormalizado(
 }
 
 
+/* =========================================================
+   ATIVO
+========================================================= */
+
 function estaAtivo(
   pessoa
 ) {
 
   return (
-    statusNormalizado(
+
+    statusPrograma(
       pessoa
     ) ===
     "ativo"
+
   );
 
 }
 
+
+/* =========================================================
+   ATIVO ESCOLA
+========================================================= */
 
 function estaAtivoEscola(
   pessoa
 ) {
 
   const status =
-    statusNormalizado(
+
+    statusPrograma(
       pessoa
     );
 
@@ -374,6 +346,10 @@ function estaAtivoEscola(
 }
 
 
+/* =========================================================
+   VISÃO PRINCIPAL
+========================================================= */
+
 function estaNaVisaoPrincipal(
   pessoa
 ) {
@@ -395,12 +371,17 @@ function estaNaVisaoPrincipal(
 }
 
 
-function estaInativoOuDesistencia(
+/* =========================================================
+   CONSULTA DE INATIVOS
+========================================================= */
+
+function estaNaConsultaInativos(
   pessoa
 ) {
 
   const status =
-    statusNormalizado(
+
+    statusPrograma(
       pessoa
     );
 
@@ -415,13 +396,23 @@ function estaInativoOuDesistencia(
     status ===
       "desistencia"
 
+    ||
+
+    status ===
+      "multi loss"
+
+    ||
+
+    status ===
+      "training"
+
   );
 
 }
 
 
 /* =========================================================
-   NORMALIZAÇÃO DE TURNO
+   NORMALIZA TURNO
 ========================================================= */
 
 function normalizarTurno(
@@ -440,14 +431,6 @@ function normalizarTurno(
     valor.includes(
       "1 turno"
     )
-    ||
-    valor.includes(
-      "1º turno"
-    )
-    ||
-    valor.includes(
-      "1° turno"
-    )
   ) {
 
     return "T1";
@@ -460,14 +443,6 @@ function normalizarTurno(
     ||
     valor.includes(
       "2 turno"
-    )
-    ||
-    valor.includes(
-      "2º turno"
-    )
-    ||
-    valor.includes(
-      "2° turno"
     )
   ) {
 
@@ -482,14 +457,6 @@ function normalizarTurno(
     valor.includes(
       "3 turno"
     )
-    ||
-    valor.includes(
-      "3º turno"
-    )
-    ||
-    valor.includes(
-      "3° turno"
-    )
   ) {
 
     return "T3";
@@ -497,13 +464,41 @@ function normalizarTurno(
   }
 
 
-  return turno;
+  if (
+    valor === "t4"
+    ||
+    valor.includes(
+      "4 turno"
+    )
+  ) {
+
+    return "T4";
+
+  }
+
+
+  if (
+    valor === "t5"
+    ||
+    valor.includes(
+      "5 turno"
+    )
+  ) {
+
+    return "T5";
+
+  }
+
+
+  return String(
+    turno || ""
+  ).trim();
 
 }
 
 
 /* =========================================================
-   FILTRO POR TURNO
+   FILTRO DE TURNO
 ========================================================= */
 
 function filtrarPorTurno(
@@ -523,6 +518,7 @@ function filtrarPorTurno(
   return lista.filter(
 
     pessoa =>
+
       normalizarTurno(
         pessoa.turno
       ) ===
@@ -534,7 +530,7 @@ function filtrarPorTurno(
 
 
 /* =========================================================
-   INDICADORES PRINCIPAIS
+   INDICADORES
 ========================================================= */
 
 function atualizarIndicadores() {
@@ -596,7 +592,9 @@ function atualizarTurnos() {
   [
     "T1",
     "T2",
-    "T3"
+    "T3",
+    "T4",
+    "T5"
   ].forEach(
 
     turno => {
@@ -607,6 +605,7 @@ function atualizarTurnos() {
         multiplicadores.filter(
 
           pessoa =>
+
             normalizarTurno(
               pessoa.turno
             ) ===
@@ -682,54 +681,269 @@ function filtrarPorStatus(
 
   if (
     statusSelecionado ===
-    "inativos"
+    "ativo"
   ) {
 
     return lista.filter(
-      estaInativoOuDesistencia
+      estaAtivo
     );
 
   }
 
 
-  return lista.filter(
+  if (
+    statusSelecionado ===
+    "ativo-escola"
+  ) {
 
-    pessoa =>
-      statusNormalizado(
-        pessoa
-      ) ===
-      statusSelecionado
+    return lista.filter(
+      estaAtivoEscola
+    );
 
-  );
+  }
+
+
+  if (
+    statusSelecionado ===
+    "inativos"
+  ) {
+
+    return lista.filter(
+      estaNaConsultaInativos
+    );
+
+  }
+
+
+  return lista;
 
 }
 
 
 /* =========================================================
-   STATUS DO REP NA BASE HC
+   MOTIVO
 ========================================================= */
 
-function repEstaAtivo(
+function obterMotivo(
   pessoa
 ) {
 
+  const motivo =
+
+    String(
+      pessoa.motivo
+      ||
+      ""
+    ).trim();
+
+
+  if (
+    motivo
+  ) {
+
+    return motivo;
+
+  }
+
+
   const status =
-    normalizarTexto(
-      pessoa.repAtivo
+
+    statusPrograma(
+      pessoa
     );
 
 
-  return (
-
+  if (
     status ===
-      "ativo"
+      "multi loss"
 
     ||
 
     status ===
-      "sim"
+      "training"
+  ) {
 
-  );
+    return "Movimentação de área";
+
+  }
+
+
+  return "-";
+
+}
+
+
+/* =========================================================
+   BADGE STATUS PROGRAMA
+========================================================= */
+
+function criarBadgeStatusPrograma(
+  pessoa
+) {
+
+  const statusOriginal =
+
+    String(
+      pessoa.statusPrograma
+      ||
+      "-"
+    ).trim();
+
+
+  const status =
+
+    statusPrograma(
+      pessoa
+    );
+
+
+  let classe =
+    "";
+
+
+  if (
+    estaAtivo(
+      pessoa
+    )
+  ) {
+
+    classe =
+      "ativo";
+
+  }
+
+
+  else if (
+    estaAtivoEscola(
+      pessoa
+    )
+  ) {
+
+    classe =
+      "escola";
+
+  }
+
+
+  else if (
+    status ===
+      "desistencia"
+  ) {
+
+    classe =
+      "desistencia";
+
+  }
+
+
+  else if (
+    status ===
+      "multi loss"
+
+    ||
+
+    status ===
+      "training"
+  ) {
+
+    classe =
+      "movimentacao";
+
+  }
+
+
+  else {
+
+    classe =
+      "inativo";
+
+  }
+
+
+  return `
+
+    <span class="badge ${classe}">
+
+      ${statusOriginal}
+
+    </span>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BADGE STATUS BASE HC
+========================================================= */
+
+function criarBadgeStatusHC(
+  statusBase
+) {
+
+  const original =
+
+    String(
+      statusBase
+      ||
+      "-"
+    ).trim();
+
+
+  const status =
+
+    normalizarTexto(
+      original
+    );
+
+
+  let classe =
+    "hc-outro";
+
+
+  if (
+    status ===
+      "ativo"
+  ) {
+
+    classe =
+      "hc-ativo";
+
+  }
+
+
+  else if (
+    status ===
+      "inativo"
+  ) {
+
+    classe =
+      "hc-inativo";
+
+  }
+
+
+  else if (
+    status.includes(
+      "ferias"
+    )
+  ) {
+
+    classe =
+      "hc-ferias";
+
+  }
+
+
+  return `
+
+    <span class="badge ${classe}">
+
+      ${original}
+
+    </span>
+
+  `;
 
 }
 
@@ -738,7 +952,7 @@ function repEstaAtivo(
    SIM / NÃO
 ========================================================= */
 
-function valorEhSim(
+function ehSim(
   valor
 ) {
 
@@ -756,12 +970,12 @@ function valorEhSim(
     ||
 
     texto ===
-      "yes"
+      "s"
 
     ||
 
     texto ===
-      "s"
+      "yes"
 
     ||
 
@@ -779,152 +993,6 @@ function valorEhSim(
 
 
 /* =========================================================
-   BADGES
-========================================================= */
-
-function criarBadgeStatus(
-  status
-) {
-
-  const valor =
-    normalizarTexto(
-      status
-    );
-
-
-  let classe =
-    "";
-
-
-  if (
-    valor ===
-    "ativo"
-  ) {
-
-    classe =
-      "ativo";
-
-  }
-
-
-  else if (
-    valor ===
-      "ativo escola"
-
-    ||
-
-    valor ===
-      "ativo para escola"
-
-    ||
-
-    valor ===
-      "ativo para escola de maquina"
-  ) {
-
-    classe =
-      "escola";
-
-  }
-
-
-  else if (
-    valor ===
-      "training"
-  ) {
-
-    classe =
-      "training";
-
-  }
-
-
-  else if (
-    valor ===
-      "multi loss"
-  ) {
-
-    classe =
-      "loss";
-
-  }
-
-
-  else if (
-    valor ===
-      "inativo"
-  ) {
-
-    classe =
-      "inativo";
-
-  }
-
-
-  else if (
-    valor ===
-      "desistencia"
-  ) {
-
-    classe =
-      "desistencia";
-
-  }
-
-
-  return `
-
-    <span class="badge ${classe}">
-
-      ${
-        status
-        ||
-        "-"
-      }
-
-    </span>
-
-  `;
-
-}
-
-
-/* =========================================================
-   BADGE STATUS REP
-========================================================= */
-
-function criarBadgeRepAtivo(
-  pessoa
-) {
-
-  const ativo =
-    repEstaAtivo(
-      pessoa
-    );
-
-
-  return `
-
-    <span class="badge ${
-      ativo
-        ? "sim"
-        : "nao"
-    }">
-
-      ${
-        ativo
-          ? "✓ Ativo"
-          : "Inativo"
-      }
-
-    </span>
-
-  `;
-
-}
-
-
-/* =========================================================
    BADGE SIM / NÃO
 ========================================================= */
 
@@ -933,7 +1001,8 @@ function criarBadgeSimNao(
 ) {
 
   const positivo =
-    valorEhSim(
+
+    ehSim(
       valor
     );
 
@@ -990,40 +1059,65 @@ function atualizarTabela() {
     termoBusca
   ) {
 
-    dados = dados.filter(
+    dados =
 
-      pessoa => {
+      dados.filter(
+
+        pessoa => {
 
 
-        const texto =
+          const texto =
 
-          normalizarTexto(
+            normalizarTexto(
 
-            `
-            ${pessoa.nome}
-            ${pessoa.ldap}
-            ${pessoa.areaMacro}
-            ${pessoa.subArea}
-            ${pessoa.processo}
-            ${pessoa.turno}
-            ${pessoa.statusPrograma}
-            ${pessoa.cargo}
-            ${pessoa.escala}
-            ${pessoa.motivo}
-            `
+              `
+              ${pessoa.nome}
+              ${pessoa.ldap}
+              ${pessoa.areaMacro}
+              ${pessoa.subArea}
+              ${pessoa.processo}
+              ${pessoa.turno}
+              ${pessoa.statusBaseHC}
+              ${pessoa.statusPrograma}
+              ${pessoa.cargo}
+              ${pessoa.escala}
+              ${pessoa.motivo}
+              `
 
+            );
+
+
+          return texto.includes(
+            termoBusca
           );
 
+        }
 
-        return texto.includes(
-          termoBusca
-        );
-
-      }
-
-    );
+      );
 
   }
+
+
+  dados.sort(
+
+    (
+      a,
+      b
+    ) =>
+
+      String(
+        a.nome
+      ).localeCompare(
+
+        String(
+          b.nome
+        ),
+
+        "pt-BR"
+
+      )
+
+  );
 
 
   if (
@@ -1035,7 +1129,7 @@ function atualizarTabela() {
 
       <tr class="sem-dados">
 
-        <td colspan="13">
+        <td colspan="14">
 
           Nenhum registro encontrado.
 
@@ -1078,8 +1172,8 @@ function atualizarTabela() {
           <td>
 
             ${
-              criarBadgeRepAtivo(
-                pessoa
+              criarBadgeStatusHC(
+                pessoa.statusBaseHC
               )
             }
 
@@ -1089,8 +1183,8 @@ function atualizarTabela() {
           <td>
 
             ${
-              criarBadgeStatus(
-                pessoa.statusPrograma
+              criarBadgeStatusPrograma(
+                pessoa
               )
             }
 
@@ -1149,40 +1243,22 @@ function atualizarTabela() {
 
           <td>
 
-            <div>
+            ${
+              pessoa.subArea
+              ||
+              "-"
+            }
 
-              <strong>
+          </td>
 
-                ${
-                  pessoa.processo
-                  ||
-                  "-"
-                }
 
-              </strong>
+          <td>
 
-              ${
-                pessoa.subArea
-                  ?
-
-                  `
-                  <div
-                    style="
-                      margin-top:4px;
-                      font-size:10px;
-                      color:#98a2b3;
-                    "
-                  >
-                    ${pessoa.subArea}
-                  </div>
-                  `
-
-                  :
-
-                  ""
-              }
-
-            </div>
+            ${
+              pessoa.processo
+              ||
+              "-"
+            }
 
           </td>
 
@@ -1234,9 +1310,9 @@ function atualizarTabela() {
           <td>
 
             ${
-              pessoa.motivo
-              ||
-              "-"
+              obterMotivo(
+                pessoa
+              )
             }
 
           </td>
@@ -1252,25 +1328,20 @@ function atualizarTabela() {
 
 
 /* =========================================================
-   CARREGANDO
+   CARREGAMENTO
 ========================================================= */
 
 function mostrarCarregamento() {
 
-  const corpoTabela =
-
-    document.getElementById(
-      "tabelaMultiplicadores"
-    );
-
-
-  corpoTabela.innerHTML = `
+  document.getElementById(
+    "tabelaMultiplicadores"
+  ).innerHTML = `
 
     <tr class="sem-dados">
 
-      <td colspan="13">
+      <td colspan="14">
 
-        Carregando dados da base...
+        Carregando dados da planilha...
 
       </td>
 
@@ -1295,7 +1366,7 @@ function mostrarErro(
 
     <tr class="sem-dados">
 
-      <td colspan="13">
+      <td colspan="14">
 
         Não foi possível carregar os dados.
 
@@ -1317,119 +1388,125 @@ function mostrarErro(
 
 
 /* =========================================================
-   FILTROS DE TURNO
+   FILTRO TURNO
 ========================================================= */
 
 function configurarFiltrosTurno() {
 
-  const botoes =
-
-    document.querySelectorAll(
+  document
+    .querySelectorAll(
       ".botao-turno"
-    );
+    )
+    .forEach(
+
+      botao => {
 
 
-  botoes.forEach(
+        botao.addEventListener(
 
-    botao => {
+          "click",
 
-
-      botao.addEventListener(
-
-        "click",
-
-        () => {
+          () => {
 
 
-          turnoSelecionado =
+            turnoSelecionado =
 
-            botao.dataset.turno;
+              botao.dataset.turno;
 
 
-          botoes.forEach(
+            document
 
-            item =>
-
-              item.classList.remove(
-                "ativo"
+              .querySelectorAll(
+                ".botao-turno"
               )
 
-          );
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativo"
+                  )
+
+              );
 
 
-          botao.classList.add(
-            "ativo"
-          );
+            botao.classList.add(
+              "ativo"
+            );
 
 
-          atualizarDashboard();
+            atualizarDashboard();
 
-        }
+          }
 
-      );
+        );
 
-    }
+      }
 
-  );
+    );
 
 }
 
 
 /* =========================================================
-   FILTROS DE STATUS
+   FILTRO STATUS
 ========================================================= */
 
 function configurarFiltrosStatus() {
 
-  const botoes =
-
-    document.querySelectorAll(
+  document
+    .querySelectorAll(
       ".botao-status"
-    );
+    )
+    .forEach(
+
+      botao => {
 
 
-  botoes.forEach(
+        botao.addEventListener(
 
-    botao => {
+          "click",
 
-
-      botao.addEventListener(
-
-        "click",
-
-        () => {
+          () => {
 
 
-          statusSelecionado =
+            statusSelecionado =
 
-            botao.dataset.status;
+              botao.dataset.status;
 
 
-          botoes.forEach(
+            document
 
-            item =>
-
-              item.classList.remove(
-                "ativo"
+              .querySelectorAll(
+                ".botao-status"
               )
 
-          );
+              .forEach(
+
+                item =>
+
+                  item.classList.remove(
+                    "ativo"
+                  )
+
+              );
 
 
-          botao.classList.add(
-            "ativo"
-          );
+            botao.classList.add(
+              "ativo"
+            );
 
 
-          atualizarTabela();
+            atualizarTabela();
 
-        }
+          }
 
-      );
+        );
 
-    }
+      }
 
-  );
+    );
 
 }
 
@@ -1440,32 +1517,29 @@ function configurarFiltrosStatus() {
 
 function configurarBusca() {
 
-  const campoBusca =
-
-    document.getElementById(
+  document
+    .getElementById(
       "campoBusca"
+    )
+    .addEventListener(
+
+      "input",
+
+      evento => {
+
+
+        termoBusca =
+
+          normalizarTexto(
+            evento.target.value
+          );
+
+
+        atualizarTabela();
+
+      }
+
     );
-
-
-  campoBusca.addEventListener(
-
-    "input",
-
-    evento => {
-
-
-      termoBusca =
-
-        normalizarTexto(
-          evento.target.value
-        );
-
-
-      atualizarTabela();
-
-    }
-
-  );
 
 }
 
@@ -1476,15 +1550,11 @@ function configurarBusca() {
 
 function atualizarData() {
 
-  const agora =
-    new Date();
-
-
   document.getElementById(
     "ultimaAtualizacao"
   ).textContent =
 
-    agora.toLocaleString(
+    new Date().toLocaleString(
 
       "pt-BR",
 
