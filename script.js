@@ -1,51 +1,59 @@
 /* =========================================================
    DASHBOARD — PROGRAMA MULTIPLICADORES
-   Dados temporários para desenvolvimento do layout
+   Dados temporários para desenvolvimento
 ========================================================= */
 
 const multiplicadores = [
+
   {
     nome: "Ana Souza",
     turno: "T1",
     status: "Ativo",
     gestao: "Gestão A"
   },
+
   {
     nome: "Bruno Silva",
     turno: "T1",
-    status: "Ativo para Escola",
+    status: "Ativo para Escola de Máquina",
     gestao: "Gestão B"
   },
+
   {
     nome: "Carlos Santos",
     turno: "T2",
     status: "Ativo",
     gestao: "Gestão C"
   },
+
   {
     nome: "Daniela Oliveira",
     turno: "T2",
-    status: "Ativo para Escola",
+    status: "Ativo para Escola de Máquina",
     gestao: "Gestão A"
   },
+
   {
     nome: "Eduardo Lima",
     turno: "T3",
     status: "Ativo",
     gestao: "Gestão B"
   },
+
   {
     nome: "Fernanda Costa",
     turno: "T3",
     status: "Ativo",
     gestao: "Gestão C"
   },
+
   {
     nome: "Gabriel Rocha",
     turno: "T3",
-    status: "Ativo para Escola",
+    status: "Ativo para Escola de Máquina",
     gestao: "Gestão A"
   }
+
 ];
 
 
@@ -53,8 +61,11 @@ const multiplicadores = [
    VARIÁVEIS
 ========================================================= */
 
-let turnoSelecionado = "todos";
-let termoBusca = "";
+let turnoSelecionado =
+  "todos";
+
+let termoBusca =
+  "";
 
 
 /* =========================================================
@@ -62,11 +73,20 @@ let termoBusca = "";
 ========================================================= */
 
 function normalizarTexto(texto) {
+
   return String(texto || "")
+
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
     .toLowerCase()
+
     .trim();
+
 }
 
 
@@ -75,25 +95,36 @@ function normalizarTexto(texto) {
 ========================================================= */
 
 function estaAtivo(pessoa) {
-  return normalizarTexto(pessoa.status) === "ativo";
+
+  return (
+    normalizarTexto(
+      pessoa.status
+    ) === "ativo"
+  );
+
 }
 
 
 function estaAtivoParaEscola(pessoa) {
-  const status = normalizarTexto(pessoa.status);
+
+  const status =
+    normalizarTexto(
+      pessoa.status
+    );
+
 
   return (
-    status === "ativo para escola" ||
-    status === "ativo para escola de maquina"
-  );
-}
 
+    status ===
+      "ativo para escola"
 
-function estaElegivel(pessoa) {
-  return (
-    estaAtivo(pessoa) ||
-    estaAtivoParaEscola(pessoa)
+    ||
+
+    status ===
+      "ativo para escola de maquina"
+
   );
+
 }
 
 
@@ -101,41 +132,62 @@ function estaElegivel(pessoa) {
    FILTRO POR TURNO
 ========================================================= */
 
-function filtrarPorTurno(lista, turno) {
+function filtrarPorTurno(
+  lista,
+  turno
+) {
 
-  if (turno === "todos") {
+  if (
+    turno === "todos"
+  ) {
+
     return lista;
+
   }
 
+
   return lista.filter(
-    pessoa => pessoa.turno === turno
+
+    pessoa =>
+      pessoa.turno === turno
+
   );
+
 }
 
 
 /* =========================================================
-   ATUALIZA CARDS PRINCIPAIS
+   INDICADORES PRINCIPAIS
 ========================================================= */
 
 function atualizarIndicadores() {
 
   const dadosFiltrados =
+
     filtrarPorTurno(
+
       multiplicadores,
+
       turnoSelecionado
+
     );
+
 
   const ativos =
-    dadosFiltrados.filter(estaAtivo);
 
-  const escola =
     dadosFiltrados.filter(
-      estaAtivoParaEscola
+
+      estaAtivo
+
     );
 
-  const elegiveis =
+
+  const escola =
+
     dadosFiltrados.filter(
-      estaElegivel
+
+      estaAtivoParaEscola
+
     );
 
 
@@ -156,39 +208,49 @@ function atualizarIndicadores() {
   ).textContent =
     escola.length;
 
-
-  document.getElementById(
-    "totalElegiveis"
-  ).textContent =
-    elegiveis.length;
 }
 
 
 /* =========================================================
-   ATUALIZA VISÃO DOS TURNOS
+   VISÃO POR TURNO
 ========================================================= */
 
 function atualizarTurnos() {
 
-  ["T1", "T2", "T3"].forEach(
+  [
+    "T1",
+    "T2",
+    "T3"
+  ].forEach(
+
     turno => {
 
+
       const pessoasTurno =
+
         multiplicadores.filter(
+
           pessoa =>
             pessoa.turno === turno
+
         );
 
 
       const ativos =
+
         pessoasTurno.filter(
+
           estaAtivo
+
         );
 
 
       const escola =
+
         pessoasTurno.filter(
+
           estaAtivoParaEscola
+
         );
 
 
@@ -210,123 +272,235 @@ function atualizarTurnos() {
         escola.length;
 
     }
+
   );
+
 }
 
 
 /* =========================================================
-   ATUALIZA TABELA
+   BADGE DE STATUS
+========================================================= */
+
+function criarBadgeStatus(status) {
+
+  if (
+    estaAtivo({
+      status
+    })
+  ) {
+
+    return `
+      <span class="badge-status ativo">
+        ● Ativo
+      </span>
+    `;
+
+  }
+
+
+  if (
+    estaAtivoParaEscola({
+      status
+    })
+  ) {
+
+    return `
+      <span class="badge-status escola">
+        🎓 Ativo para Escola de Máquina
+      </span>
+    `;
+
+  }
+
+
+  return `
+    <span class="badge-status">
+      ${status}
+    </span>
+  `;
+
+}
+
+
+/* =========================================================
+   TABELA
 ========================================================= */
 
 function atualizarTabela() {
 
   const corpoTabela =
+
     document.getElementById(
       "tabelaMultiplicadores"
     );
 
 
   let dados =
+
     filtrarPorTurno(
+
       multiplicadores,
+
       turnoSelecionado
+
     );
 
 
-  if (termoBusca) {
+  if (
+    termoBusca
+  ) {
 
     dados = dados.filter(
+
       pessoa => {
 
+
         const textoPessoa =
+
           normalizarTexto(
-            `${pessoa.nome}
-             ${pessoa.turno}
-             ${pessoa.status}
-             ${pessoa.gestao}`
+
+            `
+            ${pessoa.nome}
+            ${pessoa.turno}
+            ${pessoa.status}
+            ${pessoa.gestao}
+            `
+
           );
 
+
         return textoPessoa.includes(
+
           termoBusca
+
         );
 
       }
+
     );
 
   }
 
 
-  if (dados.length === 0) {
+  if (
+    dados.length === 0
+  ) {
 
     corpoTabela.innerHTML = `
+
       <tr class="sem-dados">
+
         <td colspan="4">
+
           Nenhum multiplicador encontrado.
+
         </td>
+
       </tr>
+
     `;
 
+
     return;
+
   }
 
 
   corpoTabela.innerHTML =
+
     dados.map(
+
       pessoa => `
+
         <tr>
 
+
           <td>
+
             <strong>
+
               ${pessoa.nome}
+
             </strong>
+
           </td>
 
-          <td>
-            ${pessoa.turno}
-          </td>
 
           <td>
-            ${pessoa.status}
+
+            <span class="badge-turno">
+
+              ${pessoa.turno}
+
+            </span>
+
           </td>
 
+
           <td>
+
+            ${criarBadgeStatus(
+              pessoa.status
+            )}
+
+          </td>
+
+
+          <td>
+
             ${pessoa.gestao}
+
           </td>
+
 
         </tr>
+
       `
+
     ).join("");
+
 }
 
 
 /* =========================================================
-   BOTÕES DE TURNO
+   FILTROS DE TURNO
 ========================================================= */
 
 function configurarFiltrosTurno() {
 
   const botoes =
+
     document.querySelectorAll(
       ".botao-turno"
     );
 
 
   botoes.forEach(
+
     botao => {
 
+
       botao.addEventListener(
+
         "click",
+
         () => {
 
+
           turnoSelecionado =
+
             botao.dataset.turno;
 
 
           botoes.forEach(
+
             item =>
+
               item.classList.remove(
                 "ativo"
               )
+
           );
 
 
@@ -338,39 +512,51 @@ function configurarFiltrosTurno() {
           atualizarDashboard();
 
         }
+
       );
 
     }
+
   );
+
 }
 
 
 /* =========================================================
-   CAMPO DE BUSCA
+   BUSCA
 ========================================================= */
 
 function configurarBusca() {
 
   const campoBusca =
+
     document.getElementById(
       "campoBusca"
     );
 
 
   campoBusca.addEventListener(
+
     "input",
+
     evento => {
 
+
       termoBusca =
+
         normalizarTexto(
+
           evento.target.value
+
         );
 
 
       atualizarTabela();
 
     }
+
   );
+
 }
 
 
@@ -381,19 +567,35 @@ function configurarBusca() {
 function atualizarData() {
 
   const agora =
+
     new Date();
 
 
   const dataFormatada =
+
     agora.toLocaleString(
+
       "pt-BR",
+
       {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+
+        day:
+          "2-digit",
+
+        month:
+          "2-digit",
+
+        year:
+          "numeric",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit"
+
       }
+
     );
 
 
@@ -401,11 +603,12 @@ function atualizarData() {
     "ultimaAtualizacao"
   ).textContent =
     dataFormatada;
+
 }
 
 
 /* =========================================================
-   ATUALIZA TODO O DASHBOARD
+   ATUALIZA DASHBOARD
 ========================================================= */
 
 function atualizarDashboard() {
@@ -424,8 +627,11 @@ function atualizarDashboard() {
 ========================================================= */
 
 document.addEventListener(
+
   "DOMContentLoaded",
+
   () => {
+
 
     configurarFiltrosTurno();
 
@@ -436,4 +642,5 @@ document.addEventListener(
     atualizarDashboard();
 
   }
+
 );
