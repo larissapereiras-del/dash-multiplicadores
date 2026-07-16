@@ -1054,9 +1054,8 @@ body {
 ========================================= */
 
 .tabela-container {
-  overflow: auto;
-
-  max-height: 620px;
+  overflow-x: auto;
+  overflow-y: visible;
 
   border:
     1px solid
@@ -1388,8 +1387,8 @@ tbody td {
 
 #tabelaConsulta thead th {
   position: sticky;
-  top: 0;
-  z-index: 5;
+  top: 62px;
+  z-index: 10;
 
   background: #f8fafc;
 
