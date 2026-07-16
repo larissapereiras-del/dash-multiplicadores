@@ -87,8 +87,9 @@
 
   <main class="container">
 
+
     <!-- =========================================
-         TOPO
+         INTRODUÇÃO
     ========================================== -->
 
     <section class="boas-vindas">
@@ -105,7 +106,7 @@
 
         <p>
           Acompanhe o quadro de multiplicadores,
-          status e distribuição por turno.
+          status, formação e distribuição por turno.
         </p>
 
       </div>
@@ -127,48 +128,49 @@
 
 
     <!-- =========================================
-         FILTROS
+         FILTRO DE TURNO
     ========================================== -->
 
-    <section class="filtros">
+    <section class="filtros-bloco">
 
-      <span class="filtro-titulo">
-        Visualizar turno:
-      </span>
+      <div class="grupo-filtro">
 
-
-      <div class="botoes-turno">
-
-        <button
-          class="botao-turno ativo"
-          data-turno="todos"
-        >
-          Todos
-        </button>
+        <span class="filtro-titulo">
+          Visualizar turno:
+        </span>
 
 
-        <button
-          class="botao-turno"
-          data-turno="T1"
-        >
-          1º Turno
-        </button>
+        <div class="botoes-turno">
 
+          <button
+            class="botao-turno ativo"
+            data-turno="todos"
+          >
+            Todos
+          </button>
 
-        <button
-          class="botao-turno"
-          data-turno="T2"
-        >
-          2º Turno
-        </button>
+          <button
+            class="botao-turno"
+            data-turno="T1"
+          >
+            1º Turno
+          </button>
 
+          <button
+            class="botao-turno"
+            data-turno="T2"
+          >
+            2º Turno
+          </button>
 
-        <button
-          class="botao-turno"
-          data-turno="T3"
-        >
-          3º Turno
-        </button>
+          <button
+            class="botao-turno"
+            data-turno="T3"
+          >
+            3º Turno
+          </button>
+
+        </div>
 
       </div>
 
@@ -182,14 +184,11 @@
     <section class="cards-indicadores">
 
 
-      <!-- TOTAL MULTIPLICADORES -->
-
       <article class="card-indicador">
 
         <div class="card-icone azul">
           👥
         </div>
-
 
         <div class="card-conteudo">
 
@@ -202,7 +201,7 @@
           </strong>
 
           <small>
-            Total de multiplicadores
+            Ativos + Ativos Escola
           </small>
 
         </div>
@@ -211,14 +210,11 @@
 
 
 
-      <!-- ATIVOS -->
-
       <article class="card-indicador">
 
         <div class="card-icone verde">
           ✓
         </div>
-
 
         <div class="card-conteudo">
 
@@ -240,14 +236,11 @@
 
 
 
-      <!-- ESCOLA -->
-
       <article class="card-indicador destaque">
 
         <div class="card-icone amarelo">
           🎓
         </div>
-
 
         <div class="card-conteudo">
 
@@ -260,7 +253,7 @@
           </strong>
 
           <small>
-            Multiplicadores disponíveis para escola
+            Disponíveis para formação
           </small>
 
         </div>
@@ -295,8 +288,6 @@
 
       <div class="turnos-grid">
 
-
-        <!-- T1 -->
 
         <article class="card-turno">
 
@@ -351,7 +342,7 @@
             <div>
 
               <span>
-                Ativos para Escola
+                Ativo Escola
               </span>
 
               <strong id="escolaT1">
@@ -365,8 +356,6 @@
         </article>
 
 
-
-        <!-- T2 -->
 
         <article class="card-turno">
 
@@ -421,7 +410,7 @@
             <div>
 
               <span>
-                Ativos para Escola
+                Ativo Escola
               </span>
 
               <strong id="escolaT2">
@@ -435,8 +424,6 @@
         </article>
 
 
-
-        <!-- T3 -->
 
         <article class="card-turno">
 
@@ -491,7 +478,7 @@
             <div>
 
               <span>
-                Ativos para Escola
+                Ativo Escola
               </span>
 
               <strong id="escolaT3">
@@ -510,21 +497,21 @@
 
 
     <!-- =========================================
-         DETALHAMENTO
+         CONSULTA
     ========================================== -->
 
     <section class="secao-dashboard">
 
-      <div class="secao-cabecalho">
+      <div class="secao-cabecalho secao-consulta">
 
         <div>
 
           <span class="secao-tag">
-            DETALHAMENTO
+            CONSULTA
           </span>
 
           <h3>
-            Multiplicadores
+            Base de Multiplicadores
           </h3>
 
         </div>
@@ -539,13 +526,69 @@
           <input
             type="text"
             id="campoBusca"
-            placeholder="Buscar multiplicador..."
+            placeholder="Buscar por nome, LDAP ou processo..."
           >
 
         </div>
 
       </div>
 
+
+      <!-- FILTROS DE STATUS -->
+
+      <div class="filtros-status">
+
+        <button
+          class="botao-status ativo"
+          data-status="principal"
+        >
+          Visão Principal
+        </button>
+
+
+        <button
+          class="botao-status"
+          data-status="ativo"
+        >
+          Ativos
+        </button>
+
+
+        <button
+          class="botao-status"
+          data-status="ativo escola"
+        >
+          Ativo Escola
+        </button>
+
+
+        <button
+          class="botao-status"
+          data-status="training"
+        >
+          Training
+        </button>
+
+
+        <button
+          class="botao-status"
+          data-status="multi loss"
+        >
+          Multi LOSS
+        </button>
+
+
+        <button
+          class="botao-status consulta-inativos"
+          data-status="inativos"
+        >
+          Consultar Inativos
+        </button>
+
+      </div>
+
+
+      <!-- TABELA -->
 
       <div class="tabela-container">
 
@@ -560,15 +603,51 @@
               </th>
 
               <th>
+                Rep Ativo?
+              </th>
+
+              <th>
+                Status Programa
+              </th>
+
+              <th>
                 Turno
               </th>
 
               <th>
-                Status
+                Cargo
               </th>
 
               <th>
-                Gestão
+                LDAP
+              </th>
+
+              <th>
+                Área Macro
+              </th>
+
+              <th>
+                Processo
+              </th>
+
+              <th>
+                Escala
+              </th>
+
+              <th>
+                Decola
+              </th>
+
+              <th>
+                Bolha Multi
+              </th>
+
+              <th>
+                Data de Formação
+              </th>
+
+              <th class="coluna-motivo">
+                Motivo
               </th>
 
             </tr>
@@ -580,8 +659,10 @@
 
             <tr class="sem-dados">
 
-              <td colspan="4">
-                Os dados da planilha serão carregados aqui.
+              <td colspan="13">
+
+                Os dados serão carregados aqui.
+
               </td>
 
             </tr>
@@ -614,7 +695,6 @@
       </span>
 
     </div>
-
 
     <p>
       Dashboard de acompanhamento e gestão
