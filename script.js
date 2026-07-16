@@ -645,16 +645,17 @@ function atualizarIndicadores() {
   ).textContent =
     escola.length;
 
+document.getElementById(
+  "ratioGeral"
+).textContent =
 
-  document.getElementById(
-    "ratioGeral"
-  ).textContent =
+  totalLideres > 0
 
-    totalLideres > 0
+    ? ratio
+        .toFixed(2)
+        .replace(".", ",")
 
-      ? `1:${ratio.toFixed(2).replace(".", ",")}`
-
-      : "-";
+    : "-";
 
 
   document.getElementById(
