@@ -78,7 +78,8 @@ body {
     );
 
   border-bottom:
-    1px solid rgba(15, 39, 71, 0.08);
+    1px solid
+    rgba(15, 39, 71, 0.08);
 
   position: relative;
   overflow: hidden;
@@ -134,14 +135,12 @@ body {
   gap: 30px;
 
   position: relative;
-
   z-index: 2;
 }
 
 .marca {
   display: flex;
   align-items: center;
-
   gap: 16px;
 }
 
@@ -187,11 +186,8 @@ body {
 
 .marca-texto h1 {
   font-size: 31px;
-
   line-height: 1;
-
   font-weight: 800;
-
   letter-spacing: -1.4px;
 }
 
@@ -215,11 +211,8 @@ body {
 
 .header-info {
   display: flex;
-
   flex-direction: column;
-
   align-items: flex-end;
-
   gap: 4px;
 }
 
@@ -296,12 +289,13 @@ body {
   margin-bottom: 6px;
 }
 
-.boas-vindas p {
+.boas-vindas p,
+.secao-descricao {
   color: var(--cinza);
 
   line-height: 1.5;
 
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .ultima-atualizacao {
@@ -337,7 +331,7 @@ body {
 
 
 /* =========================================
-   FILTRO DE TURNO
+   FILTROS
 ========================================= */
 
 .filtros-bloco {
@@ -346,33 +340,27 @@ body {
 
 .grupo-filtro {
   display: flex;
-
   align-items: center;
-
   gap: 18px;
-
   flex-wrap: wrap;
 }
 
 .filtro-titulo {
   font-size: 13px;
-
   font-weight: 700;
-
   color: var(--cinza);
 }
 
 .botoes-turno,
 .filtros-status {
   display: flex;
-
   gap: 8px;
-
   flex-wrap: wrap;
 }
 
 .botao-turno,
-.botao-status {
+.botao-status,
+.botao-limpar-lider {
   border:
     1px solid
     var(--cinza-borda);
@@ -388,7 +376,6 @@ body {
   font-family: inherit;
 
   font-size: 12px;
-
   font-weight: 700;
 
   cursor: pointer;
@@ -397,7 +384,8 @@ body {
 }
 
 .botao-turno:hover,
-.botao-status:hover {
+.botao-status:hover,
+.botao-limpar-lider:hover {
   transform: translateY(-2px);
 }
 
@@ -425,22 +413,31 @@ body {
 
 .botao-status.consulta-inativos.ativo {
   background: #b4232b;
-
   color: white;
-
   border-color: #b4232b;
+}
+
+.botao-limpar-lider {
+  color: #5d45c7;
+
+  border-color:
+    rgba(123, 97, 255, 0.25);
+}
+
+.oculto {
+  display: none !important;
 }
 
 
 /* =========================================
-   INDICADORES PRINCIPAIS
+   INDICADORES
 ========================================= */
 
 .cards-indicadores {
   display: grid;
 
   grid-template-columns:
-    repeat(3, 1fr);
+    repeat(4, 1fr);
 
   gap: 18px;
 
@@ -462,7 +459,6 @@ body {
   min-height: 145px;
 
   display: flex;
-
   align-items: center;
 
   gap: 18px;
@@ -503,7 +499,6 @@ body {
   border-radius: 19px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -527,13 +522,17 @@ body {
     rgba(255, 230, 0, 0.3);
 }
 
+.card-icone.roxo {
+  background:
+    var(--roxo-claro);
+}
+
 .card-conteudo span {
   display: block;
 
   color: var(--cinza);
 
   font-size: 13px;
-
   font-weight: 600;
 
   margin-bottom: 6px;
@@ -579,9 +578,7 @@ body {
 
 .secao-cabecalho {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   gap: 20px;
@@ -610,17 +607,6 @@ body {
   margin-bottom: 4px;
 }
 
-.comparativo-cabecalho p {
-  color: var(--cinza);
-
-  font-size: 12px;
-}
-
-
-/* =========================================
-   GRID DOS TURNOS
-========================================= */
-
 .turnos-grid {
   display: grid;
 
@@ -629,11 +615,6 @@ body {
 
   gap: 12px;
 }
-
-
-/* =========================================
-   MINI CARD DO TURNO
-========================================= */
 
 .card-turno {
   min-width: 0;
@@ -688,16 +669,9 @@ body {
     0 10px 10px 0;
 }
 
-
-/* =========================================
-   IDENTIFICAÇÃO DO TURNO
-========================================= */
-
 .turno-identificacao {
   padding-left: 6px;
-
   padding-right: 75px;
-
   margin-bottom: 18px;
 }
 
@@ -707,7 +681,6 @@ body {
   color: var(--cinza);
 
   font-size: 9px;
-
   font-weight: 800;
 
   letter-spacing: 0.06em;
@@ -725,16 +698,10 @@ body {
   line-height: 1;
 }
 
-
-/* =========================================
-   TOTAL DO TURNO
-========================================= */
-
 .turno-total-compacto {
   position: absolute;
 
   top: 13px;
-
   right: 14px;
 
   display: flex;
@@ -748,7 +715,6 @@ body {
   color: var(--cinza);
 
   font-size: 8px;
-
   font-weight: 800;
 
   text-transform: uppercase;
@@ -772,19 +738,12 @@ body {
   font-size: 15px;
 }
 
-
-/* =========================================
-   INDICADORES DOS TURNOS
-========================================= */
-
 .turno-indicador {
   display: flex;
 
   align-items: center;
 
   gap: 8px;
-
-  min-width: 0;
 
   background: var(--azul-claro-2);
 
@@ -822,26 +781,147 @@ body {
   gap: 8px;
 
   width: 100%;
-
-  min-width: 0;
 }
 
 .turno-indicador div span {
   color: var(--cinza);
 
   font-size: 9px;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
 }
 
 .turno-indicador div strong {
   color: var(--azul-profundo);
 
   font-size: 14px;
+}
+
+
+/* =========================================
+   LIDERANÇA
+========================================= */
+
+.lideres-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.card-lider {
+  border:
+    1px solid
+    var(--cinza-borda);
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f8fafc 100%
+    );
+
+  border-radius: 16px;
+
+  padding: 15px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.card-lider:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 22px
+    rgba(15, 39, 71, 0.08);
+}
+
+.card-lider.selecionado {
+  border-color:
+    var(--azul-meli);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(52, 131, 250, 0.10);
+}
+
+.lider-topo {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  align-items: flex-start;
+
+  margin-bottom: 12px;
+}
+
+.lider-nome {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  line-height: 1.35;
+}
+
+.lider-total {
+  min-width: 42px;
+  height: 42px;
+
+  border-radius: 13px;
+
+  background: var(--azul-profundo);
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.lider-detalhes {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 8px;
+}
+
+.lider-detalhe {
+  background:
+    var(--azul-claro-2);
+
+  padding: 9px 10px;
+
+  border-radius: 10px;
+}
+
+.lider-detalhe span {
+  display: block;
+
+  color: var(--cinza);
+
+  font-size: 9px;
+
+  margin-bottom: 3px;
+}
+
+.lider-detalhe strong {
+  font-size: 14px;
+}
+
+.estado-carregando {
+  color: var(--cinza);
+
+  font-size: 12px;
 }
 
 
@@ -909,7 +989,7 @@ body {
 table {
   width: 100%;
 
-  min-width: 1650px;
+  min-width: 1800px;
 
   border-collapse: collapse;
 }
@@ -971,7 +1051,6 @@ tbody tr:hover {
   display: inline-flex;
 
   align-items: center;
-
   justify-content: center;
 
   padding: 6px 10px;
@@ -979,7 +1058,6 @@ tbody tr:hover {
   border-radius: 999px;
 
   font-size: 10px;
-
   font-weight: 700;
 
   white-space: nowrap;
@@ -987,7 +1065,6 @@ tbody tr:hover {
 
 .badge.ativo {
   background: var(--verde-claro);
-
   color: #08783d;
 }
 
@@ -1000,55 +1077,46 @@ tbody tr:hover {
 
 .badge.inativo {
   background: var(--vermelho-claro);
-
   color: #b4232b;
 }
 
 .badge.desistencia {
   background: var(--laranja-claro);
-
   color: #a15c00;
 }
 
 .badge.movimentacao {
   background: var(--roxo-claro);
-
   color: #5d45c7;
 }
 
 .badge.hc-ativo {
   background: var(--verde-claro);
-
   color: #08783d;
 }
 
 .badge.hc-inativo {
   background: var(--vermelho-claro);
-
   color: #b4232b;
 }
 
 .badge.hc-ferias {
   background: var(--azul-status-claro);
-
   color: #215db0;
 }
 
 .badge.hc-outro {
   background: var(--cinza-claro);
-
   color: #475467;
 }
 
 .badge.sim {
   background: var(--verde-claro);
-
   color: #08783d;
 }
 
 .badge.nao {
   background: var(--cinza-claro);
-
   color: #667085;
 }
 
@@ -1116,19 +1184,19 @@ tbody tr:hover {
 
 @media (max-width: 1250px) {
 
+  .cards-indicadores {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
   .turnos-grid {
     grid-template-columns:
       repeat(3, 1fr);
   }
 
-}
-
-
-@media (max-width: 1000px) {
-
-  .cards-indicadores {
+  .lideres-grid {
     grid-template-columns:
-      1fr;
+      repeat(2, 1fr);
   }
 
 }
@@ -1136,7 +1204,9 @@ tbody tr:hover {
 
 @media (max-width: 800px) {
 
-  .turnos-grid {
+  .cards-indicadores,
+  .turnos-grid,
+  .lideres-grid {
     grid-template-columns:
       1fr;
   }
@@ -1150,45 +1220,35 @@ tbody tr:hover {
     padding: 20px;
   }
 
-
   .header-info {
     display: none;
   }
-
 
   .container {
     padding: 24px 18px;
   }
 
-
   .boas-vindas {
     flex-direction: column;
-
     align-items: flex-start;
   }
-
 
   .ultima-atualizacao {
     width: 100%;
   }
 
-
   .secao-cabecalho {
     flex-direction: column;
-
     align-items: flex-start;
   }
-
 
   .busca {
     width: 100%;
   }
 
-
   .botao-status.consulta-inativos {
     margin-left: 0;
   }
-
 
   .footer {
     padding:
