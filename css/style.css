@@ -11,9 +11,7 @@
   --verde-claro: #e2f7ec;
 
   --vermelho-claro: #fdecec;
-
   --laranja-claro: #fff4db;
-
   --roxo-claro: #efeaff;
 
   --azul-status-claro: #e8f1ff;
@@ -331,7 +329,7 @@ body {
 
 
 /* =========================================
-   NAVEGAÇÃO DAS ABAS
+   NAVEGAÇÃO
 ========================================= */
 
 .navegacao-dashboard {
@@ -399,14 +397,6 @@ body {
 
   cursor:
     pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.aba-dashboard:hover {
-  background:
-    var(--azul-claro-2);
 }
 
 .aba-dashboard.ativa {
@@ -634,17 +624,6 @@ body {
 
   cursor:
     pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.botao-turno:hover,
-.botao-turno-lideranca:hover,
-.botao-turno-consulta:hover,
-.botao-status:hover {
-  transform:
-    translateY(-2px);
 }
 
 .botao-turno.ativo,
@@ -659,18 +638,11 @@ body {
 
   border-color:
     var(--azul-profundo);
-
-  box-shadow:
-    0 8px 18px
-    rgba(15, 39, 71, 0.16);
 }
 
 .botao-status.consulta-inativos {
   margin-left:
     auto;
-
-  border-color:
-    rgba(229, 72, 77, 0.3);
 
   color:
     #b4232b;
@@ -682,14 +654,11 @@ body {
 
   color:
     white;
-
-  border-color:
-    #b4232b;
 }
 
 
 /* =========================================
-   INDICADORES
+   CARDS
 ========================================= */
 
 .cards-indicadores {
@@ -734,43 +703,6 @@ body {
 
   box-shadow:
     var(--sombra);
-
-  position:
-    relative;
-
-  overflow:
-    hidden;
-}
-
-.card-indicador::after {
-  content:
-    "";
-
-  position:
-    absolute;
-
-  width:
-    100px;
-
-  height:
-    100px;
-
-  border-radius:
-    50%;
-
-  right:
-    -52px;
-
-  bottom:
-    -52px;
-
-  background:
-    rgba(52, 131, 250, 0.05);
-}
-
-.card-indicador.destaque {
-  border-color:
-    rgba(255, 230, 0, 0.65);
 }
 
 .card-icone {
@@ -908,23 +840,8 @@ body {
 
 
 /* =========================================
-   COMPARATIVO POR TURNO
+   TURNOS
 ========================================= */
-
-.comparativo-turnos {
-  padding:
-    22px 26px;
-}
-
-.comparativo-cabecalho {
-  margin-bottom:
-    16px;
-}
-
-.comparativo-cabecalho h3 {
-  margin-bottom:
-    4px;
-}
 
 .turnos-grid {
   display:
@@ -938,15 +855,8 @@ body {
 }
 
 .card-turno {
-  min-width:
-    0;
-
   background:
-    linear-gradient(
-      145deg,
-      #ffffff 0%,
-      #f8fbfd 100%
-    );
+    #fff;
 
   border:
     1px solid
@@ -963,44 +873,9 @@ body {
 
   position:
     relative;
-
-  overflow:
-    hidden;
-}
-
-.card-turno::before {
-  content:
-    "";
-
-  position:
-    absolute;
-
-  left:
-    0;
-
-  top:
-    14px;
-
-  bottom:
-    14px;
-
-  width:
-    4px;
-
-  background:
-    var(--amarelo-meli);
-
-  border-radius:
-    0 10px 10px 0;
 }
 
 .turno-identificacao {
-  padding-left:
-    6px;
-
-  padding-right:
-    75px;
-
   margin-bottom:
     18px;
 }
@@ -1017,26 +892,11 @@ body {
 
   font-weight:
     800;
-
-  letter-spacing:
-    0.06em;
-
-  margin-bottom:
-    4px;
 }
 
 .turno-identificacao strong {
-  display:
-    block;
-
-  color:
-    var(--azul-profundo);
-
   font-size:
     24px;
-
-  line-height:
-    1;
 }
 
 .turno-total-compacto {
@@ -1057,20 +917,6 @@ body {
 
   gap:
     6px;
-}
-
-.turno-total-compacto span {
-  color:
-    var(--cinza);
-
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
-  text-transform:
-    uppercase;
 }
 
 .turno-total-compacto strong {
@@ -1097,9 +943,6 @@ body {
 
   justify-content:
     center;
-
-  font-size:
-    15px;
 }
 
 .turno-indicador {
@@ -1134,9 +977,6 @@ body {
 
   border-radius:
     50%;
-
-  flex-shrink:
-    0;
 }
 
 .indicador-ponto.ativo {
@@ -1153,106 +993,17 @@ body {
   display:
     flex;
 
-  align-items:
-    center;
-
   justify-content:
     space-between;
 
-  gap:
-    8px;
-
   width:
     100%;
 }
 
-.turno-indicador div span {
-  color:
-    var(--cinza);
-
-  font-size:
-    9px;
-}
-
-.turno-indicador div strong {
-  font-size:
-    14px;
-}
-
 
 /* =========================================
-   TABELA DE LIDERANÇA
+   BUSCA
 ========================================= */
-
-.tabela-lideranca-container {
-  overflow:
-    hidden;
-
-  border:
-    1px solid
-    var(--cinza-borda);
-
-  border-radius:
-    16px;
-}
-
-.tabela-lideranca {
-  width:
-    100%;
-
-  min-width:
-    0;
-}
-
-.posicao-ranking {
-  width:
-    42px;
-
-  height:
-    42px;
-
-  border-radius:
-    13px;
-
-  background:
-    var(--azul-profundo);
-
-  color:
-    white;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  font-weight:
-    800;
-}
-
-.numero-lideranca {
-  font-size:
-    16px;
-
-  font-weight:
-    800;
-
-  color:
-    var(--azul-profundo);
-}
-
-
-/* =========================================
-   CONSULTA
-========================================= */
-
-.secao-consulta {
-  margin-bottom:
-    14px;
-}
 
 .busca {
   width:
@@ -1296,14 +1047,43 @@ body {
 
   background:
     transparent;
-
-  font-family:
-    inherit;
 }
 
-.filtros-status {
-  margin-bottom:
+
+/* =========================================
+   BARRA SUPERIOR
+========================================= */
+
+.scroll-superior {
+  width:
+    100%;
+
+  overflow-x:
+    auto;
+
+  overflow-y:
+    hidden;
+
+  height:
     18px;
+
+  margin-bottom:
+    6px;
+
+  border:
+    1px solid
+    var(--cinza-borda);
+
+  border-radius:
+    8px;
+
+  background:
+    #f5f6f7;
+}
+
+.scroll-superior-conteudo {
+  height:
+    1px;
 }
 
 
@@ -1317,7 +1097,19 @@ body {
 
   border:
     1px solid
-    #eef1f4;
+    var(--cinza-borda);
+
+  border-radius:
+    16px;
+}
+
+.tabela-lideranca-container {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    var(--cinza-borda);
 
   border-radius:
     16px;
@@ -1332,6 +1124,11 @@ table {
 
   border-collapse:
     collapse;
+}
+
+.tabela-lideranca {
+  min-width:
+    0;
 }
 
 thead {
@@ -1354,9 +1151,6 @@ thead th {
 
   text-transform:
     uppercase;
-
-  letter-spacing:
-    0.05em;
 
   border-bottom:
     1px solid
@@ -1381,11 +1175,6 @@ tbody td {
     nowrap;
 }
 
-tbody tr:hover {
-  background:
-    #fbfcfd;
-}
-
 .sem-dados td {
   text-align:
     center;
@@ -1395,6 +1184,45 @@ tbody tr:hover {
 
   padding:
     34px;
+}
+
+.posicao-ranking {
+  width:
+    42px;
+
+  height:
+    42px;
+
+  border-radius:
+    13px;
+
+  background:
+    var(--azul-profundo);
+
+  color:
+    white;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-weight:
+    800;
+}
+
+
+/* =========================================
+   PADRONIZAÇÃO EM MAIÚSCULO
+========================================= */
+
+.texto-maiusculo {
+  text-transform:
+    uppercase;
 }
 
 
@@ -1539,40 +1367,14 @@ tbody tr:hover {
     12px;
 }
 
-.footer div {
-  display:
-    flex;
-
-  gap:
-    8px;
-
-  align-items:
-    center;
-}
-
-.footer div span {
-  background:
-    var(--amarelo-meli);
-
-  padding:
-    4px 7px;
-
-  border-radius:
-    6px;
-
-  font-weight:
-    800;
-
-  color:
-    var(--azul-profundo);
-}
-
 
 /* =========================================
    RESPONSIVO
 ========================================= */
 
-@media (max-width: 1250px) {
+@media (
+  max-width: 1250px
+) {
 
   .cards-indicadores {
     grid-template-columns:
@@ -1587,7 +1389,9 @@ tbody tr:hover {
 }
 
 
-@media (max-width: 800px) {
+@media (
+  max-width: 800px
+) {
 
   .cards-indicadores,
   .turnos-grid {
@@ -1598,77 +1402,18 @@ tbody tr:hover {
 }
 
 
-@media (max-width: 760px) {
-
-  .header-conteudo,
-  .navegacao-conteudo {
-    padding-left:
-      20px;
-
-    padding-right:
-      20px;
-  }
-
-  .header-info {
-    display:
-      none;
-  }
-
-  .navegacao-conteudo {
-    overflow-x:
-      auto;
-  }
-
-  .aba-dashboard {
-    white-space:
-      nowrap;
-  }
+@media (
+  max-width: 760px
+) {
 
   .container {
     padding:
       24px 18px;
   }
 
-  .boas-vindas {
-    flex-direction:
-      column;
-
-    align-items:
-      flex-start;
-  }
-
-  .ultima-atualizacao {
-    width:
-      100%;
-  }
-
-  .secao-cabecalho {
-    flex-direction:
-      column;
-
-    align-items:
-      flex-start;
-  }
-
   .busca {
     width:
       100%;
-  }
-
-  .botao-status.consulta-inativos {
-    margin-left:
-      0;
-  }
-
-  .footer {
-    padding:
-      10px 18px 30px;
-
-    flex-direction:
-      column;
-
-    gap:
-      8px;
   }
 
 }
