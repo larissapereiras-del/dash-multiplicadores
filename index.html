@@ -1,2 +1,486 @@
-<link rel="stylesheet" href="css/style.css">
-<script src="script.js"></script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Programa Multiplicadores | SP10</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+</head>
+
+<body>
+
+  <!-- =========================================
+       CABEÇALHO
+  ========================================== -->
+
+  <header class="header">
+
+    <div class="header-conteudo">
+
+      <div class="marca">
+
+        <div class="marca-icone">
+          💡
+        </div>
+
+        <div class="marca-texto">
+          <span class="marca-programa">PROGRAMA</span>
+          <h1>Multiplicadores</h1>
+          <span class="marca-unidade">SP10</span>
+        </div>
+
+      </div>
+
+      <div class="header-info">
+        <span class="header-label">
+          DASHBOARD
+        </span>
+
+        <strong>
+          Gestão de Multiplicadores
+        </strong>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================
+       CONTEÚDO PRINCIPAL
+  ========================================== -->
+
+  <main class="container">
+
+    <!-- TÍTULO -->
+
+    <section class="boas-vindas">
+
+      <div>
+        <span class="tag-programa">
+          PROGRAMA MULTIPLICADORES
+        </span>
+
+        <h2>
+          Visão Geral
+        </h2>
+
+        <p>
+          Acompanhe o quadro de multiplicadores,
+          status e elegibilidade por turno.
+        </p>
+      </div>
+
+      <div class="ultima-atualizacao">
+        <span>Última atualização</span>
+        <strong id="ultimaAtualizacao">
+          --
+        </strong>
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FILTROS DE TURNO
+    ========================================== -->
+
+    <section class="filtros">
+
+      <span class="filtro-titulo">
+        Visualizar turno:
+      </span>
+
+      <div class="botoes-turno">
+
+        <button
+          class="botao-turno ativo"
+          data-turno="todos"
+        >
+          Todos
+        </button>
+
+        <button
+          class="botao-turno"
+          data-turno="T1"
+        >
+          1º Turno
+        </button>
+
+        <button
+          class="botao-turno"
+          data-turno="T2"
+        >
+          2º Turno
+        </button>
+
+        <button
+          class="botao-turno"
+          data-turno="T3"
+        >
+          3º Turno
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CARDS PRINCIPAIS
+    ========================================== -->
+
+    <section class="cards-indicadores">
+
+      <!-- TOTAL -->
+
+      <article class="card-indicador">
+
+        <div class="card-icone azul">
+          👥
+        </div>
+
+        <div class="card-conteudo">
+          <span>
+            Multiplicadores
+          </span>
+
+          <strong id="totalMultiplicadores">
+            0
+          </strong>
+
+          <small>
+            Total cadastrado
+          </small>
+        </div>
+
+      </article>
+
+
+      <!-- ATIVOS -->
+
+      <article class="card-indicador">
+
+        <div class="card-icone verde">
+          ✓
+        </div>
+
+        <div class="card-conteudo">
+          <span>
+            Ativos
+          </span>
+
+          <strong id="totalAtivos">
+            0
+          </strong>
+
+          <small>
+            Multiplicadores ativos
+          </small>
+        </div>
+
+      </article>
+
+
+      <!-- ESCOLA -->
+
+      <article class="card-indicador destaque">
+
+        <div class="card-icone amarelo">
+          🎓
+        </div>
+
+        <div class="card-conteudo">
+          <span>
+            Ativos para Escola
+          </span>
+
+          <strong id="totalEscola">
+            0
+          </strong>
+
+          <small>
+            Disponíveis para treinamento
+          </small>
+        </div>
+
+      </article>
+
+
+      <!-- ELEGÍVEIS -->
+
+      <article class="card-indicador">
+
+        <div class="card-icone roxo">
+          ⚡
+        </div>
+
+        <div class="card-conteudo">
+          <span>
+            Total Elegível
+          </span>
+
+          <strong id="totalElegiveis">
+            0
+          </strong>
+
+          <small>
+            Ativos + Escola de Máquina
+          </small>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- =========================================
+         VISÃO POR TURNO
+    ========================================== -->
+
+    <section class="secao-dashboard">
+
+      <div class="secao-cabecalho">
+
+        <div>
+          <span class="secao-tag">
+            DISTRIBUIÇÃO
+          </span>
+
+          <h3>
+            Visão por Turno
+          </h3>
+        </div>
+
+      </div>
+
+
+      <div class="turnos-grid">
+
+        <!-- T1 -->
+
+        <article class="card-turno">
+
+          <div class="turno-topo">
+
+            <div>
+              <span>1º TURNO</span>
+              <strong>T1</strong>
+            </div>
+
+            <div class="turno-numero" id="totalT1">
+              0
+            </div>
+
+          </div>
+
+          <div class="turno-detalhes">
+
+            <div>
+              <span>Ativos</span>
+              <strong id="ativosT1">0</strong>
+            </div>
+
+            <div>
+              <span>Escola</span>
+              <strong id="escolaT1">0</strong>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- T2 -->
+
+        <article class="card-turno">
+
+          <div class="turno-topo">
+
+            <div>
+              <span>2º TURNO</span>
+              <strong>T2</strong>
+            </div>
+
+            <div class="turno-numero" id="totalT2">
+              0
+            </div>
+
+          </div>
+
+          <div class="turno-detalhes">
+
+            <div>
+              <span>Ativos</span>
+              <strong id="ativosT2">0</strong>
+            </div>
+
+            <div>
+              <span>Escola</span>
+              <strong id="escolaT2">0</strong>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- T3 -->
+
+        <article class="card-turno">
+
+          <div class="turno-topo">
+
+            <div>
+              <span>3º TURNO</span>
+              <strong>T3</strong>
+            </div>
+
+            <div class="turno-numero" id="totalT3">
+              0
+            </div>
+
+          </div>
+
+          <div class="turno-detalhes">
+
+            <div>
+              <span>Ativos</span>
+              <strong id="ativosT3">0</strong>
+            </div>
+
+            <div>
+              <span>Escola</span>
+              <strong id="escolaT3">0</strong>
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         LISTA DE MULTIPLICADORES
+    ========================================== -->
+
+    <section class="secao-dashboard">
+
+      <div class="secao-cabecalho">
+
+        <div>
+          <span class="secao-tag">
+            DETALHAMENTO
+          </span>
+
+          <h3>
+            Multiplicadores
+          </h3>
+        </div>
+
+
+        <div class="busca">
+
+          <span>
+            🔎
+          </span>
+
+          <input
+            type="text"
+            id="campoBusca"
+            placeholder="Buscar multiplicador..."
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="tabela-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Multiplicador</th>
+              <th>Turno</th>
+              <th>Status</th>
+              <th>Gestão</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="tabelaMultiplicadores">
+
+            <tr class="sem-dados">
+
+              <td colspan="4">
+                Os dados da planilha serão carregados aqui.
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       RODAPÉ
+  ========================================== -->
+
+  <footer class="footer">
+
+    <div>
+      <strong>
+        Programa Multiplicadores
+      </strong>
+
+      <span>
+        SP10
+      </span>
+    </div>
+
+    <p>
+      Dashboard de acompanhamento e gestão
+    </p>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
