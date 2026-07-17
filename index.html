@@ -9,7 +9,9 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Programa Multiplicadores | SP10</title>
+  <title>
+    Programa Multiplicadores | SP10
+  </title>
 
   <link
     rel="stylesheet"
@@ -33,7 +35,9 @@
   >
 </head>
 
+
 <body>
+
 
   <!-- =====================================================
        CABEÇALHO
@@ -49,15 +53,18 @@
           💡
         </div>
 
+
         <div class="marca-texto">
 
           <span class="marca-programa">
             PROGRAMA
           </span>
 
+
           <h1>
             Multiplicadores
           </h1>
+
 
           <span class="marca-unidade">
             SP10
@@ -67,11 +74,13 @@
 
       </div>
 
+
       <div class="header-info">
 
         <span class="header-label">
           DASHBOARD
         </span>
+
 
         <strong>
           Gestão de Multiplicadores
@@ -82,6 +91,7 @@
     </div>
 
   </header>
+
 
 
   <!-- =====================================================
@@ -99,12 +109,14 @@
         📊 Visão Geral
       </button>
 
+
       <button
         class="aba-dashboard"
         data-aba="lideranca"
       >
         👥 Liderança
       </button>
+
 
       <button
         class="aba-dashboard"
@@ -113,12 +125,14 @@
         ✅ Validação
       </button>
 
+
       <button
         class="aba-dashboard"
         data-aba="folgas"
       >
         📅 Folgas
       </button>
+
 
       <button
         class="aba-dashboard"
@@ -130,6 +144,7 @@
     </div>
 
   </nav>
+
 
 
   <!-- =====================================================
@@ -148,6 +163,7 @@
       class="conteudo-aba ativo"
     >
 
+
       <section class="boas-vindas">
 
         <div>
@@ -156,22 +172,26 @@
             PROGRAMA MULTIPLICADORES
           </span>
 
+
           <h2>
             Visão Geral
           </h2>
 
+
           <p>
-            Acompanhe o quadro de multiplicadores, formação,
-            distribuição por turno e presença ativa no HC.
+            Acompanhe o quadro de multiplicadores,
+            formação, distribuição por turno e presença ativa no HC.
           </p>
 
         </div>
+
 
         <div class="ultima-atualizacao">
 
           <span>
             Última atualização
           </span>
+
 
           <strong id="ultimaAtualizacao">
             Carregando...
@@ -180,6 +200,7 @@
         </div>
 
       </section>
+
 
 
       <!-- =================================================
@@ -194,6 +215,7 @@
             Visualizar turno:
           </span>
 
+
           <div class="botoes-turno">
 
             <button
@@ -203,12 +225,14 @@
               Todos
             </button>
 
+
             <button
               class="botao-turno"
               data-turno="T1"
             >
               1º Turno
             </button>
+
 
             <button
               class="botao-turno"
@@ -217,6 +241,7 @@
               2º Turno
             </button>
 
+
             <button
               class="botao-turno"
               data-turno="T3"
@@ -224,12 +249,14 @@
               3º Turno
             </button>
 
+
             <button
               class="botao-turno"
               data-turno="T4"
             >
               4º Turno
             </button>
+
 
             <button
               class="botao-turno"
@@ -245,11 +272,13 @@
       </section>
 
 
+
       <!-- =================================================
            INDICADORES PRINCIPAIS
       ================================================== -->
 
       <section class="cards-indicadores">
+
 
         <article class="card-indicador">
 
@@ -257,15 +286,18 @@
             👥
           </div>
 
+
           <div class="card-conteudo">
 
             <span>
               Multiplicadores
             </span>
 
+
             <strong id="totalMultiplicadores">
               -
             </strong>
+
 
             <small>
               Ativos + Ativos Escola
@@ -276,11 +308,13 @@
         </article>
 
 
+
         <article class="card-indicador">
 
           <div class="card-icone verde">
             ✓
           </div>
+
 
           <div class="card-conteudo">
 
@@ -288,9 +322,11 @@
               Ativos
             </span>
 
+
             <strong id="totalAtivos">
               -
             </strong>
+
 
             <small>
               Multiplicadores formados
@@ -301,11 +337,13 @@
         </article>
 
 
+
         <article class="card-indicador destaque">
 
           <div class="card-icone amarelo">
             🎓
           </div>
+
 
           <div class="card-conteudo">
 
@@ -313,9 +351,11 @@
               Ativos para Escola de Máquina
             </span>
 
+
             <strong id="totalEscola">
               -
             </strong>
+
 
             <small>
               Disponíveis para formação
@@ -326,11 +366,13 @@
         </article>
 
 
+
         <article class="card-indicador">
 
           <div class="card-icone roxo">
             📊
           </div>
+
 
           <div class="card-conteudo">
 
@@ -338,9 +380,11 @@
               Ratio Geral Multi/TL
             </span>
 
+
             <strong id="ratioGeral">
               -
             </strong>
+
 
             <small id="ratioDetalhe">
               Baseado no Dash oficial
@@ -351,6 +395,7 @@
         </article>
 
       </section>
+
 
 
       <!-- =================================================
@@ -367,22 +412,26 @@
               DISTRIBUIÇÃO OPERACIONAL
             </span>
 
+
             <h3>
               Multiplicadores Ativos no HC por Área
             </h3>
 
+
             <p class="secao-descricao">
               Considera somente multiplicadores com Status Base HC = ATIVO.
-              Férias, afastamentos, inativos e demais status ficam fora desta contagem.
+              Clique em uma área para ver a distribuição por processo.
             </p>
 
           </div>
+
 
           <div class="contador-destaque contador-hc">
 
             <span>
               Total Ativo HC
             </span>
+
 
             <strong id="totalMultisAtivosHC">
               -
@@ -391,6 +440,7 @@
           </div>
 
         </div>
+
 
         <div
           id="cardsAreasHC"
@@ -407,7 +457,61 @@
 
         </div>
 
+
+
+        <!-- ===============================================
+             DETALHAMENTO POR PROCESSO
+        ================================================ -->
+
+        <div
+          id="detalhamentoProcessos"
+          class="detalhamento-processos"
+          hidden
+        >
+
+          <div class="detalhamento-processos-cabecalho">
+
+            <div>
+
+              <span class="secao-tag">
+                DETALHAMENTO POR PROCESSO
+              </span>
+
+
+              <h4 id="tituloDetalhamentoArea">
+                Área
+              </h4>
+
+
+              <p>
+                Quantidade de multiplicadores ativos no HC
+                por Processo Ajustado.
+              </p>
+
+            </div>
+
+
+            <button
+              id="fecharDetalhamentoProcessos"
+              class="botao-fechar-detalhamento"
+              type="button"
+            >
+              ✕ Fechar
+            </button>
+
+          </div>
+
+
+          <div
+            id="cardsProcessosArea"
+            class="processos-area-grid"
+          >
+          </div>
+
+        </div>
+
       </section>
+
 
 
       <!-- =================================================
@@ -424,9 +528,11 @@
               DISTRIBUIÇÃO
             </span>
 
+
             <h3>
               Comparativo por Turno
             </h3>
+
 
             <p class="secao-descricao">
               Visão rápida da distribuição dos multiplicadores.
@@ -443,33 +549,68 @@
           <article class="card-turno">
 
             <div class="turno-identificacao">
-              <span>1º TURNO</span>
-              <strong>T1</strong>
+
+              <span>
+                1º TURNO
+              </span>
+
+              <strong>
+                T1
+              </strong>
+
             </div>
 
+
             <div class="turno-total-compacto">
-              <span>Total</span>
-              <strong id="totalT1">0</strong>
+
+              <span>
+                Total
+              </span>
+
+              <strong id="totalT1">
+                0
+              </strong>
+
             </div>
+
 
             <div class="turno-indicador">
 
-              <span class="indicador-ponto ativo"></span>
+              <span class="indicador-ponto ativo">
+              </span>
+
 
               <div>
-                <span>Ativos</span>
-                <strong id="ativosT1">0</strong>
+
+                <span>
+                  Ativos
+                </span>
+
+                <strong id="ativosT1">
+                  0
+                </strong>
+
               </div>
 
             </div>
 
+
             <div class="turno-indicador">
 
-              <span class="indicador-ponto escola"></span>
+              <span class="indicador-ponto escola">
+              </span>
+
 
               <div>
-                <span>Ativo Escola</span>
-                <strong id="escolaT1">0</strong>
+
+                <span>
+                  Ativo Escola
+                </span>
+
+                <strong id="escolaT1">
+                  0
+                </strong>
+
               </div>
 
             </div>
@@ -477,36 +618,72 @@
           </article>
 
 
+
           <article class="card-turno">
 
             <div class="turno-identificacao">
-              <span>2º TURNO</span>
-              <strong>T2</strong>
+
+              <span>
+                2º TURNO
+              </span>
+
+              <strong>
+                T2
+              </strong>
+
             </div>
 
+
             <div class="turno-total-compacto">
-              <span>Total</span>
-              <strong id="totalT2">0</strong>
+
+              <span>
+                Total
+              </span>
+
+              <strong id="totalT2">
+                0
+              </strong>
+
             </div>
+
 
             <div class="turno-indicador">
 
-              <span class="indicador-ponto ativo"></span>
+              <span class="indicador-ponto ativo">
+              </span>
+
 
               <div>
-                <span>Ativos</span>
-                <strong id="ativosT2">0</strong>
+
+                <span>
+                  Ativos
+                </span>
+
+                <strong id="ativosT2">
+                  0
+                </strong>
+
               </div>
 
             </div>
 
+
             <div class="turno-indicador">
 
-              <span class="indicador-ponto escola"></span>
+              <span class="indicador-ponto escola">
+              </span>
+
 
               <div>
-                <span>Ativo Escola</span>
-                <strong id="escolaT2">0</strong>
+
+                <span>
+                  Ativo Escola
+                </span>
+
+                <strong id="escolaT2">
+                  0
+                </strong>
+
               </div>
 
             </div>
@@ -514,36 +691,72 @@
           </article>
 
 
+
           <article class="card-turno">
 
             <div class="turno-identificacao">
-              <span>3º TURNO</span>
-              <strong>T3</strong>
+
+              <span>
+                3º TURNO
+              </span>
+
+              <strong>
+                T3
+              </strong>
+
             </div>
 
+
             <div class="turno-total-compacto">
-              <span>Total</span>
-              <strong id="totalT3">0</strong>
+
+              <span>
+                Total
+              </span>
+
+              <strong id="totalT3">
+                0
+              </strong>
+
             </div>
+
 
             <div class="turno-indicador">
 
-              <span class="indicador-ponto ativo"></span>
+              <span class="indicador-ponto ativo">
+              </span>
+
 
               <div>
-                <span>Ativos</span>
-                <strong id="ativosT3">0</strong>
+
+                <span>
+                  Ativos
+                </span>
+
+                <strong id="ativosT3">
+                  0
+                </strong>
+
               </div>
 
             </div>
 
+
             <div class="turno-indicador">
 
-              <span class="indicador-ponto escola"></span>
+              <span class="indicador-ponto escola">
+              </span>
+
 
               <div>
-                <span>Ativo Escola</span>
-                <strong id="escolaT3">0</strong>
+
+                <span>
+                  Ativo Escola
+                </span>
+
+                <strong id="escolaT3">
+                  0
+                </strong>
+
               </div>
 
             </div>
@@ -551,36 +764,72 @@
           </article>
 
 
+
           <article class="card-turno">
 
             <div class="turno-identificacao">
-              <span>4º TURNO</span>
-              <strong>T4</strong>
+
+              <span>
+                4º TURNO
+              </span>
+
+              <strong>
+                T4
+              </strong>
+
             </div>
 
+
             <div class="turno-total-compacto">
-              <span>Total</span>
-              <strong id="totalT4">0</strong>
+
+              <span>
+                Total
+              </span>
+
+              <strong id="totalT4">
+                0
+              </strong>
+
             </div>
+
 
             <div class="turno-indicador">
 
-              <span class="indicador-ponto ativo"></span>
+              <span class="indicador-ponto ativo">
+              </span>
+
 
               <div>
-                <span>Ativos</span>
-                <strong id="ativosT4">0</strong>
+
+                <span>
+                  Ativos
+                </span>
+
+                <strong id="ativosT4">
+                  0
+                </strong>
+
               </div>
 
             </div>
 
+
             <div class="turno-indicador">
 
-              <span class="indicador-ponto escola"></span>
+              <span class="indicador-ponto escola">
+              </span>
+
 
               <div>
-                <span>Ativo Escola</span>
-                <strong id="escolaT4">0</strong>
+
+                <span>
+                  Ativo Escola
+                </span>
+
+                <strong id="escolaT4">
+                  0
+                </strong>
+
               </div>
 
             </div>
@@ -588,36 +837,72 @@
           </article>
 
 
+
           <article class="card-turno">
 
             <div class="turno-identificacao">
-              <span>5º TURNO</span>
-              <strong>T5</strong>
+
+              <span>
+                5º TURNO
+              </span>
+
+              <strong>
+                T5
+              </strong>
+
             </div>
 
+
             <div class="turno-total-compacto">
-              <span>Total</span>
-              <strong id="totalT5">0</strong>
+
+              <span>
+                Total
+              </span>
+
+              <strong id="totalT5">
+                0
+              </strong>
+
             </div>
+
 
             <div class="turno-indicador">
 
-              <span class="indicador-ponto ativo"></span>
+              <span class="indicador-ponto ativo">
+              </span>
+
 
               <div>
-                <span>Ativos</span>
-                <strong id="ativosT5">0</strong>
+
+                <span>
+                  Ativos
+                </span>
+
+                <strong id="ativosT5">
+                  0
+                </strong>
+
               </div>
 
             </div>
 
+
             <div class="turno-indicador">
 
-              <span class="indicador-ponto escola"></span>
+              <span class="indicador-ponto escola">
+              </span>
+
 
               <div>
-                <span>Ativo Escola</span>
-                <strong id="escolaT5">0</strong>
+
+                <span>
+                  Ativo Escola
+                </span>
+
+                <strong id="escolaT5">
+                  0
+                </strong>
+
               </div>
 
             </div>
@@ -630,6 +915,7 @@
       </section>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -649,13 +935,15 @@
             GESTÃO POR LIDERANÇA
           </span>
 
+
           <h2>
             Distribuição por Liderança
           </h2>
 
+
           <p>
-            Compare a quantidade de multiplicadores por Team Leader
-            e identifique lideranças sem multis.
+            Compare a quantidade de multiplicadores
+            por Team Leader e identifique lideranças sem multis.
           </p>
 
         </div>
@@ -671,6 +959,7 @@
             Visualizar turno:
           </span>
 
+
           <div class="botoes-turno-lideranca">
 
             <button
@@ -680,12 +969,14 @@
               Todos
             </button>
 
+
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T1"
             >
               1º Turno
             </button>
+
 
             <button
               class="botao-turno-lideranca"
@@ -694,6 +985,7 @@
               2º Turno
             </button>
 
+
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T3"
@@ -701,12 +993,14 @@
               3º Turno
             </button>
 
+
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T4"
             >
               4º Turno
             </button>
+
 
             <button
               class="botao-turno-lideranca"
@@ -732,9 +1026,11 @@
               RANKING
             </span>
 
+
             <h3>
               Multiplicadores por Team Leader
             </h3>
+
 
             <p class="secao-descricao">
               Ordenado do maior para o menor quadro de multis ativos.
@@ -760,6 +1056,7 @@
               </tr>
 
             </thead>
+
 
             <tbody id="tabelaLideranca">
 
@@ -790,9 +1087,11 @@
               OPORTUNIDADE
             </span>
 
+
             <h3>
               TLs sem Multiplicadores
             </h3>
+
 
             <p class="secao-descricao">
               Lideranças que não possuem nenhum multiplicador
@@ -801,11 +1100,13 @@
 
           </div>
 
+
           <div class="contador-destaque">
 
             <span>
               Total
             </span>
+
 
             <strong id="totalTlsSemMultis">
               -
@@ -831,6 +1132,7 @@
 
             </thead>
 
+
             <tbody id="tabelaTlsSemMultis">
 
               <tr class="sem-dados">
@@ -852,6 +1154,7 @@
     </section>
 
 
+
     <!-- ===================================================
          VALIDAÇÃO
     ==================================================== -->
@@ -869,9 +1172,11 @@
             CONFERÊNCIA DE BASE
           </span>
 
+
           <h2>
             Validação Base × Dash Oficial
           </h2>
+
 
           <p>
             Compare os multiplicadores ativos da sua base
@@ -891,9 +1196,11 @@
             Ativos na Base
           </span>
 
+
           <strong id="validacaoTotalBase">
             -
           </strong>
+
 
           <small>
             Ativo + Ativo Escola
@@ -908,9 +1215,11 @@
             Dash Oficial
           </span>
 
+
           <strong id="validacaoTotalOficial">
             -
           </strong>
+
 
           <small>
             Multiplicadores com cadastro oficial
@@ -925,9 +1234,11 @@
             Alinhados
           </span>
 
+
           <strong id="validacaoTotalAlinhados">
             -
           </strong>
+
 
           <small>
             Presentes nas duas bases
@@ -942,9 +1253,11 @@
             Divergências
           </span>
 
+
           <strong id="validacaoTotalDivergencias">
             -
           </strong>
+
 
           <small>
             Registros que precisam de validação
@@ -965,9 +1278,11 @@
               DETALHAMENTO
             </span>
 
+
             <h3>
               Comparativo de Multiplicadores
             </h3>
+
 
             <p class="secao-descricao">
               O cruzamento é realizado pelo LDAP.
@@ -981,6 +1296,7 @@
             <span>
               🔎
             </span>
+
 
             <input
               type="text"
@@ -1002,6 +1318,7 @@
             Todos
           </button>
 
+
           <button
             class="botao-validacao"
             data-validacao="alinhado"
@@ -1009,12 +1326,14 @@
             ✅ Alinhados
           </button>
 
+
           <button
             class="botao-validacao"
             data-validacao="base-sem-oficial"
           >
             ⚠️ Ativo sem Oficial
           </button>
+
 
           <button
             class="botao-validacao"
@@ -1050,6 +1369,7 @@
 
             </thead>
 
+
             <tbody id="corpoTabelaValidacao">
 
               <tr class="sem-dados">
@@ -1071,6 +1391,7 @@
     </section>
 
 
+
     <!-- ===================================================
          FOLGAS
     ==================================================== -->
@@ -1088,9 +1409,11 @@
             ESCALA DE FOLGAS
           </span>
 
+
           <h2>
             Calendário Anual
           </h2>
+
 
           <p>
             Consulte a distribuição anual das folgas por turma.
@@ -1111,15 +1434,18 @@
               CONSULTA VISUAL
             </span>
 
+
             <h3>
               Calendário de Folgas
             </h3>
+
 
             <p class="secao-descricao">
               A imagem é carregada diretamente do arquivo do Google Drive.
             </p>
 
           </div>
+
 
           <a
             class="botao-abrir-calendario"
@@ -1139,8 +1465,9 @@
             id="imagemCalendarioFolgas"
             class="imagem-calendario"
             src="https://drive.google.com/thumbnail?id=1a55ygbGLGkMNJDOylxoYARBtXHtCd7fT&sz=w2000"
-            alt="Calendário anual de folgas das turmas A, B, C e D"
+            alt="Calendário anual de folgas"
           >
+
 
           <div
             id="erroCalendario"
@@ -1149,6 +1476,7 @@
           >
 
             Não foi possível carregar a imagem automaticamente.
+
 
             <a
               href="https://drive.google.com/file/d/1a55ygbGLGkMNJDOylxoYARBtXHtCd7fT/view"
@@ -1165,6 +1493,7 @@
       </section>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -1184,9 +1513,11 @@
             CONSULTA
           </span>
 
+
           <h2>
             Base de Multiplicadores
           </h2>
+
 
           <p>
             Consulte os dados individuais dos multiplicadores.
@@ -1205,6 +1536,7 @@
             Visualizar turno:
           </span>
 
+
           <div class="botoes-turno-consulta">
 
             <button
@@ -1214,12 +1546,14 @@
               Todos
             </button>
 
+
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T1"
             >
               1º Turno
             </button>
+
 
             <button
               class="botao-turno-consulta"
@@ -1228,6 +1562,7 @@
               2º Turno
             </button>
 
+
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T3"
@@ -1235,12 +1570,14 @@
               3º Turno
             </button>
 
+
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T4"
             >
               4º Turno
             </button>
+
 
             <button
               class="botao-turno-consulta"
@@ -1266,6 +1603,7 @@
               DETALHAMENTO
             </span>
 
+
             <h3>
               Multiplicadores
             </h3>
@@ -1278,6 +1616,7 @@
             <span>
               🔎
             </span>
+
 
             <input
               type="text"
@@ -1299,6 +1638,7 @@
             Visão Principal
           </button>
 
+
           <button
             class="botao-status"
             data-status="ativo"
@@ -1306,12 +1646,14 @@
             Ativos
           </button>
 
+
           <button
             class="botao-status"
             data-status="ativo-escola"
           >
             Ativo Escola
           </button>
+
 
           <button
             class="botao-status consulta-inativos"
@@ -1352,6 +1694,7 @@
 
             </thead>
 
+
             <tbody id="tabelaMultiplicadores">
 
               <tr class="sem-dados">
@@ -1375,6 +1718,7 @@
   </main>
 
 
+
   <!-- =====================================================
        RODAPÉ
   ====================================================== -->
@@ -1387,11 +1731,13 @@
         Programa Multiplicadores
       </strong>
 
+
       <span>
         SP10
       </span>
 
     </div>
+
 
     <p>
       Dashboard de acompanhamento e gestão
@@ -1400,7 +1746,8 @@
   </footer>
 
 
-  <script src="script.js"></script>
+  <script src="script.js">
+  </script>
 
 </body>
 
