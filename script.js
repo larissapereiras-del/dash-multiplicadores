@@ -2,11 +2,6 @@
    DASHBOARD — PROGRAMA MULTIPLICADORES
 ========================================================= */
 
-
-/* =========================================================
-   API
-========================================================= */
-
 const API_URL =
   "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzortEzdw4UOxFqaqGIuxLC6sT-mf0yG5aMJbbCFHPk4ldG7HvX0PzlO178bNAZ_vySqg/exec";
 
@@ -22,7 +17,7 @@ let registrosValidacao = [];
 
 
 /* =========================================================
-   FILTROS
+   ESTADO
 ========================================================= */
 
 let turnoSelecionado = "todos";
@@ -35,6 +30,8 @@ let termoBusca = "";
 
 let filtroValidacao = "todos";
 let termoBuscaValidacao = "";
+
+let areaSelecionadaHC = "";
 
 
 /* =========================================================
@@ -90,7 +87,7 @@ function definirTexto(id, valor) {
 
 
 /* =========================================================
-   TRANSFORMA BASE VALIDADOS
+   TRANSFORMA BASE
 ========================================================= */
 
 function transformarRegistro(item) {
@@ -147,10 +144,6 @@ function transformarRegistro(item) {
 }
 
 
-/* =========================================================
-   TRANSFORMA DASH OFICIAL
-========================================================= */
-
 function transformarRegistroOficial(item) {
 
   return {
@@ -181,10 +174,6 @@ function transformarRegistroOficial(item) {
 }
 
 
-/* =========================================================
-   TRANSFORMA TL SEM MULTI
-========================================================= */
-
 function transformarTlSemMulti(item) {
 
   return {
@@ -210,36 +199,39 @@ function transformarTlSemMulti(item) {
 
 
 /* =========================================================
-   CALLBACK JSONP
+   CALLBACK
 ========================================================= */
 
-window.receberDadosMultiplicadores = function(retorno) {
+window.receberDadosMultiplicadores =
+  function(retorno) {
 
-  try {
+    try {
 
-    if (
-      !retorno ||
-      !retorno.sucesso
-    ) {
+      if (
+        !retorno ||
+        !retorno.sucesso
+      ) {
 
-      throw new Error(
-        retorno?.erro ||
-        "A API não retornou os dados corretamente."
-      );
+        throw new Error(
+          retorno?.erro ||
+          "A API não retornou os dados corretamente."
+        );
 
-    }
+      }
 
 
-    /* =====================================================
-       BASE VALIDADOS
-    ===================================================== */
+      multiplicadores =
 
-    multiplicadores =
+        Array.isArray(
+          retorno.dados
+        )
 
-      Array.isArray(retorno.dados)
+          ?
 
-        ? retorno.dados
-            .map(transformarRegistro)
+          retorno.dados
+            .map(
+              transformarRegistro
+            )
             .filter(
               pessoa =>
                 String(
@@ -247,19 +239,23 @@ window.receberDadosMultiplicadores = function(retorno) {
                 ).trim() !== ""
             )
 
-        : [];
+          :
+
+          [];
 
 
-    /* =====================================================
-       DASH OFICIAL
-    ===================================================== */
+      multiplicadoresOficial =
 
-    multiplicadoresOficial =
+        Array.isArray(
+          retorno.dadosOficial
+        )
 
-      Array.isArray(retorno.dadosOficial)
+          ?
 
-        ? retorno.dadosOficial
-            .map(transformarRegistroOficial)
+          retorno.dadosOficial
+            .map(
+              transformarRegistroOficial
+            )
             .filter(
               pessoa =>
                 String(
@@ -267,59 +263,44 @@ window.receberDadosMultiplicadores = function(retorno) {
                 ).trim() !== ""
             )
 
-        : [];
+          :
+
+          [];
 
 
-    /* =====================================================
-       TLs SEM MULTIS
-    ===================================================== */
+      tlsSemMultis =
 
-    tlsSemMultis =
+        Array.isArray(
+          retorno.tlsSemMultis
+        )
 
-      Array.isArray(retorno.tlsSemMultis)
+          ?
 
-        ? retorno.tlsSemMultis
-            .map(transformarTlSemMulti)
+          retorno.tlsSemMultis
+            .map(
+              transformarTlSemMulti
+            )
 
-        : [];
+          :
 
-
-    console.log(
-      "VALIDADOS:",
-      multiplicadores.length
-    );
-
-    console.log(
-      "DASH OFICIAL:",
-      multiplicadoresOficial.length
-    );
-
-    console.log(
-      "TLs SEM MULTIS:",
-      tlsSemMultis.length
-    );
+          [];
 
 
-    atualizarData();
+      atualizarData();
 
-    atualizarDashboard();
+      atualizarDashboard();
 
-  }
+    }
 
-  catch (erro) {
+    catch (erro) {
 
-    console.error(
-      "Erro ao processar dados:",
-      erro
-    );
+      mostrarErro(
+        erro.message
+      );
 
-    mostrarErro(
-      erro.message
-    );
+    }
 
-  }
-
-};
+  };
 
 
 /* =========================================================
@@ -328,19 +309,21 @@ window.receberDadosMultiplicadores = function(retorno) {
 
 function carregarDados() {
 
-  const scriptAnterior =
+  const anterior =
     document.getElementById(
       "api-multiplicadores"
     );
 
 
-  if (scriptAnterior) {
-    scriptAnterior.remove();
+  if (anterior) {
+    anterior.remove();
   }
 
 
   const script =
-    document.createElement("script");
+    document.createElement(
+      "script"
+    );
 
 
   script.id =
@@ -354,13 +337,14 @@ function carregarDados() {
     Date.now();
 
 
-  script.onerror = function() {
+  script.onerror =
+    function() {
 
-    mostrarErro(
-      "Não foi possível conectar com a API da planilha."
-    );
+      mostrarErro(
+        "Não foi possível conectar com a API da planilha."
+      );
 
-  };
+    };
 
 
   document.body.appendChild(
@@ -371,7 +355,7 @@ function carregarDados() {
 
 
 /* =========================================================
-   STATUS DO PROGRAMA
+   STATUS
 ========================================================= */
 
 function statusPrograma(pessoa) {
@@ -386,7 +370,8 @@ function statusPrograma(pessoa) {
 function estaAtivo(pessoa) {
 
   return (
-    statusPrograma(pessoa) ===
+    statusPrograma(pessoa)
+    ===
     "ativo"
   );
 
@@ -423,10 +408,6 @@ function estaNaVisaoPrincipal(pessoa) {
 }
 
 
-/* =========================================================
-   STATUS HC
-========================================================= */
-
 function statusHcAtivo(pessoa) {
 
   return (
@@ -443,10 +424,6 @@ function statusHcAtivo(pessoa) {
 
 }
 
-
-/* =========================================================
-   INATIVOS DA CONSULTA
-========================================================= */
 
 function estaNaConsultaInativos(pessoa) {
 
@@ -486,9 +463,7 @@ function normalizarTurno(turno) {
     valor === "1º turno" ||
     valor === "1o turno"
   ) {
-
     return "T1";
-
   }
 
 
@@ -499,9 +474,7 @@ function normalizarTurno(turno) {
     valor === "2º turno" ||
     valor === "2o turno"
   ) {
-
     return "T2";
-
   }
 
 
@@ -512,9 +485,7 @@ function normalizarTurno(turno) {
     valor === "3º turno" ||
     valor === "3o turno"
   ) {
-
     return "T3";
-
   }
 
 
@@ -525,9 +496,7 @@ function normalizarTurno(turno) {
     valor === "4º turno" ||
     valor === "4o turno"
   ) {
-
     return "T4";
-
   }
 
 
@@ -538,9 +507,7 @@ function normalizarTurno(turno) {
     valor === "5º turno" ||
     valor === "5o turno"
   ) {
-
     return "T5";
-
   }
 
 
@@ -551,10 +518,6 @@ function normalizarTurno(turno) {
 }
 
 
-/* =========================================================
-   FILTRA LISTA POR TURNO
-========================================================= */
-
 function filtrarListaPorTurno(
   lista,
   turno
@@ -563,9 +526,7 @@ function filtrarListaPorTurno(
   if (
     turno === "todos"
   ) {
-
     return lista;
-
   }
 
 
@@ -587,15 +548,10 @@ function filtrarListaPorTurno(
 
 
 /* =========================================================
-   VISÃO GERAL
+   INDICADORES
 ========================================================= */
 
 function atualizarIndicadores() {
-
-
-  /* =====================================================
-     BASE INTERNA
-  ===================================================== */
 
   const baseInterna =
 
@@ -615,20 +571,6 @@ function atualizarIndicadores() {
     );
 
 
-  const ativos =
-
-    principal.filter(
-      estaAtivo
-    );
-
-
-  const escola =
-
-    principal.filter(
-      estaAtivoEscola
-    );
-
-
   definirTexto(
     "totalMultiplicadores",
     principal.length
@@ -636,22 +578,41 @@ function atualizarIndicadores() {
 
 
   definirTexto(
+
     "totalAtivos",
-    ativos.length
+
+    principal.filter(
+      estaAtivo
+    ).length
+
   );
 
 
   definirTexto(
+
     "totalEscola",
-    escola.length
+
+    principal.filter(
+      estaAtivoEscola
+    ).length
+
   );
 
 
-  /* =====================================================
-     RATIO — DASH OFICIAL
-  ===================================================== */
+  atualizarRatioOficial();
 
-  const baseOficialFiltrada =
+  atualizarDistribuicaoAreasHC();
+
+}
+
+
+/* =========================================================
+   RATIO OFICIAL
+========================================================= */
+
+function atualizarRatioOficial() {
+
+  const baseOficial =
 
     filtrarListaPorTurno(
 
@@ -662,58 +623,46 @@ function atualizarIndicadores() {
     );
 
 
-  const ldapsOficiais =
+  const multis =
 
     new Set(
 
-      baseOficialFiltrada
-
+      baseOficial
         .map(
           pessoa =>
             normalizarTexto(
               pessoa.ldap
             )
         )
-
         .filter(Boolean)
 
     );
 
 
-  const lideresOficiais =
+  const lideres =
 
     new Set(
 
-      baseOficialFiltrada
-
+      baseOficial
         .map(
           pessoa =>
             normalizarTexto(
               pessoa.teamLeader
             )
         )
-
         .filter(Boolean)
 
     );
 
 
-  const totalMultisOficiais =
-    ldapsOficiais.size;
+  const ratio =
 
-
-  const totalLideresOficiais =
-    lideresOficiais.size;
-
-
-  const ratioOficial =
-
-    totalLideresOficiais > 0
+    lideres.size > 0
 
       ?
 
-      totalMultisOficiais /
-      totalLideresOficiais
+      multis.size /
+      lideres.size
 
       :
 
@@ -724,11 +673,11 @@ function atualizarIndicadores() {
 
     "ratioGeral",
 
-    totalLideresOficiais > 0
+    lideres.size > 0
 
       ?
 
-      ratioOficial
+      ratio
         .toFixed(2)
         .replace(".", ",")
 
@@ -743,11 +692,11 @@ function atualizarIndicadores() {
 
     "ratioDetalhe",
 
-    totalLideresOficiais > 0
+    lideres.size > 0
 
       ?
 
-      `${totalMultisOficiais} multis oficiais ÷ ${totalLideresOficiais} líderes`
+      `${multis.size} multis oficiais ÷ ${lideres.size} líderes`
 
       :
 
@@ -755,24 +704,47 @@ function atualizarIndicadores() {
 
   );
 
+}
 
-  /* =====================================================
-     ÁREAS ATIVAS HC
-  ===================================================== */
 
-  atualizarDistribuicaoAreasHC();
+/* =========================================================
+   BASE ATIVA HC
+========================================================= */
+
+function obterBaseAtivaHC() {
+
+  return filtrarListaPorTurno(
+
+    multiplicadores,
+
+    turnoSelecionado
+
+  ).filter(
+
+    pessoa =>
+
+      estaNaVisaoPrincipal(
+        pessoa
+      )
+
+      &&
+
+      statusHcAtivo(
+        pessoa
+      )
+
+  );
 
 }
 
 
 /* =========================================================
-   DISTRIBUIÇÃO POR ÁREA — SOMENTE HC ATIVO
+   DISTRIBUIÇÃO ÁREAS
 ========================================================= */
 
 function atualizarDistribuicaoAreasHC() {
 
   const container =
-
     document.getElementById(
       "cardsAreasHC"
     );
@@ -783,47 +755,8 @@ function atualizarDistribuicaoAreasHC() {
   }
 
 
-  const baseTurno =
-
-    filtrarListaPorTurno(
-
-      multiplicadores,
-
-      turnoSelecionado
-
-    );
-
-
-  /*
-    Considera somente:
-
-    Status Treinamento:
-    - Ativo
-    - Ativo Escola
-
-    E:
-
-    Status Base HC:
-    - ATIVO
-  */
-
   const ativosNoHC =
-
-    baseTurno.filter(
-
-      pessoa =>
-
-        estaNaVisaoPrincipal(
-          pessoa
-        )
-
-        &&
-
-        statusHcAtivo(
-          pessoa
-        )
-
-    );
+    obterBaseAtivaHC();
 
 
   definirTexto(
@@ -835,7 +768,7 @@ function atualizarDistribuicaoAreasHC() {
   );
 
 
-  const mapaAreas =
+  const mapa =
     new Map();
 
 
@@ -843,37 +776,237 @@ function atualizarDistribuicaoAreasHC() {
 
     pessoa => {
 
-      const areaOriginal =
-
+      const area =
         String(
-
-          pessoa.areaMacro
-
-          ||
-
+          pessoa.areaMacro ||
           "SEM ÁREA"
-
         ).trim();
 
 
       const chave =
+        normalizarTexto(area);
 
+
+      if (!mapa.has(chave)) {
+
+        mapa.set(
+
+          chave,
+
+          {
+
+            nome:
+              textoMaiusculo(area),
+
+            total:
+              0
+
+          }
+
+        );
+
+      }
+
+
+      mapa.get(chave).total++;
+
+    }
+
+  );
+
+
+  const areas =
+
+    Array
+      .from(
+        mapa.values()
+      )
+      .sort(
+        (a, b) =>
+          b.total - a.total
+      );
+
+
+  container.innerHTML =
+
+    areas
+      .map(
+
+        area => `
+
+          <article
+            class="card-area-hc ${
+              normalizarTexto(
+                area.nome
+              )
+              ===
+              normalizarTexto(
+                areaSelecionadaHC
+              )
+                ?
+                "selecionado"
+                :
+                ""
+            }"
+            data-area="${
+              escapeHtml(
+                area.nome
+              )
+            }"
+          >
+
+            <span>
+              ${
+                escapeHtml(
+                  area.nome
+                )
+              }
+            </span>
+
+
+            <strong>
+              ${area.total}
+            </strong>
+
+
+            <small>
+              Clique para detalhar os processos
+            </small>
+
+          </article>
+
+        `
+
+      )
+      .join("");
+
+
+  configurarCliqueAreas();
+
+
+  if (
+    areaSelecionadaHC
+  ) {
+
+    atualizarDetalhamentoProcessos(
+      areaSelecionadaHC
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CLIQUE NOS CARDS DE ÁREA
+========================================================= */
+
+function configurarCliqueAreas() {
+
+  document
+    .querySelectorAll(
+      ".card-area-hc[data-area]"
+    )
+    .forEach(
+
+      card => {
+
+        card.addEventListener(
+
+          "click",
+
+          () => {
+
+            areaSelecionadaHC =
+              card.dataset.area;
+
+
+            atualizarDistribuicaoAreasHC();
+
+          }
+
+        );
+
+      }
+
+    );
+
+}
+
+
+/* =========================================================
+   DETALHAMENTO POR PROCESSO
+========================================================= */
+
+function atualizarDetalhamentoProcessos(
+  area
+) {
+
+  const bloco =
+    document.getElementById(
+      "detalhamentoProcessos"
+    );
+
+
+  const container =
+    document.getElementById(
+      "cardsProcessosArea"
+    );
+
+
+  if (
+    !bloco ||
+    !container
+  ) {
+    return;
+  }
+
+
+  const base =
+
+    obterBaseAtivaHC()
+
+      .filter(
+
+        pessoa =>
+
+          normalizarTexto(
+            pessoa.areaMacro
+          )
+
+          ===
+
+          normalizarTexto(
+            area
+          )
+
+      );
+
+
+  const mapa =
+    new Map();
+
+
+  base.forEach(
+
+    pessoa => {
+
+      const processo =
+        String(
+          pessoa.processo ||
+          "SEM PROCESSO"
+        ).trim();
+
+
+      const chave =
         normalizarTexto(
-          areaOriginal
-        )
-
-        ||
-
-        "sem area";
+          processo
+        );
 
 
-      if (
-        !mapaAreas.has(
-          chave
-        )
-      ) {
+      if (!mapa.has(chave)) {
 
-        mapaAreas.set(
+        mapa.set(
 
           chave,
 
@@ -881,7 +1014,7 @@ function atualizarDistribuicaoAreasHC() {
 
             nome:
               textoMaiusculo(
-                areaOriginal
+                processo
               ),
 
             total:
@@ -894,7 +1027,7 @@ function atualizarDistribuicaoAreasHC() {
       }
 
 
-      mapaAreas.get(
+      mapa.get(
         chave
       ).total++;
 
@@ -903,66 +1036,41 @@ function atualizarDistribuicaoAreasHC() {
   );
 
 
-  const areas =
+  const processos =
 
     Array
       .from(
-        mapaAreas.values()
+        mapa.values()
       )
-
       .sort(
-
-        (
-          a,
-          b
-        ) =>
-
-          b.total -
-          a.total
-
+        (a, b) =>
+          b.total - a.total
       );
 
 
-  if (
-    areas.length === 0
-  ) {
+  definirTexto(
 
-    container.innerHTML = `
+    "tituloDetalhamentoArea",
 
-      <article class="card-area-hc">
+    textoMaiusculo(area)
 
-        <span>
-
-          Nenhum multiplicador ativo no HC
-          para o filtro selecionado.
-
-        </span>
-
-      </article>
-
-    `;
-
-
-    return;
-
-  }
+  );
 
 
   container.innerHTML =
 
-    areas
-
+    processos
       .map(
 
-        area => `
+        processo => `
 
-          <article class="card-area-hc">
+          <article class="card-processo-area">
 
             <span>
 
               ${
                 escapeHtml(
-                  area.nome
+                  processo.nome
                 )
               }
 
@@ -971,56 +1079,88 @@ function atualizarDistribuicaoAreasHC() {
 
             <strong>
 
-              ${area.total}
+              ${processo.total}
 
             </strong>
-
-
-            <small>
-
-              ${
-                area.total === 1
-
-                  ?
-
-                  "multiplicador ativo no HC"
-
-                  :
-
-                  "multiplicadores ativos no HC"
-              }
-
-            </small>
 
           </article>
 
         `
 
       )
-
       .join("");
+
+
+  bloco.hidden =
+    false;
 
 }
 
 
 /* =========================================================
-   COMPARATIVO POR TURNO
+   FECHAR DETALHAMENTO
+========================================================= */
+
+function configurarFecharDetalhamento() {
+
+  const botao =
+
+    document.getElementById(
+      "fecharDetalhamentoProcessos"
+    );
+
+
+  if (!botao) {
+    return;
+  }
+
+
+  botao.addEventListener(
+
+    "click",
+
+    () => {
+
+      areaSelecionadaHC =
+        "";
+
+
+      const bloco =
+
+        document.getElementById(
+          "detalhamentoProcessos"
+        );
+
+
+      if (bloco) {
+        bloco.hidden = true;
+      }
+
+
+      atualizarDistribuicaoAreasHC();
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   TURNOS
 ========================================================= */
 
 function atualizarTurnos() {
 
   [
-
     "T1",
     "T2",
     "T3",
     "T4",
     "T5"
-
   ].forEach(
 
     turno => {
-
 
       const base =
 
@@ -1045,20 +1185,6 @@ function atualizarTurnos() {
           );
 
 
-      const ativos =
-
-        base.filter(
-          estaAtivo
-        );
-
-
-      const escola =
-
-        base.filter(
-          estaAtivoEscola
-        );
-
-
       definirTexto(
 
         `total${turno}`,
@@ -1072,7 +1198,9 @@ function atualizarTurnos() {
 
         `ativos${turno}`,
 
-        ativos.length
+        base.filter(
+          estaAtivo
+        ).length
 
       );
 
@@ -1081,7 +1209,9 @@ function atualizarTurnos() {
 
         `escola${turno}`,
 
-        escola.length
+        base.filter(
+          estaAtivoEscola
+        ).length
 
       );
 
@@ -1118,12 +1248,7 @@ function atualizarTabelaLideranca() {
 
       turnoLiderancaSelecionado
 
-    );
-
-
-  base =
-
-    base.filter(
+    ).filter(
       estaNaVisaoPrincipal
     );
 
@@ -1136,33 +1261,22 @@ function atualizarTabelaLideranca() {
 
     pessoa => {
 
-
-      const nomeLider =
-
+      const nome =
         String(
-
           pessoa.teamLeader || ""
-
         ).trim();
 
 
-      if (!nomeLider) {
+      if (!nome) {
         return;
       }
 
 
       const chave =
-
-        normalizarTexto(
-          nomeLider
-        );
+        normalizarTexto(nome);
 
 
-      if (
-        !mapa.has(
-          chave
-        )
-      ) {
+      if (!mapa.has(chave)) {
 
         mapa.set(
 
@@ -1171,9 +1285,7 @@ function atualizarTabelaLideranca() {
           {
 
             nome:
-              textoMaiusculo(
-                nomeLider
-              ),
+              textoMaiusculo(nome),
 
             total:
               0,
@@ -1198,25 +1310,15 @@ function atualizarTabelaLideranca() {
       lider.total++;
 
 
-      if (
-        estaAtivo(
-          pessoa
-        )
-      ) {
-
+      if (estaAtivo(pessoa)) {
         lider.ativos++;
-
       }
 
 
       if (
-        estaAtivoEscola(
-          pessoa
-        )
+        estaAtivoEscola(pessoa)
       ) {
-
         lider.escola++;
-
       }
 
     }
@@ -1230,48 +1332,15 @@ function atualizarTabelaLideranca() {
       .from(
         mapa.values()
       )
-
       .sort(
-
-        (
-          a,
-          b
-        ) =>
-
-          b.total -
-          a.total
-
+        (a, b) =>
+          b.total - a.total
       );
-
-
-  if (
-    lideres.length === 0
-  ) {
-
-    corpo.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="5">
-
-          Nenhum líder encontrado.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
-
-  }
 
 
   corpo.innerHTML =
 
     lideres
-
       .map(
 
         (
@@ -1282,61 +1351,27 @@ function atualizarTabelaLideranca() {
           <tr>
 
             <td>
-
-              <div class="posicao-ranking">
-
-                ${indice + 1}
-
-              </div>
-
+              ${indice + 1}
             </td>
 
-
             <td>
-
-              <strong>
-
-                ${
-                  escapeHtml(
-                    lider.nome
-                  )
-                }
-
-              </strong>
-
+              ${
+                escapeHtml(
+                  lider.nome
+                )
+              }
             </td>
 
-
             <td>
-
-              <strong>
-
-                ${lider.total}
-
-              </strong>
-
+              ${lider.total}
             </td>
 
-
             <td>
-
-              <span class="badge ativo">
-
-                ${lider.ativos}
-
-              </span>
-
+              ${lider.ativos}
             </td>
 
-
             <td>
-
-              <span class="badge escola">
-
-                ${lider.escola}
-
-              </span>
-
+              ${lider.escola}
             </td>
 
           </tr>
@@ -1344,20 +1379,18 @@ function atualizarTabelaLideranca() {
         `
 
       )
-
       .join("");
 
 }
 
 
 /* =========================================================
-   TLs SEM MULTIS
+   TLS SEM MULTIS
 ========================================================= */
 
 function atualizarTlsSemMultis() {
 
   const corpo =
-
     document.getElementById(
       "tabelaTlsSemMultis"
     );
@@ -1370,57 +1403,21 @@ function atualizarTlsSemMultis() {
 
   const lista =
 
-    tlsSemMultis
+    tlsSemMultis.filter(
 
-      .filter(
+      item =>
 
-        item => {
-
-
-          const total =
-
-            Number(
-
-              String(
-                item.totalMultis || "0"
-              )
-
-                .replace(
-                  ",",
-                  "."
-                )
-
-            );
-
-
-          return total === 0;
-
-        }
-
-      )
-
-      .sort(
-
-        (
-          a,
-          b
-        ) =>
-
+        Number(
           String(
-            a.teamLeader
-          )
+            item.totalMultis || "0"
+          ).replace(",", ".")
+        )
 
-            .localeCompare(
+        ===
 
-              String(
-                b.teamLeader
-              ),
+        0
 
-              "pt-BR"
-
-            )
-
-      );
+    );
 
 
   definirTexto(
@@ -1432,508 +1429,221 @@ function atualizarTlsSemMultis() {
   );
 
 
-  if (
-    lista.length === 0
-  ) {
-
-    corpo.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="4">
-
-          Nenhum TL sem multiplicadores.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
-
-  }
-
-
   corpo.innerHTML =
 
     lista
-
       .map(
 
         item => `
 
           <tr>
 
-
             <td>
-
-              <strong>
-
-                ${
-                  escapeHtml(
-
-                    textoMaiusculo(
-
-                      item.teamLeader
-
-                    )
-
-                  )
-                }
-
-              </strong>
-
-            </td>
-
-
-            <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
-                    item.area
-
+                    item.teamLeader
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
-              <strong>
-
-                ${
-                  escapeHtml(
-
-                    String(
-
-                      item.totalEquipe
-
-                      ||
-
-                      "0"
-
-                    )
-
+              ${
+                escapeHtml(
+                  textoMaiusculo(
+                    item.area
                   )
-                }
-
-              </strong>
-
+                )
+              }
             </td>
-
 
             <td>
-
-              <span class="badge inativo">
-
-                0
-
-              </span>
-
+              ${
+                escapeHtml(
+                  item.totalEquipe || "0"
+                )
+              }
             </td>
 
+            <td>
+              0
+            </td>
 
           </tr>
 
         `
 
       )
-
       .join("");
 
 }
 
 
 /* =========================================================
-   CONSTRÓI VALIDAÇÃO
+   VALIDAÇÃO
 ========================================================= */
 
 function construirValidacao() {
 
-  const ativosBase =
-
-    multiplicadores
-
-      .filter(
-        estaNaVisaoPrincipal
-      );
-
-
-  const mapaBase =
+  const base =
     new Map();
 
 
-  ativosBase.forEach(
+  multiplicadores
+    .filter(
+      estaNaVisaoPrincipal
+    )
+    .forEach(
 
-    pessoa => {
+      pessoa => {
 
-
-      const ldap =
-
-        normalizarTexto(
-
-          pessoa.ldap
-
-        );
-
-
-      if (!ldap) {
-        return;
-      }
+        const ldap =
+          normalizarTexto(
+            pessoa.ldap
+          );
 
 
-      if (
-        !mapaBase.has(
-          ldap
-        )
-      ) {
-
-        mapaBase.set(
-
-          ldap,
-
-          pessoa
-
-        );
+        if (ldap) {
+          base.set(
+            ldap,
+            pessoa
+          );
+        }
 
       }
 
-    }
-
-  );
+    );
 
 
-  const mapaOficial =
+  const oficial =
     new Map();
 
 
-  multiplicadoresOficial.forEach(
+  multiplicadoresOficial
+    .forEach(
 
-    pessoa => {
+      pessoa => {
 
-
-      const ldap =
-
-        normalizarTexto(
-
-          pessoa.ldap
-
-        );
+        const ldap =
+          normalizarTexto(
+            pessoa.ldap
+          );
 
 
-      if (!ldap) {
-        return;
-      }
-
-
-      if (
-        !mapaOficial.has(
-          ldap
-        )
-      ) {
-
-        mapaOficial.set(
-
-          ldap,
-
-          pessoa
-
-        );
+        if (ldap) {
+          oficial.set(
+            ldap,
+            pessoa
+          );
+        }
 
       }
 
-    }
-
-  );
+    );
 
 
-  const todosLdaps =
+  const ldaps =
 
     new Set([
 
-      ...mapaBase.keys(),
+      ...base.keys(),
 
-      ...mapaOficial.keys()
+      ...oficial.keys()
 
     ]);
 
 
-  const resultado = [];
-
-
-  todosLdaps.forEach(
-
-    ldap => {
-
-
-      const base =
-        mapaBase.get(ldap);
-
-
-      const oficial =
-        mapaOficial.get(ldap);
-
-
-      let tipo = "";
-      let descricao = "";
-
-
-      if (
-        base &&
-        oficial
-      ) {
-
-        tipo =
-          "alinhado";
-
-        descricao =
-          "ALINHADO";
-
-      }
-
-
-      else if (
-        base
-      ) {
-
-        tipo =
-          "base-sem-oficial";
-
-        descricao =
-          "ATIVO SEM OFICIAL";
-
-      }
-
-
-      else {
-
-        tipo =
-          "oficial-sem-base";
-
-        descricao =
-          "OFICIAL FORA DOS ATIVOS";
-
-      }
-
-
-      resultado.push({
-
-        tipo:
-          tipo,
-
-
-        resultado:
-          descricao,
-
-
-        nome:
-
-          base?.nome
-
-          ||
-
-          oficial?.nome
-
-          ||
-
-          "-",
-
-
-        ldap:
-
-          base?.ldap
-
-          ||
-
-          oficial?.ldap
-
-          ||
-
-          "-",
-
-
-        statusBase:
-
-          base?.statusPrograma
-
-          ||
-
-          "FORA DOS ATIVOS",
-
-
-        statusCad:
-
-          base?.statusBaseHC
-
-          ||
-
-          "-",
-
-
-        noOficial:
-
-          oficial
-
-            ?
-
-            "SIM"
-
-            :
-
-            "NÃO",
-
-
-        teamLeaderBase:
-
-          base?.teamLeader
-
-          ||
-
-          "-",
-
-
-        turnoBase:
-
-          base?.turno
-
-          ||
-
-          "-",
-
-
-        teamLeaderOficial:
-
-          oficial?.teamLeader
-
-          ||
-
-          "-",
-
-
-        areaOficial:
-
-          oficial?.area
-
-          ||
-
-          "-"
-
-      });
-
-    }
-
-  );
-
-
-  const ordem = {
-
-    "base-sem-oficial":
-      1,
-
-    "oficial-sem-base":
-      2,
-
-    "alinhado":
-      3
-
-  };
-
-
-  resultado.sort(
-
-    (
-      a,
-      b
-    ) => {
-
-
-      const diferenca =
-
-        ordem[
-          a.tipo
-        ]
-
-        -
-
-        ordem[
-          b.tipo
-        ];
-
-
-      if (
-        diferenca !== 0
-      ) {
-
-        return diferenca;
-
-      }
-
-
-      return String(
-        a.nome
+  registrosValidacao =
+
+    Array
+      .from(
+        ldaps
       )
+      .map(
 
-        .localeCompare(
+        ldap => {
 
-          String(
-            b.nome
-          ),
-
-          "pt-BR"
-
-        );
-
-    }
-
-  );
+          const b =
+            base.get(ldap);
 
 
-  return {
-
-    registros:
-      resultado,
+          const o =
+            oficial.get(ldap);
 
 
-    totalBase:
-      mapaBase.size,
+          let tipo =
+            "alinhado";
 
 
-    totalOficial:
-      mapaOficial.size,
+          if (
+            b &&
+            !o
+          ) {
+            tipo =
+              "base-sem-oficial";
+          }
 
 
-    alinhados:
-
-      resultado.filter(
-
-        item =>
-
-          item.tipo ===
-          "alinhado"
-
-      ).length,
+          if (
+            !b &&
+            o
+          ) {
+            tipo =
+              "oficial-sem-base";
+          }
 
 
-    divergencias:
+          return {
 
-      resultado.filter(
+            tipo,
 
-        item =>
+            nome:
+              b?.nome ||
+              o?.nome ||
+              "-",
 
-          item.tipo !==
-          "alinhado"
+            ldap:
+              b?.ldap ||
+              o?.ldap ||
+              "-",
 
-      ).length
+            statusBase:
+              b?.statusPrograma ||
+              "FORA DOS ATIVOS",
 
-  };
+            statusCad:
+              b?.statusBaseHC ||
+              "-",
+
+            noOficial:
+              o
+                ?
+                "SIM"
+                :
+                "NÃO",
+
+            teamLeaderBase:
+              b?.teamLeader ||
+              "-",
+
+            turnoBase:
+              b?.turno ||
+              "-",
+
+            teamLeaderOficial:
+              o?.teamLeader ||
+              "-",
+
+            areaOficial:
+              o?.area ||
+              "-"
+
+          };
+
+        }
+
+      );
 
 }
 
@@ -1944,19 +1654,28 @@ function construirValidacao() {
 
 function atualizarValidacao() {
 
-  const validacao =
-    construirValidacao();
-
-
-  registrosValidacao =
-    validacao.registros;
+  construirValidacao();
 
 
   definirTexto(
 
     "validacaoTotalBase",
 
-    validacao.totalBase
+    new Set(
+
+      multiplicadores
+        .filter(
+          estaNaVisaoPrincipal
+        )
+        .map(
+          pessoa =>
+            normalizarTexto(
+              pessoa.ldap
+            )
+        )
+        .filter(Boolean)
+
+    ).size
 
   );
 
@@ -1965,7 +1684,18 @@ function atualizarValidacao() {
 
     "validacaoTotalOficial",
 
-    validacao.totalOficial
+    new Set(
+
+      multiplicadoresOficial
+        .map(
+          pessoa =>
+            normalizarTexto(
+              pessoa.ldap
+            )
+        )
+        .filter(Boolean)
+
+    ).size
 
   );
 
@@ -1974,7 +1704,13 @@ function atualizarValidacao() {
 
     "validacaoTotalAlinhados",
 
-    validacao.alinhados
+    registrosValidacao
+      .filter(
+        item =>
+          item.tipo ===
+          "alinhado"
+      )
+      .length
 
   );
 
@@ -1983,7 +1719,13 @@ function atualizarValidacao() {
 
     "validacaoTotalDivergencias",
 
-    validacao.divergencias
+    registrosValidacao
+      .filter(
+        item =>
+          item.tipo !==
+          "alinhado"
+      )
+      .length
 
   );
 
@@ -2000,7 +1742,6 @@ function atualizarValidacao() {
 function atualizarTabelaValidacao() {
 
   const corpo =
-
     document.getElementById(
       "corpoTabelaValidacao"
     );
@@ -2012,15 +1753,8 @@ function atualizarTabelaValidacao() {
 
 
   let dados =
+    [...registrosValidacao];
 
-    [
-      ...registrosValidacao
-    ];
-
-
-  /* =====================================================
-     FILTRO POR RESULTADO
-  ===================================================== */
 
   if (
     filtroValidacao !==
@@ -2028,11 +1762,9 @@ function atualizarTabelaValidacao() {
   ) {
 
     dados =
-
       dados.filter(
 
         item =>
-
           item.tipo ===
           filtroValidacao
 
@@ -2041,85 +1773,32 @@ function atualizarTabelaValidacao() {
   }
 
 
-  /* =====================================================
-     BUSCA
-  ===================================================== */
-
   if (
     termoBuscaValidacao
   ) {
 
     dados =
-
       dados.filter(
 
-        item => {
+        item =>
 
+          normalizarTexto(
 
-          const texto =
+            `
+            ${item.nome}
+            ${item.ldap}
+            ${item.teamLeaderBase}
+            ${item.teamLeaderOficial}
+            ${item.statusBase}
+            ${item.statusCad}
+            ${item.areaOficial}
+            `
 
-            normalizarTexto(
-
-              `
-
-              ${item.nome}
-
-              ${item.ldap}
-
-              ${item.resultado}
-
-              ${item.statusBase}
-
-              ${item.statusCad}
-
-              ${item.noOficial}
-
-              ${item.teamLeaderBase}
-
-              ${item.turnoBase}
-
-              ${item.teamLeaderOficial}
-
-              ${item.areaOficial}
-
-              `
-
-            );
-
-
-          return texto.includes(
-
+          ).includes(
             termoBuscaValidacao
-
-          );
-
-        }
+          )
 
       );
-
-  }
-
-
-  if (
-    dados.length === 0
-  ) {
-
-    corpo.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="10">
-
-          Nenhum registro encontrado.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
 
   }
 
@@ -2127,234 +1806,141 @@ function atualizarTabelaValidacao() {
   corpo.innerHTML =
 
     dados
-
       .map(
 
         item => `
 
           <tr>
 
-
             <td>
-
               ${
                 criarBadgeValidacao(
                   item
                 )
               }
-
             </td>
 
-
             <td>
-
-              <strong>
-
-                ${
-                  escapeHtml(
-
-                    textoMaiusculo(
-
-                      item.nome
-
-                    )
-
-                  )
-                }
-
-              </strong>
-
-            </td>
-
-
-            <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
+                    item.nome
+                  )
+                )
+              }
+            </td>
 
+            <td>
+              ${
+                escapeHtml(
+                  textoMaiusculo(
                     item.ldap
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     item.statusBase
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 criarBadgeStatusHC(
-
                   item.statusCad
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
-                item.noOficial ===
-                "SIM"
-
-                  ?
-
-                  `<span class="badge sim">SIM</span>`
-
-                  :
-
-                  `<span class="badge nao">NÃO</span>`
+                item.noOficial
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     item.teamLeaderBase
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
-              <span class="badge-turno">
-
-                ${
-                  escapeHtml(
-
-                    normalizarTurno(
-
-                      item.turnoBase
-
-                    )
-
-                    ||
-
-                    "-"
-
-                  )
-                }
-
-              </span>
-
-            </td>
-
-
-            <td>
-
               ${
                 escapeHtml(
+                  normalizarTurno(
+                    item.turnoBase
+                  )
+                )
+              }
+            </td>
 
+            <td>
+              ${
+                escapeHtml(
                   textoMaiusculo(
-
                     item.teamLeaderOficial
-
                   )
-
                 )
               }
-
             </td>
-
 
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     item.areaOficial
-
                   )
-
                 )
               }
-
             </td>
-
 
           </tr>
 
         `
 
       )
-
       .join("");
 
 }
 
 
 /* =========================================================
-   BADGE VALIDAÇÃO
+   BADGES
 ========================================================= */
 
-function criarBadgeValidacao(item) {
+function criarBadgeValidacao(
+  item
+) {
 
-  let texto = "";
+  let texto =
+    "✓ ALINHADO";
 
 
   if (
     item.tipo ===
-    "alinhado"
-  ) {
-
-    texto =
-      "✓ ALINHADO";
-
-  }
-
-
-  else if (
-    item.tipo ===
     "base-sem-oficial"
   ) {
-
     texto =
       "⚠ ATIVO SEM OFICIAL";
-
   }
 
 
-  else {
-
+  if (
+    item.tipo ===
+    "oficial-sem-base"
+  ) {
     texto =
       "✕ OFICIAL FORA DOS ATIVOS";
-
   }
 
 
@@ -2371,202 +1957,9 @@ function criarBadgeValidacao(item) {
 }
 
 
-/* =========================================================
-   FILTRO STATUS CONSULTA
-========================================================= */
-
-function filtrarPorStatus(lista) {
-
-  if (
-    statusSelecionado ===
-    "principal"
-  ) {
-
-    return lista.filter(
-      estaNaVisaoPrincipal
-    );
-
-  }
-
-
-  if (
-    statusSelecionado ===
-    "ativo"
-  ) {
-
-    return lista.filter(
-      estaAtivo
-    );
-
-  }
-
-
-  if (
-    statusSelecionado ===
-    "ativo-escola"
-  ) {
-
-    return lista.filter(
-      estaAtivoEscola
-    );
-
-  }
-
-
-  if (
-    statusSelecionado ===
-    "inativos"
-  ) {
-
-    return lista.filter(
-      estaNaConsultaInativos
-    );
-
-  }
-
-
-  return lista;
-
-}
-
-
-/* =========================================================
-   MOTIVO
-========================================================= */
-
-function obterMotivo(pessoa) {
-
-  const motivo =
-
-    String(
-
-      pessoa.motivo || ""
-
-    ).trim();
-
-
-  if (motivo) {
-    return motivo;
-  }
-
-
-  const status =
-    statusPrograma(pessoa);
-
-
-  if (
-    status === "multi loss" ||
-
-    status === "training"
-  ) {
-
-    return "MOVIMENTAÇÃO DE ÁREA";
-
-  }
-
-
-  return "-";
-
-}
-
-
-/* =========================================================
-   BADGE STATUS PROGRAMA
-========================================================= */
-
-function criarBadgeStatusPrograma(
-  pessoa
+function criarBadgeStatusHC(
+  valor
 ) {
-
-  const status =
-    statusPrograma(pessoa);
-
-
-  let classe =
-    "inativo";
-
-
-  if (
-    estaAtivo(
-      pessoa
-    )
-  ) {
-
-    classe =
-      "ativo";
-
-  }
-
-
-  else if (
-    estaAtivoEscola(
-      pessoa
-    )
-  ) {
-
-    classe =
-      "escola";
-
-  }
-
-
-  else if (
-    status ===
-    "desistencia"
-  ) {
-
-    classe =
-      "desistencia";
-
-  }
-
-
-  else if (
-
-    status ===
-    "multi loss"
-
-    ||
-
-    status ===
-    "training"
-
-  ) {
-
-    classe =
-      "movimentacao";
-
-  }
-
-
-  return `
-
-    <span class="badge ${classe}">
-
-      ${
-        escapeHtml(
-
-          textoMaiusculo(
-
-            pessoa.statusPrograma
-
-          )
-
-        )
-      }
-
-    </span>
-
-  `;
-
-}
-
-
-/* =========================================================
-   BADGE STATUS HC
-========================================================= */
-
-function criarBadgeStatusHC(valor) {
 
   const status =
     normalizarTexto(valor);
@@ -2579,32 +1972,26 @@ function criarBadgeStatusHC(valor) {
   if (
     status === "ativo"
   ) {
-
     classe =
       "hc-ativo";
-
   }
 
 
-  else if (
+  if (
     status === "inativo"
   ) {
-
     classe =
       "hc-inativo";
-
   }
 
 
-  else if (
+  if (
     status.includes(
       "ferias"
     )
   ) {
-
     classe =
       "hc-ferias";
-
   }
 
 
@@ -2614,11 +2001,9 @@ function criarBadgeStatusHC(valor) {
 
       ${
         escapeHtml(
-
           textoMaiusculo(
             valor
           )
-
         )
       }
 
@@ -2629,11 +2014,52 @@ function criarBadgeStatusHC(valor) {
 }
 
 
-/* =========================================================
-   BADGE SIM / NÃO
-========================================================= */
+function criarBadgeStatusPrograma(
+  pessoa
+) {
 
-function criarBadgeSimNao(valor) {
+  let classe =
+    "inativo";
+
+
+  if (
+    estaAtivo(pessoa)
+  ) {
+    classe =
+      "ativo";
+  }
+
+
+  if (
+    estaAtivoEscola(pessoa)
+  ) {
+    classe =
+      "escola";
+  }
+
+
+  return `
+
+    <span class="badge ${classe}">
+
+      ${
+        escapeHtml(
+          textoMaiusculo(
+            pessoa.statusPrograma
+          )
+        )
+      }
+
+    </span>
+
+  `;
+
+}
+
+
+function criarBadgeSimNao(
+  valor
+) {
 
   const sim =
 
@@ -2672,13 +2098,98 @@ function criarBadgeSimNao(valor) {
 
 
 /* =========================================================
-   TABELA CONSULTA
+   CONSULTA
 ========================================================= */
+
+function filtrarPorStatus(
+  lista
+) {
+
+  if (
+    statusSelecionado ===
+    "principal"
+  ) {
+    return lista.filter(
+      estaNaVisaoPrincipal
+    );
+  }
+
+
+  if (
+    statusSelecionado ===
+    "ativo"
+  ) {
+    return lista.filter(
+      estaAtivo
+    );
+  }
+
+
+  if (
+    statusSelecionado ===
+    "ativo-escola"
+  ) {
+    return lista.filter(
+      estaAtivoEscola
+    );
+  }
+
+
+  if (
+    statusSelecionado ===
+    "inativos"
+  ) {
+    return lista.filter(
+      estaNaConsultaInativos
+    );
+  }
+
+
+  return lista;
+
+}
+
+
+function obterMotivo(
+  pessoa
+) {
+
+  if (
+    String(
+      pessoa.motivo || ""
+    ).trim()
+  ) {
+
+    return pessoa.motivo;
+
+  }
+
+
+  if (
+
+    statusPrograma(pessoa) ===
+    "multi loss"
+
+    ||
+
+    statusPrograma(pessoa) ===
+    "training"
+
+  ) {
+
+    return "MOVIMENTAÇÃO DE ÁREA";
+
+  }
+
+
+  return "-";
+
+}
+
 
 function atualizarTabela() {
 
   const corpo =
-
     document.getElementById(
       "tabelaMultiplicadores"
     );
@@ -2688,10 +2199,6 @@ function atualizarTabela() {
     return;
   }
 
-
-  /*
-    Primeiro aplicamos apenas o filtro de turno.
-  */
 
   let dados =
 
@@ -2704,153 +2211,46 @@ function atualizarTabela() {
     );
 
 
-  /*
-    CORREÇÃO DA BUSCA:
-
-    Quando existe texto digitado,
-    a pesquisa é feita na base inteira daquele turno.
-
-    Isso permite encontrar:
-
-    - Ativos
-    - Ativo Escola
-    - Inativos
-    - Desistências
-    - Multi LOSS
-    - Training
-
-    sem precisar selecionar antes o botão correspondente.
-  */
-
   if (
     termoBusca
   ) {
 
-
     dados =
-
       dados.filter(
 
-        pessoa => {
+        pessoa =>
 
+          normalizarTexto(
 
-          const texto =
+            `
+            ${pessoa.nome}
+            ${pessoa.teamLeader}
+            ${pessoa.ldap}
+            ${pessoa.areaMacro}
+            ${pessoa.subArea}
+            ${pessoa.processo}
+            ${pessoa.statusBaseHC}
+            ${pessoa.statusPrograma}
+            ${pessoa.cargo}
+            ${pessoa.escala}
+            ${pessoa.dataFormacao}
+            ${pessoa.motivo}
+            `
 
-            normalizarTexto(
-
-              `
-
-              ${pessoa.nome}
-
-              ${pessoa.teamLeader}
-
-              ${pessoa.ldap}
-
-              ${pessoa.areaMacro}
-
-              ${pessoa.subArea}
-
-              ${pessoa.processo}
-
-              ${pessoa.statusBaseHC}
-
-              ${pessoa.statusPrograma}
-
-              ${pessoa.cargo}
-
-              ${pessoa.escala}
-
-              ${pessoa.dataFormacao}
-
-              ${pessoa.motivo}
-
-              `
-
-            );
-
-
-          return texto.includes(
-
+          ).includes(
             termoBusca
-
-          );
-
-        }
+          )
 
       );
 
-
   }
-
 
   else {
 
-
-    /*
-      Sem busca digitada,
-      respeita normalmente o botão:
-
-      - Visão Principal
-      - Ativos
-      - Ativo Escola
-      - Consultar Inativos
-    */
-
-
     dados =
-
       filtrarPorStatus(
         dados
       );
-
-
-  }
-
-
-  dados.sort(
-
-    (
-      a,
-      b
-    ) =>
-
-      String(
-        a.nome
-      )
-
-        .localeCompare(
-
-          String(
-            b.nome
-          ),
-
-          "pt-BR"
-
-        )
-
-  );
-
-
-  if (
-    dados.length === 0
-  ) {
-
-    corpo.innerHTML = `
-
-      <tr class="sem-dados">
-
-        <td colspan="15">
-
-          Nenhum registro encontrado.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
 
   }
 
@@ -2858,275 +2258,158 @@ function atualizarTabela() {
   corpo.innerHTML =
 
     dados
-
       .map(
 
         pessoa => `
 
           <tr>
 
-
             <td>
-
-              <strong>
-
-                ${
-                  escapeHtml(
-
-                    textoMaiusculo(
-
-                      pessoa.nome
-
-                    )
-
-                  )
-                }
-
-              </strong>
-
-            </td>
-
-
-            <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
-                    pessoa.teamLeader
-
+                    pessoa.nome
                   )
-
                 )
               }
-
             </td>
 
+            <td>
+              ${
+                escapeHtml(
+                  textoMaiusculo(
+                    pessoa.teamLeader
+                  )
+                )
+              }
+            </td>
 
             <td>
-
               ${
                 criarBadgeStatusHC(
-
                   pessoa.statusBaseHC
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 criarBadgeStatusPrograma(
-
                   pessoa
-
                 )
               }
-
             </td>
 
-
             <td>
-
-              <span class="badge-turno">
-
-                ${
-                  escapeHtml(
-
-                    normalizarTurno(
-
-                      pessoa.turno
-
-                    )
-
-                    ||
-
-                    "-"
-
-                  )
-                }
-
-              </span>
-
+              ${
+                normalizarTurno(
+                  pessoa.turno
+                )
+              }
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.cargo
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.ldap
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.areaMacro
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.subArea
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.processo
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     pessoa.escala
-
                   )
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 criarBadgeSimNao(
-
                   pessoa.decola
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 criarBadgeSimNao(
-
                   pessoa.bolhaMulti
-
                 )
               }
-
             </td>
 
-
             <td>
-
               ${
                 escapeHtml(
-
-                  pessoa.dataFormacao
-
-                  ||
-
+                  pessoa.dataFormacao ||
                   "-"
-
                 )
               }
-
             </td>
-
 
             <td>
-
               ${
                 escapeHtml(
-
                   textoMaiusculo(
-
                     obterMotivo(
-
                       pessoa
-
                     )
-
                   )
-
                 )
               }
-
             </td>
-
 
           </tr>
 
         `
 
       )
-
       .join("");
 
 }
@@ -3139,15 +2422,12 @@ function atualizarTabela() {
 function configurarAbas() {
 
   document
-
     .querySelectorAll(
       ".aba-dashboard"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -3155,21 +2435,17 @@ function configurarAbas() {
 
           () => {
 
-
             const aba =
               botao.dataset.aba;
 
 
             document
-
               .querySelectorAll(
                 ".aba-dashboard"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativa"
                   )
@@ -3178,15 +2454,12 @@ function configurarAbas() {
 
 
             document
-
               .querySelectorAll(
                 ".conteudo-aba"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -3233,21 +2506,13 @@ function configurarAbas() {
 
 function configurarFiltros() {
 
-
-  /* =====================================================
-     VISÃO GERAL
-  ===================================================== */
-
   document
-
     .querySelectorAll(
       ".botao-turno"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -3255,21 +2520,17 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoSelecionado =
               botao.dataset.turno;
 
 
             document
-
               .querySelectorAll(
                 ".botao-turno"
               )
-
               .forEach(
 
                 item =>
-
                   item.classList.remove(
                     "ativo"
                   )
@@ -3293,20 +2554,13 @@ function configurarFiltros() {
     );
 
 
-  /* =====================================================
-     LIDERANÇA
-  ===================================================== */
-
   document
-
     .querySelectorAll(
       ".botao-turno-lideranca"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -3314,33 +2568,9 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoLiderancaSelecionado =
-
               botao.dataset
                 .turnoLideranca;
-
-
-            document
-
-              .querySelectorAll(
-                ".botao-turno-lideranca"
-              )
-
-              .forEach(
-
-                item =>
-
-                  item.classList.remove(
-                    "ativo"
-                  )
-
-              );
-
-
-            botao.classList.add(
-              "ativo"
-            );
 
 
             atualizarTabelaLideranca();
@@ -3354,20 +2584,13 @@ function configurarFiltros() {
     );
 
 
-  /* =====================================================
-     CONSULTA — TURNO
-  ===================================================== */
-
   document
-
     .querySelectorAll(
       ".botao-turno-consulta"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -3375,33 +2598,9 @@ function configurarFiltros() {
 
           () => {
 
-
             turnoConsultaSelecionado =
-
               botao.dataset
                 .turnoConsulta;
-
-
-            document
-
-              .querySelectorAll(
-                ".botao-turno-consulta"
-              )
-
-              .forEach(
-
-                item =>
-
-                  item.classList.remove(
-                    "ativo"
-                  )
-
-              );
-
-
-            botao.classList.add(
-              "ativo"
-            );
 
 
             atualizarTabela();
@@ -3415,54 +2614,24 @@ function configurarFiltros() {
     );
 
 
-  /* =====================================================
-     CONSULTA — STATUS
-  ===================================================== */
-
   document
-
     .querySelectorAll(
       ".botao-status"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
           "click",
 
           () => {
-
 
             statusSelecionado =
               botao.dataset.status;
 
 
-            document
-
-              .querySelectorAll(
-                ".botao-status"
-              )
-
-              .forEach(
-
-                item =>
-
-                  item.classList.remove(
-                    "ativo"
-                  )
-
-              );
-
-
-            botao.classList.add(
-              "ativo"
-            );
-
-
             atualizarTabela();
 
           }
@@ -3474,20 +2643,13 @@ function configurarFiltros() {
     );
 
 
-  /* =====================================================
-     VALIDAÇÃO
-  ===================================================== */
-
   document
-
     .querySelectorAll(
       ".botao-validacao"
     )
-
     .forEach(
 
       botao => {
-
 
         botao.addEventListener(
 
@@ -3495,31 +2657,8 @@ function configurarFiltros() {
 
           () => {
 
-
             filtroValidacao =
               botao.dataset.validacao;
-
-
-            document
-
-              .querySelectorAll(
-                ".botao-validacao"
-              )
-
-              .forEach(
-
-                item =>
-
-                  item.classList.remove(
-                    "ativo"
-                  )
-
-              );
-
-
-            botao.classList.add(
-              "ativo"
-            );
 
 
             atualizarTabelaValidacao();
@@ -3541,11 +2680,6 @@ function configurarFiltros() {
 
 function configurarBusca() {
 
-
-  /* =====================================================
-     BUSCA CONSULTA
-  ===================================================== */
-
   const campo =
 
     document.getElementById(
@@ -3555,20 +2689,15 @@ function configurarBusca() {
 
   if (campo) {
 
-
     campo.addEventListener(
 
       "input",
 
       evento => {
 
-
         termoBusca =
-
           normalizarTexto(
-
             evento.target.value
-
           );
 
 
@@ -3578,13 +2707,8 @@ function configurarBusca() {
 
     );
 
-
   }
 
-
-  /* =====================================================
-     BUSCA VALIDAÇÃO
-  ===================================================== */
 
   const campoValidacao =
 
@@ -3595,20 +2719,15 @@ function configurarBusca() {
 
   if (campoValidacao) {
 
-
     campoValidacao.addEventListener(
 
       "input",
 
       evento => {
 
-
         termoBuscaValidacao =
-
           normalizarTexto(
-
             evento.target.value
-
           );
 
 
@@ -3617,7 +2736,6 @@ function configurarBusca() {
       }
 
     );
-
 
   }
 
@@ -3655,7 +2773,6 @@ function configurarCalendario() {
 
     () => {
 
-
       imagem.style.display =
         "none";
 
@@ -3675,7 +2792,7 @@ function configurarCalendario() {
 
 
 /* =========================================================
-   ÚLTIMA ATUALIZAÇÃO
+   DATA
 ========================================================= */
 
 function atualizarData() {
@@ -3685,30 +2802,8 @@ function atualizarData() {
     "ultimaAtualizacao",
 
     new Date()
-
       .toLocaleString(
-
-        "pt-BR",
-
-        {
-
-          day:
-            "2-digit",
-
-          month:
-            "2-digit",
-
-          year:
-            "numeric",
-
-          hour:
-            "2-digit",
-
-          minute:
-            "2-digit"
-
-        }
-
+        "pt-BR"
       )
 
   );
@@ -3717,7 +2812,7 @@ function atualizarData() {
 
 
 /* =========================================================
-   ATUALIZA DASHBOARD
+   DASHBOARD
 ========================================================= */
 
 function atualizarDashboard() {
@@ -3741,7 +2836,9 @@ function atualizarDashboard() {
    ERRO
 ========================================================= */
 
-function mostrarErro(mensagem) {
+function mostrarErro(
+  mensagem
+) {
 
   console.error(
     mensagem
@@ -3753,94 +2850,6 @@ function mostrarErro(mensagem) {
     "ultimaAtualizacao",
 
     "Erro ao carregar"
-
-  );
-
-
-  const tabelas = [
-
-    {
-
-      id:
-        "tabelaMultiplicadores",
-
-      colspan:
-        15
-
-    },
-
-
-    {
-
-      id:
-        "tabelaLideranca",
-
-      colspan:
-        5
-
-    },
-
-
-    {
-
-      id:
-        "tabelaTlsSemMultis",
-
-      colspan:
-        4
-
-    },
-
-
-    {
-
-      id:
-        "corpoTabelaValidacao",
-
-      colspan:
-        10
-
-    }
-
-  ];
-
-
-  tabelas.forEach(
-
-    item => {
-
-
-      const tabela =
-
-        document.getElementById(
-          item.id
-        );
-
-
-      if (tabela) {
-
-
-        tabela.innerHTML = `
-
-          <tr class="sem-dados">
-
-            <td colspan="${item.colspan}">
-
-              ${
-                escapeHtml(
-                  mensagem
-                )
-              }
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-
-    }
 
   );
 
@@ -3857,7 +2866,6 @@ document.addEventListener(
 
   () => {
 
-
     configurarAbas();
 
     configurarFiltros();
@@ -3865,6 +2873,8 @@ document.addEventListener(
     configurarBusca();
 
     configurarCalendario();
+
+    configurarFecharDetalhamento();
 
     carregarDados();
 
