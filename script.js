@@ -2,6 +2,11 @@
    DASHBOARD — PROGRAMA MULTIPLICADORES
 ========================================================= */
 
+
+/* =========================================================
+   API
+========================================================= */
+
 const API_URL =
   "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzortEzdw4UOxFqaqGIuxLC6sT-mf0yG5aMJbbCFHPk4ldG7HvX0PzlO178bNAZ_vySqg/exec";
 
@@ -23,8 +28,11 @@ let registrosValidacao = [];
 let turnoSelecionado = "todos";
 let turnoLiderancaSelecionado = "todos";
 let turnoConsultaSelecionado = "todos";
+
 let statusSelecionado = "principal";
+
 let termoBusca = "";
+
 let filtroValidacao = "todos";
 let termoBuscaValidacao = "";
 
@@ -205,80 +213,113 @@ function transformarTlSemMulti(item) {
    CALLBACK JSONP
 ========================================================= */
 
-window.receberDadosMultiplicadores =
-  function(retorno) {
+window.receberDadosMultiplicadores = function(retorno) {
 
-    try {
+  try {
 
-      if (
-        !retorno
-        ||
-        !retorno.sucesso
-      ) {
+    if (
+      !retorno ||
+      !retorno.sucesso
+    ) {
 
-        throw new Error(
-          retorno?.erro
-          ||
-          "A API não retornou os dados corretamente."
-        );
-
-      }
-
-
-      multiplicadores =
-
-        Array.isArray(retorno.dados)
-
-          ? retorno.dados
-              .map(transformarRegistro)
-              .filter(
-                pessoa =>
-                  String(pessoa.nome || "").trim() !== ""
-              )
-
-          : [];
-
-
-      multiplicadoresOficial =
-
-        Array.isArray(retorno.dadosOficial)
-
-          ? retorno.dadosOficial
-              .map(transformarRegistroOficial)
-              .filter(
-                pessoa =>
-                  String(pessoa.ldap || "").trim() !== ""
-              )
-
-          : [];
-
-
-      tlsSemMultis =
-
-        Array.isArray(retorno.tlsSemMultis)
-
-          ? retorno.tlsSemMultis
-              .map(transformarTlSemMulti)
-
-          : [];
-
-
-      atualizarData();
-      atualizarDashboard();
-
-    }
-
-    catch (erro) {
-
-      console.error(erro);
-
-      mostrarErro(
-        erro.message
+      throw new Error(
+        retorno?.erro ||
+        "A API não retornou os dados corretamente."
       );
 
     }
 
-  };
+
+    /* =====================================================
+       BASE VALIDADOS
+    ===================================================== */
+
+    multiplicadores =
+
+      Array.isArray(retorno.dados)
+
+        ? retorno.dados
+            .map(transformarRegistro)
+            .filter(
+              pessoa =>
+                String(
+                  pessoa.nome || ""
+                ).trim() !== ""
+            )
+
+        : [];
+
+
+    /* =====================================================
+       DASH OFICIAL
+    ===================================================== */
+
+    multiplicadoresOficial =
+
+      Array.isArray(retorno.dadosOficial)
+
+        ? retorno.dadosOficial
+            .map(transformarRegistroOficial)
+            .filter(
+              pessoa =>
+                String(
+                  pessoa.ldap || ""
+                ).trim() !== ""
+            )
+
+        : [];
+
+
+    /* =====================================================
+       TLs SEM MULTIS
+    ===================================================== */
+
+    tlsSemMultis =
+
+      Array.isArray(retorno.tlsSemMultis)
+
+        ? retorno.tlsSemMultis
+            .map(transformarTlSemMulti)
+
+        : [];
+
+
+    console.log(
+      "VALIDADOS:",
+      multiplicadores.length
+    );
+
+    console.log(
+      "DASH OFICIAL:",
+      multiplicadoresOficial.length
+    );
+
+    console.log(
+      "TLs SEM MULTIS:",
+      tlsSemMultis.length
+    );
+
+
+    atualizarData();
+
+    atualizarDashboard();
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro ao processar dados:",
+      erro
+    );
+
+    mostrarErro(
+      erro.message
+    );
+
+  }
+
+};
 
 
 /* =========================================================
@@ -307,23 +348,19 @@ function carregarDados() {
 
 
   script.src =
-    API_URL
-    +
-    "?callback=receberDadosMultiplicadores"
-    +
-    "&t="
-    +
+    API_URL +
+    "?callback=receberDadosMultiplicadores" +
+    "&t=" +
     Date.now();
 
 
-  script.onerror =
-    function() {
+  script.onerror = function() {
 
-      mostrarErro(
-        "Não foi possível conectar com a API da planilha."
-      );
+    mostrarErro(
+      "Não foi possível conectar com a API da planilha."
+    );
 
-    };
+  };
 
 
   document.body.appendChild(
@@ -334,7 +371,7 @@ function carregarDados() {
 
 
 /* =========================================================
-   STATUS
+   STATUS DO PROGRAMA
 ========================================================= */
 
 function statusPrograma(pessoa) {
@@ -349,8 +386,7 @@ function statusPrograma(pessoa) {
 function estaAtivo(pessoa) {
 
   return (
-    statusPrograma(pessoa)
-    ===
+    statusPrograma(pessoa) ===
     "ativo"
   );
 
@@ -364,11 +400,14 @@ function estaAtivoEscola(pessoa) {
 
 
   return (
-    status === "ativo escola"
-    ||
-    status === "ativo para escola"
-    ||
-    status === "ativo para escola de maquina"
+
+    status === "ativo escola" ||
+
+    status === "ativo para escola" ||
+
+    status ===
+    "ativo para escola de maquina"
+
   );
 
 }
@@ -377,13 +416,37 @@ function estaAtivoEscola(pessoa) {
 function estaNaVisaoPrincipal(pessoa) {
 
   return (
-    estaAtivo(pessoa)
-    ||
+    estaAtivo(pessoa) ||
     estaAtivoEscola(pessoa)
   );
 
 }
 
+
+/* =========================================================
+   STATUS HC
+========================================================= */
+
+function statusHcAtivo(pessoa) {
+
+  return (
+
+    normalizarTexto(
+      pessoa.statusBaseHC
+    )
+
+    ===
+
+    "ativo"
+
+  );
+
+}
+
+
+/* =========================================================
+   INATIVOS DA CONSULTA
+========================================================= */
 
 function estaNaConsultaInativos(pessoa) {
 
@@ -392,13 +455,15 @@ function estaNaConsultaInativos(pessoa) {
 
 
   return (
-    status === "inativo"
-    ||
-    status === "desistencia"
-    ||
-    status === "multi loss"
-    ||
+
+    status === "inativo" ||
+
+    status === "desistencia" ||
+
+    status === "multi loss" ||
+
     status === "training"
+
   );
 
 }
@@ -415,77 +480,67 @@ function normalizarTurno(turno) {
 
 
   if (
-    valor === "t1"
-    ||
-    valor === "1"
-    ||
-    valor === "1 turno"
-    ||
-    valor === "1º turno"
-    ||
+    valor === "t1" ||
+    valor === "1" ||
+    valor === "1 turno" ||
+    valor === "1º turno" ||
     valor === "1o turno"
   ) {
+
     return "T1";
+
   }
 
 
   if (
-    valor === "t2"
-    ||
-    valor === "2"
-    ||
-    valor === "2 turno"
-    ||
-    valor === "2º turno"
-    ||
+    valor === "t2" ||
+    valor === "2" ||
+    valor === "2 turno" ||
+    valor === "2º turno" ||
     valor === "2o turno"
   ) {
+
     return "T2";
+
   }
 
 
   if (
-    valor === "t3"
-    ||
-    valor === "3"
-    ||
-    valor === "3 turno"
-    ||
-    valor === "3º turno"
-    ||
+    valor === "t3" ||
+    valor === "3" ||
+    valor === "3 turno" ||
+    valor === "3º turno" ||
     valor === "3o turno"
   ) {
+
     return "T3";
+
   }
 
 
   if (
-    valor === "t4"
-    ||
-    valor === "4"
-    ||
-    valor === "4 turno"
-    ||
-    valor === "4º turno"
-    ||
+    valor === "t4" ||
+    valor === "4" ||
+    valor === "4 turno" ||
+    valor === "4º turno" ||
     valor === "4o turno"
   ) {
+
     return "T4";
+
   }
 
 
   if (
-    valor === "t5"
-    ||
-    valor === "5"
-    ||
-    valor === "5 turno"
-    ||
-    valor === "5º turno"
-    ||
+    valor === "t5" ||
+    valor === "5" ||
+    valor === "5 turno" ||
+    valor === "5º turno" ||
     valor === "5o turno"
   ) {
+
     return "T5";
+
   }
 
 
@@ -497,7 +552,7 @@ function normalizarTurno(turno) {
 
 
 /* =========================================================
-   FILTRO POR TURNO
+   FILTRA LISTA POR TURNO
 ========================================================= */
 
 function filtrarListaPorTurno(
@@ -505,17 +560,26 @@ function filtrarListaPorTurno(
   turno
 ) {
 
-  if (turno === "todos") {
+  if (
+    turno === "todos"
+  ) {
+
     return lista;
+
   }
 
 
   return lista.filter(
 
     pessoa =>
+
       normalizarTurno(
         pessoa.turno
-      ) === turno
+      )
+
+      ===
+
+      turno
 
   );
 
@@ -528,9 +592,10 @@ function filtrarListaPorTurno(
 
 function atualizarIndicadores() {
 
-  /* =======================================================
-     CARDS DA NOSSA BASE
-  ======================================================= */
+
+  /* =====================================================
+     BASE INTERNA
+  ===================================================== */
 
   const baseInterna =
 
@@ -582,9 +647,9 @@ function atualizarIndicadores() {
   );
 
 
-  /* =======================================================
-     RATIO — SOMENTE DASH OFICIAL
-  ======================================================= */
+  /* =====================================================
+     RATIO — DASH OFICIAL
+  ===================================================== */
 
   const baseOficialFiltrada =
 
@@ -597,13 +662,6 @@ function atualizarIndicadores() {
     );
 
 
-  /*
-    Um LDAP representa um multiplicador oficial.
-
-    O Set evita contar duas vezes o mesmo LDAP
-    caso a exportação tenha duplicidade.
-  */
-
   const ldapsOficiais =
 
     new Set(
@@ -611,23 +669,16 @@ function atualizarIndicadores() {
       baseOficialFiltrada
 
         .map(
-
           pessoa =>
             normalizarTexto(
               pessoa.ldap
             )
-
         )
 
         .filter(Boolean)
 
     );
 
-
-  /*
-    Aqui contamos os Team Leaders únicos
-    diretamente da exportação oficial.
-  */
 
   const lideresOficiais =
 
@@ -636,12 +687,10 @@ function atualizarIndicadores() {
       baseOficialFiltrada
 
         .map(
-
           pessoa =>
             normalizarTexto(
               pessoa.teamLeader
             )
-
         )
 
         .filter(Boolean)
@@ -661,11 +710,14 @@ function atualizarIndicadores() {
 
     totalLideresOficiais > 0
 
-      ? totalMultisOficiais
-        /
-        totalLideresOficiais
+      ?
 
-      : 0;
+      totalMultisOficiais /
+      totalLideresOficiais
+
+      :
+
+      0;
 
 
   definirTexto(
@@ -674,11 +726,15 @@ function atualizarIndicadores() {
 
     totalLideresOficiais > 0
 
-      ? ratioOficial
-          .toFixed(2)
-          .replace(".", ",")
+      ?
 
-      : "-"
+      ratioOficial
+        .toFixed(2)
+        .replace(".", ",")
+
+      :
+
+      "-"
 
   );
 
@@ -689,11 +745,260 @@ function atualizarIndicadores() {
 
     totalLideresOficiais > 0
 
-      ? `${totalMultisOficiais} multis oficiais ÷ ${totalLideresOficiais} líderes`
+      ?
 
-      : "Sem dados oficiais disponíveis"
+      `${totalMultisOficiais} multis oficiais ÷ ${totalLideresOficiais} líderes`
+
+      :
+
+      "Sem dados oficiais disponíveis"
 
   );
+
+
+  /* =====================================================
+     ÁREAS ATIVAS HC
+  ===================================================== */
+
+  atualizarDistribuicaoAreasHC();
+
+}
+
+
+/* =========================================================
+   DISTRIBUIÇÃO POR ÁREA — SOMENTE HC ATIVO
+========================================================= */
+
+function atualizarDistribuicaoAreasHC() {
+
+  const container =
+
+    document.getElementById(
+      "cardsAreasHC"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const baseTurno =
+
+    filtrarListaPorTurno(
+
+      multiplicadores,
+
+      turnoSelecionado
+
+    );
+
+
+  /*
+    Considera somente:
+
+    Status Treinamento:
+    - Ativo
+    - Ativo Escola
+
+    E:
+
+    Status Base HC:
+    - ATIVO
+  */
+
+  const ativosNoHC =
+
+    baseTurno.filter(
+
+      pessoa =>
+
+        estaNaVisaoPrincipal(
+          pessoa
+        )
+
+        &&
+
+        statusHcAtivo(
+          pessoa
+        )
+
+    );
+
+
+  definirTexto(
+
+    "totalMultisAtivosHC",
+
+    ativosNoHC.length
+
+  );
+
+
+  const mapaAreas =
+    new Map();
+
+
+  ativosNoHC.forEach(
+
+    pessoa => {
+
+      const areaOriginal =
+
+        String(
+
+          pessoa.areaMacro
+
+          ||
+
+          "SEM ÁREA"
+
+        ).trim();
+
+
+      const chave =
+
+        normalizarTexto(
+          areaOriginal
+        )
+
+        ||
+
+        "sem area";
+
+
+      if (
+        !mapaAreas.has(
+          chave
+        )
+      ) {
+
+        mapaAreas.set(
+
+          chave,
+
+          {
+
+            nome:
+              textoMaiusculo(
+                areaOriginal
+              ),
+
+            total:
+              0
+
+          }
+
+        );
+
+      }
+
+
+      mapaAreas.get(
+        chave
+      ).total++;
+
+    }
+
+  );
+
+
+  const areas =
+
+    Array
+      .from(
+        mapaAreas.values()
+      )
+
+      .sort(
+
+        (
+          a,
+          b
+        ) =>
+
+          b.total -
+          a.total
+
+      );
+
+
+  if (
+    areas.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <article class="card-area-hc">
+
+        <span>
+
+          Nenhum multiplicador ativo no HC
+          para o filtro selecionado.
+
+        </span>
+
+      </article>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    areas
+
+      .map(
+
+        area => `
+
+          <article class="card-area-hc">
+
+            <span>
+
+              ${
+                escapeHtml(
+                  area.nome
+                )
+              }
+
+            </span>
+
+
+            <strong>
+
+              ${area.total}
+
+            </strong>
+
+
+            <small>
+
+              ${
+                area.total === 1
+
+                  ?
+
+                  "multiplicador ativo no HC"
+
+                  :
+
+                  "multiplicadores ativos no HC"
+              }
+
+            </small>
+
+          </article>
+
+        `
+
+      )
+
+      .join("");
 
 }
 
@@ -705,14 +1010,17 @@ function atualizarIndicadores() {
 function atualizarTurnos() {
 
   [
+
     "T1",
     "T2",
     "T3",
     "T4",
     "T5"
+
   ].forEach(
 
     turno => {
+
 
       const base =
 
@@ -721,9 +1029,14 @@ function atualizarTurnos() {
           .filter(
 
             pessoa =>
+
               normalizarTurno(
                 pessoa.turno
-              ) === turno
+              )
+
+              ===
+
+              turno
 
           )
 
@@ -733,32 +1046,43 @@ function atualizarTurnos() {
 
 
       const ativos =
+
         base.filter(
           estaAtivo
         );
 
 
       const escola =
+
         base.filter(
           estaAtivoEscola
         );
 
 
       definirTexto(
+
         `total${turno}`,
+
         base.length
+
       );
 
 
       definirTexto(
+
         `ativos${turno}`,
+
         ativos.length
+
       );
 
 
       definirTexto(
+
         `escola${turno}`,
+
         escola.length
+
       );
 
     }
@@ -775,6 +1099,7 @@ function atualizarTurnos() {
 function atualizarTabelaLideranca() {
 
   const corpo =
+
     document.getElementById(
       "tabelaLideranca"
     );
@@ -797,6 +1122,7 @@ function atualizarTabelaLideranca() {
 
 
   base =
+
     base.filter(
       estaNaVisaoPrincipal
     );
@@ -810,9 +1136,13 @@ function atualizarTabelaLideranca() {
 
     pessoa => {
 
+
       const nomeLider =
+
         String(
+
           pessoa.teamLeader || ""
+
         ).trim();
 
 
@@ -822,12 +1152,17 @@ function atualizarTabelaLideranca() {
 
 
       const chave =
+
         normalizarTexto(
           nomeLider
         );
 
 
-      if (!mapa.has(chave)) {
+      if (
+        !mapa.has(
+          chave
+        )
+      ) {
 
         mapa.set(
 
@@ -863,13 +1198,25 @@ function atualizarTabelaLideranca() {
       lider.total++;
 
 
-      if (estaAtivo(pessoa)) {
+      if (
+        estaAtivo(
+          pessoa
+        )
+      ) {
+
         lider.ativos++;
+
       }
 
 
-      if (estaAtivoEscola(pessoa)) {
+      if (
+        estaAtivoEscola(
+          pessoa
+        )
+      ) {
+
         lider.escola++;
+
       }
 
     }
@@ -883,9 +1230,17 @@ function atualizarTabelaLideranca() {
       .from(
         mapa.values()
       )
+
       .sort(
-        (a, b) =>
-          b.total - a.total
+
+        (
+          a,
+          b
+        ) =>
+
+          b.total -
+          a.total
+
       );
 
 
@@ -907,6 +1262,7 @@ function atualizarTabelaLideranca() {
 
     `;
 
+
     return;
 
   }
@@ -914,78 +1270,82 @@ function atualizarTabelaLideranca() {
 
   corpo.innerHTML =
 
-    lideres.map(
+    lideres
 
-      (
-        lider,
-        indice
-      ) => `
+      .map(
 
-        <tr>
+        (
+          lider,
+          indice
+        ) => `
 
-          <td>
+          <tr>
 
-            <div class="posicao-ranking">
+            <td>
 
-              ${indice + 1}
+              <div class="posicao-ranking">
 
-            </div>
+                ${indice + 1}
 
-          </td>
+              </div>
 
-
-          <td>
-
-            <strong>
-
-              ${
-                escapeHtml(
-                  lider.nome
-                )
-              }
-
-            </strong>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            <strong>
+              <strong>
 
-              ${lider.total}
+                ${
+                  escapeHtml(
+                    lider.nome
+                  )
+                }
 
-            </strong>
+              </strong>
 
-          </td>
-
-
-          <td>
-
-            <span class="badge ativo">
-
-              ${lider.ativos}
-
-            </span>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            <span class="badge escola">
+              <strong>
 
-              ${lider.escola}
+                ${lider.total}
 
-            </span>
+              </strong>
 
-          </td>
+            </td>
 
-        </tr>
 
-      `
+            <td>
 
-    ).join("");
+              <span class="badge ativo">
+
+                ${lider.ativos}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <span class="badge escola">
+
+                ${lider.escola}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        `
+
+      )
+
+      .join("");
 
 }
 
@@ -997,6 +1357,7 @@ function atualizarTabelaLideranca() {
 function atualizarTlsSemMultis() {
 
   const corpo =
+
     document.getElementById(
       "tabelaTlsSemMultis"
     );
@@ -1014,6 +1375,7 @@ function atualizarTlsSemMultis() {
       .filter(
 
         item => {
+
 
           const total =
 
@@ -1062,8 +1424,11 @@ function atualizarTlsSemMultis() {
 
 
   definirTexto(
+
     "totalTlsSemMultis",
+
     lista.length
+
   );
 
 
@@ -1085,6 +1450,7 @@ function atualizarTlsSemMultis() {
 
     `;
 
+
     return;
 
   }
@@ -1092,82 +1458,96 @@ function atualizarTlsSemMultis() {
 
   corpo.innerHTML =
 
-    lista.map(
+    lista
 
-      item => `
+      .map(
 
-        <tr>
+        item => `
 
-          <td>
+          <tr>
 
-            <strong>
+
+            <td>
+
+              <strong>
+
+                ${
+                  escapeHtml(
+
+                    textoMaiusculo(
+
+                      item.teamLeader
+
+                    )
+
+                  )
+                }
+
+              </strong>
+
+            </td>
+
+
+            <td>
 
               ${
                 escapeHtml(
 
                   textoMaiusculo(
-                    item.teamLeader
+
+                    item.area
+
                   )
 
                 )
               }
 
-            </strong>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              escapeHtml(
+              <strong>
 
-                textoMaiusculo(
-                  item.area
-                )
+                ${
+                  escapeHtml(
 
-              )
-            }
+                    String(
 
-          </td>
+                      item.totalEquipe
 
+                      ||
 
-          <td>
+                      "0"
 
-            <strong>
+                    )
 
-              ${
-                escapeHtml(
-
-                  String(
-                    item.totalEquipe
-                    ||
-                    "0"
                   )
+                }
 
-                )
-              }
+              </strong>
 
-            </strong>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            <span class="badge inativo">
+              <span class="badge inativo">
 
-              0
+                0
 
-            </span>
+              </span>
 
-          </td>
+            </td>
 
-        </tr>
 
-      `
+          </tr>
 
-    ).join("");
+        `
+
+      )
+
+      .join("");
 
 }
 
@@ -1180,9 +1560,11 @@ function construirValidacao() {
 
   const ativosBase =
 
-    multiplicadores.filter(
-      estaNaVisaoPrincipal
-    );
+    multiplicadores
+
+      .filter(
+        estaNaVisaoPrincipal
+      );
 
 
   const mapaBase =
@@ -1193,9 +1575,13 @@ function construirValidacao() {
 
     pessoa => {
 
+
       const ldap =
+
         normalizarTexto(
+
           pessoa.ldap
+
         );
 
 
@@ -1204,11 +1590,18 @@ function construirValidacao() {
       }
 
 
-      if (!mapaBase.has(ldap)) {
+      if (
+        !mapaBase.has(
+          ldap
+        )
+      ) {
 
         mapaBase.set(
+
           ldap,
+
           pessoa
+
         );
 
       }
@@ -1226,9 +1619,13 @@ function construirValidacao() {
 
     pessoa => {
 
+
       const ldap =
+
         normalizarTexto(
+
           pessoa.ldap
+
         );
 
 
@@ -1237,11 +1634,18 @@ function construirValidacao() {
       }
 
 
-      if (!mapaOficial.has(ldap)) {
+      if (
+        !mapaOficial.has(
+          ldap
+        )
+      ) {
 
         mapaOficial.set(
+
           ldap,
+
           pessoa
+
         );
 
       }
@@ -1269,6 +1673,7 @@ function construirValidacao() {
 
     ldap => {
 
+
       const base =
         mapaBase.get(ldap);
 
@@ -1282,8 +1687,7 @@ function construirValidacao() {
 
 
       if (
-        base
-        &&
+        base &&
         oficial
       ) {
 
@@ -1295,7 +1699,10 @@ function construirValidacao() {
 
       }
 
-      else if (base) {
+
+      else if (
+        base
+      ) {
 
         tipo =
           "base-sem-oficial";
@@ -1304,6 +1711,7 @@ function construirValidacao() {
           "ATIVO SEM OFICIAL";
 
       }
+
 
       else {
 
@@ -1321,56 +1729,101 @@ function construirValidacao() {
         tipo:
           tipo,
 
+
         resultado:
           descricao,
 
+
         nome:
+
           base?.nome
+
           ||
+
           oficial?.nome
+
           ||
+
           "-",
+
 
         ldap:
+
           base?.ldap
+
           ||
+
           oficial?.ldap
+
           ||
+
           "-",
+
 
         statusBase:
+
           base?.statusPrograma
+
           ||
+
           "FORA DOS ATIVOS",
 
+
         statusCad:
+
           base?.statusBaseHC
+
           ||
+
           "-",
+
 
         noOficial:
+
           oficial
-            ? "SIM"
-            : "NÃO",
+
+            ?
+
+            "SIM"
+
+            :
+
+            "NÃO",
+
 
         teamLeaderBase:
+
           base?.teamLeader
+
           ||
+
           "-",
+
 
         turnoBase:
+
           base?.turno
+
           ||
+
           "-",
+
 
         teamLeaderOficial:
+
           oficial?.teamLeader
+
           ||
+
           "-",
 
+
         areaOficial:
+
           oficial?.area
+
           ||
+
           "-"
 
       });
@@ -1401,29 +1854,42 @@ function construirValidacao() {
       b
     ) => {
 
+
       const diferenca =
 
-        ordem[a.tipo]
+        ordem[
+          a.tipo
+        ]
+
         -
-        ordem[b.tipo];
+
+        ordem[
+          b.tipo
+        ];
 
 
-      if (diferenca !== 0) {
+      if (
+        diferenca !== 0
+      ) {
+
         return diferenca;
+
       }
 
 
       return String(
         a.nome
-      ).localeCompare(
+      )
 
-        String(
-          b.nome
-        ),
+        .localeCompare(
 
-        "pt-BR"
+          String(
+            b.nome
+          ),
 
-      );
+          "pt-BR"
+
+        );
 
     }
 
@@ -1435,27 +1901,33 @@ function construirValidacao() {
     registros:
       resultado,
 
+
     totalBase:
       mapaBase.size,
 
+
     totalOficial:
       mapaOficial.size,
+
 
     alinhados:
 
       resultado.filter(
 
         item =>
+
           item.tipo ===
           "alinhado"
 
       ).length,
+
 
     divergencias:
 
       resultado.filter(
 
         item =>
+
           item.tipo !==
           "alinhado"
 
@@ -1481,26 +1953,38 @@ function atualizarValidacao() {
 
 
   definirTexto(
+
     "validacaoTotalBase",
+
     validacao.totalBase
+
   );
 
 
   definirTexto(
+
     "validacaoTotalOficial",
+
     validacao.totalOficial
+
   );
 
 
   definirTexto(
+
     "validacaoTotalAlinhados",
+
     validacao.alinhados
+
   );
 
 
   definirTexto(
+
     "validacaoTotalDivergencias",
+
     validacao.divergencias
+
   );
 
 
@@ -1516,6 +2000,7 @@ function atualizarValidacao() {
 function atualizarTabelaValidacao() {
 
   const corpo =
+
     document.getElementById(
       "corpoTabelaValidacao"
     );
@@ -1527,8 +2012,15 @@ function atualizarTabelaValidacao() {
 
 
   let dados =
-    [...registrosValidacao];
 
+    [
+      ...registrosValidacao
+    ];
+
+
+  /* =====================================================
+     FILTRO POR RESULTADO
+  ===================================================== */
 
   if (
     filtroValidacao !==
@@ -1536,9 +2028,11 @@ function atualizarTabelaValidacao() {
   ) {
 
     dados =
+
       dados.filter(
 
         item =>
+
           item.tipo ===
           filtroValidacao
 
@@ -1547,37 +2041,56 @@ function atualizarTabelaValidacao() {
   }
 
 
+  /* =====================================================
+     BUSCA
+  ===================================================== */
+
   if (
     termoBuscaValidacao
   ) {
 
     dados =
+
       dados.filter(
 
         item => {
+
 
           const texto =
 
             normalizarTexto(
 
               `
+
               ${item.nome}
+
               ${item.ldap}
+
               ${item.resultado}
+
               ${item.statusBase}
+
               ${item.statusCad}
+
               ${item.noOficial}
+
               ${item.teamLeaderBase}
+
               ${item.turnoBase}
+
               ${item.teamLeaderOficial}
+
               ${item.areaOficial}
+
               `
 
             );
 
 
           return texto.includes(
+
             termoBuscaValidacao
+
           );
 
         }
@@ -1605,6 +2118,7 @@ function atualizarTabelaValidacao() {
 
     `;
 
+
     return;
 
   }
@@ -1612,167 +2126,195 @@ function atualizarTabelaValidacao() {
 
   corpo.innerHTML =
 
-    dados.map(
+    dados
 
-      item => `
+      .map(
 
-        <tr>
+        item => `
 
-          <td>
-
-            ${
-              criarBadgeValidacao(
-                item
-              )
-            }
-
-          </td>
+          <tr>
 
 
-          <td>
+            <td>
 
-            <strong>
+              ${
+                criarBadgeValidacao(
+                  item
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              <strong>
+
+                ${
+                  escapeHtml(
+
+                    textoMaiusculo(
+
+                      item.nome
+
+                    )
+
+                  )
+                }
+
+              </strong>
+
+            </td>
+
+
+            <td>
 
               ${
                 escapeHtml(
 
                   textoMaiusculo(
-                    item.nome
+
+                    item.ldap
+
                   )
 
                 )
               }
 
-            </strong>
-
-          </td>
+            </td>
 
 
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  item.ldap
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  item.statusBase
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              criarBadgeStatusHC(
-                item.statusCad
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              item.noOficial ===
-              "SIM"
-
-                ? `<span class="badge sim">SIM</span>`
-
-                : `<span class="badge nao">NÃO</span>`
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  item.teamLeaderBase
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            <span class="badge-turno">
+            <td>
 
               ${
                 escapeHtml(
 
-                  normalizarTurno(
-                    item.turnoBase
+                  textoMaiusculo(
+
+                    item.statusBase
+
                   )
-                  ||
-                  "-"
 
                 )
               }
 
-            </span>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              escapeHtml(
+              ${
+                criarBadgeStatusHC(
 
-                textoMaiusculo(
-                  item.teamLeaderOficial
+                  item.statusCad
+
                 )
+              }
 
-              )
-            }
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              escapeHtml(
+              ${
+                item.noOficial ===
+                "SIM"
 
-                textoMaiusculo(
-                  item.areaOficial
+                  ?
+
+                  `<span class="badge sim">SIM</span>`
+
+                  :
+
+                  `<span class="badge nao">NÃO</span>`
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    item.teamLeaderBase
+
+                  )
+
                 )
+              }
 
-              )
-            }
+            </td>
 
-          </td>
 
-        </tr>
+            <td>
 
-      `
+              <span class="badge-turno">
 
-    ).join("");
+                ${
+                  escapeHtml(
+
+                    normalizarTurno(
+
+                      item.turnoBase
+
+                    )
+
+                    ||
+
+                    "-"
+
+                  )
+                }
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    item.teamLeaderOficial
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    item.areaOficial
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+          </tr>
+
+        `
+
+      )
+
+      .join("");
 
 }
 
@@ -1796,6 +2338,7 @@ function criarBadgeValidacao(item) {
 
   }
 
+
   else if (
     item.tipo ===
     "base-sem-oficial"
@@ -1805,6 +2348,7 @@ function criarBadgeValidacao(item) {
       "⚠ ATIVO SEM OFICIAL";
 
   }
+
 
   else {
 
@@ -1893,8 +2437,11 @@ function filtrarPorStatus(lista) {
 function obterMotivo(pessoa) {
 
   const motivo =
+
     String(
+
       pessoa.motivo || ""
+
     ).trim();
 
 
@@ -1908,8 +2455,8 @@ function obterMotivo(pessoa) {
 
 
   if (
-    status === "multi loss"
-    ||
+    status === "multi loss" ||
+
     status === "training"
   ) {
 
@@ -1932,9 +2479,7 @@ function criarBadgeStatusPrograma(
 ) {
 
   const status =
-    statusPrograma(
-      pessoa
-    );
+    statusPrograma(pessoa);
 
 
   let classe =
@@ -1952,6 +2497,7 @@ function criarBadgeStatusPrograma(
 
   }
 
+
   else if (
     estaAtivoEscola(
       pessoa
@@ -1963,6 +2509,7 @@ function criarBadgeStatusPrograma(
 
   }
 
+
   else if (
     status ===
     "desistencia"
@@ -1973,10 +2520,17 @@ function criarBadgeStatusPrograma(
 
   }
 
+
   else if (
-    status === "multi loss"
+
+    status ===
+    "multi loss"
+
     ||
-    status === "training"
+
+    status ===
+    "training"
+
   ) {
 
     classe =
@@ -1993,7 +2547,9 @@ function criarBadgeStatusPrograma(
         escapeHtml(
 
           textoMaiusculo(
+
             pessoa.statusPrograma
+
           )
 
         )
@@ -2007,15 +2563,13 @@ function criarBadgeStatusPrograma(
 
 
 /* =========================================================
-   BADGE STATUS CAD
+   BADGE STATUS HC
 ========================================================= */
 
 function criarBadgeStatusHC(valor) {
 
   const status =
-    normalizarTexto(
-      valor
-    );
+    normalizarTexto(valor);
 
 
   let classe =
@@ -2023,8 +2577,7 @@ function criarBadgeStatusHC(valor) {
 
 
   if (
-    status ===
-    "ativo"
+    status === "ativo"
   ) {
 
     classe =
@@ -2032,15 +2585,16 @@ function criarBadgeStatusHC(valor) {
 
   }
 
+
   else if (
-    status ===
-    "inativo"
+    status === "inativo"
   ) {
 
     classe =
       "hc-inativo";
 
   }
+
 
   else if (
     status.includes(
@@ -2076,29 +2630,38 @@ function criarBadgeStatusHC(valor) {
 
 
 /* =========================================================
-   BADGE SIM NÃO
+   BADGE SIM / NÃO
 ========================================================= */
 
 function criarBadgeSimNao(valor) {
 
   const sim =
+
     normalizarTexto(
       valor
-    ) === "sim";
+    )
+
+    ===
+
+    "sim";
 
 
   return `
 
     <span class="badge ${
       sim
-        ? "sim"
-        : "nao"
+        ?
+        "sim"
+        :
+        "nao"
     }">
 
       ${
         sim
-          ? "SIM"
-          : "NÃO"
+          ?
+          "SIM"
+          :
+          "NÃO"
       }
 
     </span>
@@ -2115,6 +2678,7 @@ function criarBadgeSimNao(valor) {
 function atualizarTabela() {
 
   const corpo =
+
     document.getElementById(
       "tabelaMultiplicadores"
     );
@@ -2124,6 +2688,10 @@ function atualizarTabela() {
     return;
   }
 
+
+  /*
+    Primeiro aplicamos apenas o filtro de turno.
+  */
 
   let dados =
 
@@ -2136,48 +2704,105 @@ function atualizarTabela() {
     );
 
 
-  dados =
-    filtrarPorStatus(
-      dados
-    );
+  /*
+    CORREÇÃO DA BUSCA:
 
+    Quando existe texto digitado,
+    a pesquisa é feita na base inteira daquele turno.
+
+    Isso permite encontrar:
+
+    - Ativos
+    - Ativo Escola
+    - Inativos
+    - Desistências
+    - Multi LOSS
+    - Training
+
+    sem precisar selecionar antes o botão correspondente.
+  */
 
   if (
     termoBusca
   ) {
 
+
     dados =
+
       dados.filter(
 
         pessoa => {
+
 
           const texto =
 
             normalizarTexto(
 
               `
+
               ${pessoa.nome}
+
               ${pessoa.teamLeader}
+
               ${pessoa.ldap}
+
               ${pessoa.areaMacro}
+
               ${pessoa.subArea}
+
               ${pessoa.processo}
+
               ${pessoa.statusBaseHC}
+
               ${pessoa.statusPrograma}
+
               ${pessoa.cargo}
+
               ${pessoa.escala}
+
+              ${pessoa.dataFormacao}
+
+              ${pessoa.motivo}
+
               `
 
             );
 
 
           return texto.includes(
+
             termoBusca
+
           );
 
         }
 
       );
+
+
+  }
+
+
+  else {
+
+
+    /*
+      Sem busca digitada,
+      respeita normalmente o botão:
+
+      - Visão Principal
+      - Ativos
+      - Ativo Escola
+      - Consultar Inativos
+    */
+
+
+    dados =
+
+      filtrarPorStatus(
+        dados
+      );
+
 
   }
 
@@ -2224,6 +2849,7 @@ function atualizarTabela() {
 
     `;
 
+
     return;
 
   }
@@ -2231,237 +2857,277 @@ function atualizarTabela() {
 
   corpo.innerHTML =
 
-    dados.map(
+    dados
 
-      pessoa => `
+      .map(
 
-        <tr>
+        pessoa => `
 
-          <td>
+          <tr>
 
-            <strong>
+
+            <td>
+
+              <strong>
+
+                ${
+                  escapeHtml(
+
+                    textoMaiusculo(
+
+                      pessoa.nome
+
+                    )
+
+                  )
+                }
+
+              </strong>
+
+            </td>
+
+
+            <td>
 
               ${
                 escapeHtml(
 
                   textoMaiusculo(
-                    pessoa.nome
+
+                    pessoa.teamLeader
+
                   )
 
                 )
               }
 
-            </strong>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              escapeHtml(
+              ${
+                criarBadgeStatusHC(
 
-                textoMaiusculo(
-                  pessoa.teamLeader
+                  pessoa.statusBaseHC
+
                 )
+              }
 
-              )
-            }
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              criarBadgeStatusHC(
-                pessoa.statusBaseHC
-              )
-            }
+              ${
+                criarBadgeStatusPrograma(
 
-          </td>
+                  pessoa
 
+                )
+              }
 
-          <td>
-
-            ${
-              criarBadgeStatusPrograma(
-                pessoa
-              )
-            }
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            <span class="badge-turno">
+              <span class="badge-turno">
+
+                ${
+                  escapeHtml(
+
+                    normalizarTurno(
+
+                      pessoa.turno
+
+                    )
+
+                    ||
+
+                    "-"
+
+                  )
+                }
+
+              </span>
+
+            </td>
+
+
+            <td>
 
               ${
                 escapeHtml(
 
-                  normalizarTurno(
-                    pessoa.turno
+                  textoMaiusculo(
+
+                    pessoa.cargo
+
                   )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    pessoa.ldap
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    pessoa.areaMacro
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    pessoa.subArea
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    pessoa.processo
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  textoMaiusculo(
+
+                    pessoa.escala
+
+                  )
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                criarBadgeSimNao(
+
+                  pessoa.decola
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                criarBadgeSimNao(
+
+                  pessoa.bolhaMulti
+
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+
+                  pessoa.dataFormacao
+
                   ||
+
                   "-"
 
                 )
               }
 
-            </span>
-
-          </td>
+            </td>
 
 
-          <td>
+            <td>
 
-            ${
-              escapeHtml(
+              ${
+                escapeHtml(
 
-                textoMaiusculo(
-                  pessoa.cargo
-                )
+                  textoMaiusculo(
 
-              )
-            }
+                    obterMotivo(
 
-          </td>
+                      pessoa
 
+                    )
 
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  pessoa.ldap
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  pessoa.areaMacro
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  pessoa.subArea
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  pessoa.processo
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-                  pessoa.escala
-                )
-
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              criarBadgeSimNao(
-                pessoa.decola
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              criarBadgeSimNao(
-                pessoa.bolhaMulti
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-                pessoa.dataFormacao
-                ||
-                "-"
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-
-                textoMaiusculo(
-
-                  obterMotivo(
-                    pessoa
                   )
 
                 )
+              }
 
-              )
-            }
+            </td>
 
-          </td>
 
-        </tr>
+          </tr>
 
-      `
+        `
 
-    ).join("");
+      )
+
+      .join("");
 
 }
 
@@ -2473,12 +3139,15 @@ function atualizarTabela() {
 function configurarAbas() {
 
   document
+
     .querySelectorAll(
       ".aba-dashboard"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
@@ -2486,17 +3155,21 @@ function configurarAbas() {
 
           () => {
 
+
             const aba =
               botao.dataset.aba;
 
 
             document
+
               .querySelectorAll(
                 ".aba-dashboard"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativa"
                   )
@@ -2505,12 +3178,15 @@ function configurarAbas() {
 
 
             document
+
               .querySelectorAll(
                 ".conteudo-aba"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2524,8 +3200,11 @@ function configurarAbas() {
 
 
             const conteudo =
+
               document.getElementById(
+
                 `aba-${aba}`
+
               );
 
 
@@ -2554,15 +3233,21 @@ function configurarAbas() {
 
 function configurarFiltros() {
 
-  /* VISÃO GERAL */
+
+  /* =====================================================
+     VISÃO GERAL
+  ===================================================== */
 
   document
+
     .querySelectorAll(
       ".botao-turno"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
@@ -2570,17 +3255,21 @@ function configurarFiltros() {
 
           () => {
 
+
             turnoSelecionado =
               botao.dataset.turno;
 
 
             document
+
               .querySelectorAll(
                 ".botao-turno"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2604,15 +3293,20 @@ function configurarFiltros() {
     );
 
 
-  /* LIDERANÇA */
+  /* =====================================================
+     LIDERANÇA
+  ===================================================== */
 
   document
+
     .querySelectorAll(
       ".botao-turno-lideranca"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
@@ -2620,17 +3314,23 @@ function configurarFiltros() {
 
           () => {
 
+
             turnoLiderancaSelecionado =
-              botao.dataset.turnoLideranca;
+
+              botao.dataset
+                .turnoLideranca;
 
 
             document
+
               .querySelectorAll(
                 ".botao-turno-lideranca"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2654,15 +3354,20 @@ function configurarFiltros() {
     );
 
 
-  /* CONSULTA TURNO */
+  /* =====================================================
+     CONSULTA — TURNO
+  ===================================================== */
 
   document
+
     .querySelectorAll(
       ".botao-turno-consulta"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
@@ -2670,17 +3375,23 @@ function configurarFiltros() {
 
           () => {
 
+
             turnoConsultaSelecionado =
-              botao.dataset.turnoConsulta;
+
+              botao.dataset
+                .turnoConsulta;
 
 
             document
+
               .querySelectorAll(
                 ".botao-turno-consulta"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2704,33 +3415,42 @@ function configurarFiltros() {
     );
 
 
-  /* CONSULTA STATUS */
+  /* =====================================================
+     CONSULTA — STATUS
+  ===================================================== */
 
   document
+
     .querySelectorAll(
       ".botao-status"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
           "click",
 
           () => {
+
 
             statusSelecionado =
               botao.dataset.status;
 
 
             document
+
               .querySelectorAll(
                 ".botao-status"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2754,15 +3474,20 @@ function configurarFiltros() {
     );
 
 
-  /* VALIDAÇÃO */
+  /* =====================================================
+     VALIDAÇÃO
+  ===================================================== */
 
   document
+
     .querySelectorAll(
       ".botao-validacao"
     )
+
     .forEach(
 
       botao => {
+
 
         botao.addEventListener(
 
@@ -2770,17 +3495,21 @@ function configurarFiltros() {
 
           () => {
 
+
             filtroValidacao =
               botao.dataset.validacao;
 
 
             document
+
               .querySelectorAll(
                 ".botao-validacao"
               )
+
               .forEach(
 
                 item =>
+
                   item.classList.remove(
                     "ativo"
                   )
@@ -2812,7 +3541,13 @@ function configurarFiltros() {
 
 function configurarBusca() {
 
+
+  /* =====================================================
+     BUSCA CONSULTA
+  ===================================================== */
+
   const campo =
+
     document.getElementById(
       "campoBusca"
     );
@@ -2820,15 +3555,20 @@ function configurarBusca() {
 
   if (campo) {
 
+
     campo.addEventListener(
 
       "input",
 
       evento => {
 
+
         termoBusca =
+
           normalizarTexto(
+
             evento.target.value
+
           );
 
 
@@ -2838,10 +3578,16 @@ function configurarBusca() {
 
     );
 
+
   }
 
 
+  /* =====================================================
+     BUSCA VALIDAÇÃO
+  ===================================================== */
+
   const campoValidacao =
+
     document.getElementById(
       "campoBuscaValidacao"
     );
@@ -2849,15 +3595,20 @@ function configurarBusca() {
 
   if (campoValidacao) {
 
+
     campoValidacao.addEventListener(
 
       "input",
 
       evento => {
 
+
         termoBuscaValidacao =
+
           normalizarTexto(
+
             evento.target.value
+
           );
 
 
@@ -2867,13 +3618,64 @@ function configurarBusca() {
 
     );
 
+
   }
 
 }
 
 
 /* =========================================================
-   DATA
+   CALENDÁRIO
+========================================================= */
+
+function configurarCalendario() {
+
+  const imagem =
+
+    document.getElementById(
+      "imagemCalendarioFolgas"
+    );
+
+
+  const erro =
+
+    document.getElementById(
+      "erroCalendario"
+    );
+
+
+  if (!imagem) {
+    return;
+  }
+
+
+  imagem.addEventListener(
+
+    "error",
+
+    () => {
+
+
+      imagem.style.display =
+        "none";
+
+
+      if (erro) {
+
+        erro.hidden =
+          false;
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   ÚLTIMA ATUALIZAÇÃO
 ========================================================= */
 
 function atualizarData() {
@@ -2883,6 +3685,7 @@ function atualizarData() {
     "ultimaAtualizacao",
 
     new Date()
+
       .toLocaleString(
 
         "pt-BR",
@@ -2914,7 +3717,7 @@ function atualizarData() {
 
 
 /* =========================================================
-   DASHBOARD
+   ATUALIZA DASHBOARD
 ========================================================= */
 
 function atualizarDashboard() {
@@ -2946,43 +3749,57 @@ function mostrarErro(mensagem) {
 
 
   definirTexto(
+
     "ultimaAtualizacao",
+
     "Erro ao carregar"
+
   );
 
 
   const tabelas = [
 
     {
+
       id:
         "tabelaMultiplicadores",
 
       colspan:
         15
+
     },
 
+
     {
+
       id:
         "tabelaLideranca",
 
       colspan:
         5
+
     },
 
+
     {
+
       id:
         "tabelaTlsSemMultis",
 
       colspan:
         4
+
     },
 
+
     {
+
       id:
         "corpoTabelaValidacao",
 
       colspan:
         10
+
     }
 
   ];
@@ -2992,13 +3809,16 @@ function mostrarErro(mensagem) {
 
     item => {
 
+
       const tabela =
+
         document.getElementById(
           item.id
         );
 
 
       if (tabela) {
+
 
         tabela.innerHTML = `
 
@@ -3037,11 +3857,14 @@ document.addEventListener(
 
   () => {
 
+
     configurarAbas();
 
     configurarFiltros();
 
     configurarBusca();
+
+    configurarCalendario();
 
     carregarDados();
 
