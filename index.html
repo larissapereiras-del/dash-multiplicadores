@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,9 +9,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    Programa Multiplicadores | SP10
-  </title>
+  <title>Programa Multiplicadores | SP10</title>
 
   <link
     rel="stylesheet"
@@ -34,12 +31,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-
 </head>
 
-
 <body>
-
 
   <!-- =====================================================
        CABEÇALHO
@@ -49,69 +43,45 @@
 
     <div class="header-conteudo">
 
-
       <div class="marca">
 
-
         <div class="marca-icone">
-
           💡
-
         </div>
-
 
         <div class="marca-texto">
 
           <span class="marca-programa">
-
             PROGRAMA
-
           </span>
 
-
           <h1>
-
             Multiplicadores
-
           </h1>
 
-
           <span class="marca-unidade">
-
             SP10
-
           </span>
 
         </div>
 
-
       </div>
-
 
       <div class="header-info">
 
-
         <span class="header-label">
-
           DASHBOARD
-
         </span>
 
-
         <strong>
-
           Gestão de Multiplicadores
-
         </strong>
 
-
       </div>
-
 
     </div>
 
   </header>
-
 
 
   <!-- =====================================================
@@ -120,55 +90,46 @@
 
   <nav class="navegacao-dashboard">
 
-
     <div class="navegacao-conteudo">
-
 
       <button
         class="aba-dashboard ativa"
         data-aba="visao-geral"
       >
-
         📊 Visão Geral
-
       </button>
-
 
       <button
         class="aba-dashboard"
         data-aba="lideranca"
       >
-
         👥 Liderança
-
       </button>
-
 
       <button
         class="aba-dashboard"
         data-aba="validacao"
       >
-
         ✅ Validação
-
       </button>
 
+      <button
+        class="aba-dashboard"
+        data-aba="folgas"
+      >
+        📅 Folgas
+      </button>
 
       <button
         class="aba-dashboard"
         data-aba="consulta"
       >
-
         🔎 Consulta
-
       </button>
-
 
     </div>
 
-
   </nav>
-
 
 
   <!-- =====================================================
@@ -176,7 +137,6 @@
   ====================================================== -->
 
   <main class="container">
-
 
 
     <!-- ===================================================
@@ -188,60 +148,38 @@
       class="conteudo-aba ativo"
     >
 
-
       <section class="boas-vindas">
-
 
         <div>
 
-
           <span class="tag-programa">
-
             PROGRAMA MULTIPLICADORES
-
           </span>
 
-
           <h2>
-
             Visão Geral
-
           </h2>
 
-
           <p>
-
-            Acompanhe o quadro de multiplicadores,
-            formação e distribuição por turno.
-
+            Acompanhe o quadro de multiplicadores, formação,
+            distribuição por turno e presença ativa no HC.
           </p>
 
-
         </div>
-
 
         <div class="ultima-atualizacao">
 
-
           <span>
-
             Última atualização
-
           </span>
 
-
           <strong id="ultimaAtualizacao">
-
             Carregando...
-
           </strong>
-
 
         </div>
 
-
       </section>
-
 
 
       <!-- =================================================
@@ -250,262 +188,226 @@
 
       <section class="filtros-bloco">
 
-
         <div class="grupo-filtro">
 
-
           <span class="filtro-titulo">
-
             Visualizar turno:
-
           </span>
 
-
           <div class="botoes-turno">
-
 
             <button
               class="botao-turno ativo"
               data-turno="todos"
             >
-
               Todos
-
             </button>
-
 
             <button
               class="botao-turno"
               data-turno="T1"
             >
-
               1º Turno
-
             </button>
-
 
             <button
               class="botao-turno"
               data-turno="T2"
             >
-
               2º Turno
-
             </button>
-
 
             <button
               class="botao-turno"
               data-turno="T3"
             >
-
               3º Turno
-
             </button>
-
 
             <button
               class="botao-turno"
               data-turno="T4"
             >
-
               4º Turno
-
             </button>
-
 
             <button
               class="botao-turno"
               data-turno="T5"
             >
-
               5º Turno
-
             </button>
-
 
           </div>
 
-
         </div>
-
 
       </section>
 
 
-
       <!-- =================================================
-           INDICADORES
+           INDICADORES PRINCIPAIS
       ================================================== -->
 
       <section class="cards-indicadores">
 
-
         <article class="card-indicador">
-
 
           <div class="card-icone azul">
-
             👥
-
           </div>
-
 
           <div class="card-conteudo">
 
-
             <span>
-
               Multiplicadores
-
             </span>
 
-
             <strong id="totalMultiplicadores">
-
               -
-
             </strong>
 
-
             <small>
-
               Ativos + Ativos Escola
-
             </small>
-
 
           </div>
 
-
         </article>
-
 
 
         <article class="card-indicador">
 
-
           <div class="card-icone verde">
-
             ✓
-
           </div>
-
 
           <div class="card-conteudo">
 
-
             <span>
-
               Ativos
-
             </span>
 
-
             <strong id="totalAtivos">
-
               -
-
             </strong>
 
-
             <small>
-
               Multiplicadores formados
-
             </small>
-
 
           </div>
 
-
         </article>
-
 
 
         <article class="card-indicador destaque">
 
-
           <div class="card-icone amarelo">
-
             🎓
-
           </div>
-
 
           <div class="card-conteudo">
 
-
             <span>
-
               Ativos para Escola de Máquina
-
             </span>
 
-
             <strong id="totalEscola">
-
               -
-
             </strong>
 
-
             <small>
-
               Disponíveis para formação
-
             </small>
-
 
           </div>
 
-
         </article>
-
 
 
         <article class="card-indicador">
 
-
           <div class="card-icone roxo">
-
             📊
-
           </div>
-
 
           <div class="card-conteudo">
 
-
             <span>
-
               Ratio Geral Multi/TL
-
             </span>
 
-
             <strong id="ratioGeral">
-
               -
-
             </strong>
 
-
             <small id="ratioDetalhe">
-
-              Multiplicadores por líder
-
+              Baseado no Dash oficial
             </small>
-
 
           </div>
 
-
         </article>
-
 
       </section>
 
+
+      <!-- =================================================
+           MULTIS ATIVOS NO HC POR ÁREA
+      ================================================== -->
+
+      <section class="secao-dashboard">
+
+        <div class="secao-cabecalho">
+
+          <div>
+
+            <span class="secao-tag">
+              DISTRIBUIÇÃO OPERACIONAL
+            </span>
+
+            <h3>
+              Multiplicadores Ativos no HC por Área
+            </h3>
+
+            <p class="secao-descricao">
+              Considera somente multiplicadores com Status Base HC = ATIVO.
+              Férias, afastamentos, inativos e demais status ficam fora desta contagem.
+            </p>
+
+          </div>
+
+          <div class="contador-destaque contador-hc">
+
+            <span>
+              Total Ativo HC
+            </span>
+
+            <strong id="totalMultisAtivosHC">
+              -
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div
+          id="cardsAreasHC"
+          class="areas-hc-grid"
+        >
+
+          <article class="card-area-hc">
+
+            <span>
+              Carregando áreas...
+            </span>
+
+          </article>
+
+        </div>
+
+      </section>
 
 
       <!-- =================================================
@@ -514,546 +416,220 @@
 
       <section class="secao-dashboard comparativo-turnos">
 
-
         <div class="secao-cabecalho comparativo-cabecalho">
-
 
           <div>
 
-
             <span class="secao-tag">
-
               DISTRIBUIÇÃO
-
             </span>
 
-
             <h3>
-
               Comparativo por Turno
-
             </h3>
 
-
             <p class="secao-descricao">
-
               Visão rápida da distribuição dos multiplicadores.
-
             </p>
-
 
           </div>
 
-
         </div>
-
 
 
         <div class="turnos-grid">
 
 
-          <!-- T1 -->
-
           <article class="card-turno">
 
-
             <div class="turno-identificacao">
-
-              <span>
-
-                1º TURNO
-
-              </span>
-
-              <strong>
-
-                T1
-
-              </strong>
-
+              <span>1º TURNO</span>
+              <strong>T1</strong>
             </div>
-
 
             <div class="turno-total-compacto">
-
-              <span>
-
-                Total
-
-              </span>
-
-              <strong id="totalT1">
-
-                0
-
-              </strong>
-
+              <span>Total</span>
+              <strong id="totalT1">0</strong>
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto ativo">
-
-              </span>
-
+              <span class="indicador-ponto ativo"></span>
 
               <div>
-
-                <span>
-
-                  Ativos
-
-                </span>
-
-                <strong id="ativosT1">
-
-                  0
-
-                </strong>
-
+                <span>Ativos</span>
+                <strong id="ativosT1">0</strong>
               </div>
 
-
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto escola">
-
-              </span>
-
+              <span class="indicador-ponto escola"></span>
 
               <div>
-
-                <span>
-
-                  Ativo Escola
-
-                </span>
-
-                <strong id="escolaT1">
-
-                  0
-
-                </strong>
-
+                <span>Ativo Escola</span>
+                <strong id="escolaT1">0</strong>
               </div>
 
-
             </div>
-
 
           </article>
 
 
-
-          <!-- T2 -->
-
           <article class="card-turno">
 
-
             <div class="turno-identificacao">
-
-              <span>
-
-                2º TURNO
-
-              </span>
-
-              <strong>
-
-                T2
-
-              </strong>
-
+              <span>2º TURNO</span>
+              <strong>T2</strong>
             </div>
-
 
             <div class="turno-total-compacto">
-
-              <span>
-
-                Total
-
-              </span>
-
-              <strong id="totalT2">
-
-                0
-
-              </strong>
-
+              <span>Total</span>
+              <strong id="totalT2">0</strong>
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto ativo">
-
-              </span>
-
+              <span class="indicador-ponto ativo"></span>
 
               <div>
-
-                <span>
-
-                  Ativos
-
-                </span>
-
-                <strong id="ativosT2">
-
-                  0
-
-                </strong>
-
+                <span>Ativos</span>
+                <strong id="ativosT2">0</strong>
               </div>
 
-
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto escola">
-
-              </span>
-
+              <span class="indicador-ponto escola"></span>
 
               <div>
-
-                <span>
-
-                  Ativo Escola
-
-                </span>
-
-                <strong id="escolaT2">
-
-                  0
-
-                </strong>
-
+                <span>Ativo Escola</span>
+                <strong id="escolaT2">0</strong>
               </div>
 
-
             </div>
-
 
           </article>
 
 
-
-          <!-- T3 -->
-
           <article class="card-turno">
 
-
             <div class="turno-identificacao">
-
-              <span>
-
-                3º TURNO
-
-              </span>
-
-              <strong>
-
-                T3
-
-              </strong>
-
+              <span>3º TURNO</span>
+              <strong>T3</strong>
             </div>
-
 
             <div class="turno-total-compacto">
-
-              <span>
-
-                Total
-
-              </span>
-
-              <strong id="totalT3">
-
-                0
-
-              </strong>
-
+              <span>Total</span>
+              <strong id="totalT3">0</strong>
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto ativo">
-
-              </span>
-
+              <span class="indicador-ponto ativo"></span>
 
               <div>
-
-                <span>
-
-                  Ativos
-
-                </span>
-
-                <strong id="ativosT3">
-
-                  0
-
-                </strong>
-
+                <span>Ativos</span>
+                <strong id="ativosT3">0</strong>
               </div>
 
-
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto escola">
-
-              </span>
-
+              <span class="indicador-ponto escola"></span>
 
               <div>
-
-                <span>
-
-                  Ativo Escola
-
-                </span>
-
-                <strong id="escolaT3">
-
-                  0
-
-                </strong>
-
+                <span>Ativo Escola</span>
+                <strong id="escolaT3">0</strong>
               </div>
 
-
             </div>
-
 
           </article>
 
 
-
-          <!-- T4 -->
-
           <article class="card-turno">
 
-
             <div class="turno-identificacao">
-
-              <span>
-
-                4º TURNO
-
-              </span>
-
-              <strong>
-
-                T4
-
-              </strong>
-
+              <span>4º TURNO</span>
+              <strong>T4</strong>
             </div>
-
 
             <div class="turno-total-compacto">
-
-              <span>
-
-                Total
-
-              </span>
-
-              <strong id="totalT4">
-
-                0
-
-              </strong>
-
+              <span>Total</span>
+              <strong id="totalT4">0</strong>
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto ativo">
-
-              </span>
-
+              <span class="indicador-ponto ativo"></span>
 
               <div>
-
-                <span>
-
-                  Ativos
-
-                </span>
-
-                <strong id="ativosT4">
-
-                  0
-
-                </strong>
-
+                <span>Ativos</span>
+                <strong id="ativosT4">0</strong>
               </div>
 
-
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto escola">
-
-              </span>
-
+              <span class="indicador-ponto escola"></span>
 
               <div>
-
-                <span>
-
-                  Ativo Escola
-
-                </span>
-
-                <strong id="escolaT4">
-
-                  0
-
-                </strong>
-
+                <span>Ativo Escola</span>
+                <strong id="escolaT4">0</strong>
               </div>
 
-
             </div>
-
 
           </article>
 
 
-
-          <!-- T5 -->
-
           <article class="card-turno">
 
-
             <div class="turno-identificacao">
-
-              <span>
-
-                5º TURNO
-
-              </span>
-
-              <strong>
-
-                T5
-
-              </strong>
-
+              <span>5º TURNO</span>
+              <strong>T5</strong>
             </div>
-
 
             <div class="turno-total-compacto">
-
-              <span>
-
-                Total
-
-              </span>
-
-              <strong id="totalT5">
-
-                0
-
-              </strong>
-
+              <span>Total</span>
+              <strong id="totalT5">0</strong>
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto ativo">
-
-              </span>
-
+              <span class="indicador-ponto ativo"></span>
 
               <div>
-
-                <span>
-
-                  Ativos
-
-                </span>
-
-                <strong id="ativosT5">
-
-                  0
-
-                </strong>
-
+                <span>Ativos</span>
+                <strong id="ativosT5">0</strong>
               </div>
 
-
             </div>
-
 
             <div class="turno-indicador">
 
-
-              <span class="indicador-ponto escola">
-
-              </span>
-
+              <span class="indicador-ponto escola"></span>
 
               <div>
-
-                <span>
-
-                  Ativo Escola
-
-                </span>
-
-                <strong id="escolaT5">
-
-                  0
-
-                </strong>
-
+                <span>Ativo Escola</span>
+                <strong id="escolaT5">0</strong>
               </div>
 
-
             </div>
-
 
           </article>
 
 
         </div>
 
-
       </section>
 
-
     </section>
-
 
 
     <!-- ===================================================
@@ -1065,382 +641,215 @@
       class="conteudo-aba"
     >
 
-
       <section class="boas-vindas">
-
 
         <div>
 
-
           <span class="tag-programa">
-
             GESTÃO POR LIDERANÇA
-
           </span>
 
-
           <h2>
-
             Distribuição por Liderança
-
           </h2>
 
-
           <p>
-
-            Compare a quantidade de multiplicadores
-            por Team Leader e identifique lideranças sem multis.
-
+            Compare a quantidade de multiplicadores por Team Leader
+            e identifique lideranças sem multis.
           </p>
 
-
         </div>
-
 
       </section>
 
 
-
-      <!-- =================================================
-           FILTRO LIDERANÇA
-      ================================================== -->
-
       <section class="filtros-bloco">
-
 
         <div class="grupo-filtro">
 
-
           <span class="filtro-titulo">
-
             Visualizar turno:
-
           </span>
 
-
           <div class="botoes-turno-lideranca">
-
 
             <button
               class="botao-turno-lideranca ativo"
               data-turno-lideranca="todos"
             >
-
               Todos
-
             </button>
-
 
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T1"
             >
-
               1º Turno
-
             </button>
-
 
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T2"
             >
-
               2º Turno
-
             </button>
-
 
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T3"
             >
-
               3º Turno
-
             </button>
-
 
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T4"
             >
-
               4º Turno
-
             </button>
-
 
             <button
               class="botao-turno-lideranca"
               data-turno-lideranca="T5"
             >
-
               5º Turno
-
             </button>
-
 
           </div>
 
-
         </div>
-
 
       </section>
 
-
-
-      <!-- =================================================
-           RANKING DE LIDERANÇA
-      ================================================== -->
 
       <section class="secao-dashboard">
 
-
         <div class="secao-cabecalho">
-
 
           <div>
 
-
             <span class="secao-tag">
-
               RANKING
-
             </span>
 
-
             <h3>
-
               Multiplicadores por Team Leader
-
             </h3>
 
-
             <p class="secao-descricao">
-
               Ordenado do maior para o menor quadro de multis ativos.
-
             </p>
 
-
           </div>
-
 
         </div>
 
 
-
         <div class="tabela-lideranca-container">
-
 
           <table class="tabela-lideranca">
 
-
             <thead>
 
-
               <tr>
-
-                <th>
-
-                  Posição
-
-                </th>
-
-                <th>
-
-                  Team Leader
-
-                </th>
-
-                <th>
-
-                  Total Multis
-
-                </th>
-
-                <th>
-
-                  Ativos
-
-                </th>
-
-                <th>
-
-                  Ativo Escola
-
-                </th>
-
+                <th>Posição</th>
+                <th>Team Leader</th>
+                <th>Total Multis</th>
+                <th>Ativos</th>
+                <th>Ativo Escola</th>
               </tr>
-
 
             </thead>
 
-
             <tbody id="tabelaLideranca">
-
 
               <tr class="sem-dados">
 
-
                 <td colspan="5">
-
                   Carregando liderança...
-
                 </td>
-
 
               </tr>
 
-
             </tbody>
-
 
           </table>
 
-
         </div>
-
 
       </section>
 
 
-
-      <!-- =================================================
-           TLs SEM MULTIS
-      ================================================== -->
-
       <section class="secao-dashboard secao-tl-sem-multi">
-
 
         <div class="secao-cabecalho">
 
-
           <div>
 
-
             <span class="secao-tag alerta">
-
               OPORTUNIDADE
-
             </span>
 
-
             <h3>
-
               TLs sem Multiplicadores
-
             </h3>
 
-
             <p class="secao-descricao">
-
               Lideranças que não possuem nenhum multiplicador
               abaixo da gestão no Dash oficial.
-
             </p>
 
-
           </div>
-
 
           <div class="contador-destaque">
 
-
             <span>
-
               Total
-
             </span>
 
-
             <strong id="totalTlsSemMultis">
-
               -
-
             </strong>
-
 
           </div>
 
-
         </div>
-
 
 
         <div class="tabela-lideranca-container">
 
-
           <table class="tabela-lideranca tabela-tl-sem-multis">
-
 
             <thead>
 
-
               <tr>
-
-                <th>
-
-                  Team Leader
-
-                </th>
-
-                <th>
-
-                  Área
-
-                </th>
-
-                <th>
-
-                  Total da Equipe
-
-                </th>
-
-                <th>
-
-                  Total de Multis
-
-                </th>
-
+                <th>Team Leader</th>
+                <th>Área</th>
+                <th>Total da Equipe</th>
+                <th>Total de Multis</th>
               </tr>
-
 
             </thead>
 
-
             <tbody id="tabelaTlsSemMultis">
-
 
               <tr class="sem-dados">
 
-
                 <td colspan="4">
-
                   Carregando lideranças...
-
                 </td>
-
 
               </tr>
 
-
             </tbody>
-
 
           </table>
 
-
         </div>
-
 
       </section>
 
-
     </section>
-
 
 
     <!-- ===================================================
@@ -1452,211 +861,126 @@
       class="conteudo-aba"
     >
 
-
       <section class="boas-vindas">
-
 
         <div>
 
-
           <span class="tag-programa">
-
             CONFERÊNCIA DE BASE
-
           </span>
 
-
           <h2>
-
             Validação Base × Dash Oficial
-
           </h2>
 
-
           <p>
-
             Compare os multiplicadores ativos da sua base
             com quem possui cadastro oficial de multiplicador.
-
           </p>
 
-
         </div>
-
 
       </section>
 
 
-
-      <!-- =================================================
-           CARDS VALIDAÇÃO
-      ================================================== -->
-
       <section class="cards-validacao">
 
-
         <article class="card-validacao">
 
-
           <span class="card-validacao-label">
-
             Ativos na Base
-
           </span>
-
 
           <strong id="validacaoTotalBase">
-
             -
-
           </strong>
 
-
           <small>
-
             Ativo + Ativo Escola
-
           </small>
 
-
         </article>
-
 
 
         <article class="card-validacao">
 
-
           <span class="card-validacao-label">
-
             Dash Oficial
-
           </span>
 
-
           <strong id="validacaoTotalOficial">
-
             -
-
           </strong>
 
-
           <small>
-
             Multiplicadores com cadastro oficial
-
           </small>
 
-
         </article>
-
 
 
         <article class="card-validacao sucesso">
 
-
           <span class="card-validacao-label">
-
             Alinhados
-
           </span>
 
-
           <strong id="validacaoTotalAlinhados">
-
             -
-
           </strong>
 
-
           <small>
-
             Presentes nas duas bases
-
           </small>
 
-
         </article>
-
 
 
         <article class="card-validacao alerta">
 
-
           <span class="card-validacao-label">
-
             Divergências
-
           </span>
 
-
           <strong id="validacaoTotalDivergencias">
-
             -
-
           </strong>
 
-
           <small>
-
             Registros que precisam de validação
-
           </small>
 
-
         </article>
-
 
       </section>
 
 
-
-      <!-- =================================================
-           DETALHAMENTO VALIDAÇÃO
-      ================================================== -->
-
       <section class="secao-dashboard">
-
 
         <div class="secao-cabecalho secao-validacao-cabecalho">
 
-
           <div>
 
-
             <span class="secao-tag">
-
               DETALHAMENTO
-
             </span>
 
-
             <h3>
-
               Comparativo de Multiplicadores
-
             </h3>
 
-
             <p class="secao-descricao">
-
               O cruzamento é realizado pelo LDAP.
-
             </p>
-
 
           </div>
 
 
-
           <div class="busca">
 
-
             <span>
-
               🔎
-
             </span>
-
 
             <input
               type="text"
@@ -1664,169 +988,183 @@
               placeholder="Buscar nome, LDAP ou líder..."
             >
 
-
           </div>
-
 
         </div>
 
 
-
-        <!-- ===============================================
-             FILTROS VALIDAÇÃO
-        ================================================ -->
-
         <div class="filtros-validacao">
-
 
           <button
             class="botao-validacao ativo"
             data-validacao="todos"
           >
-
             Todos
-
           </button>
-
 
           <button
             class="botao-validacao"
             data-validacao="alinhado"
           >
-
             ✅ Alinhados
-
           </button>
-
 
           <button
             class="botao-validacao"
             data-validacao="base-sem-oficial"
           >
-
             ⚠️ Ativo sem Oficial
-
           </button>
-
 
           <button
             class="botao-validacao"
             data-validacao="oficial-sem-base"
           >
-
             🚨 Oficial fora dos Ativos
-
           </button>
-
 
         </div>
 
 
-
         <div class="tabela-container tabela-validacao-container">
-
 
           <table
             id="tabelaValidacao"
             class="tabela-validacao"
           >
 
-
             <thead>
 
-
               <tr>
-
-                <th>
-
-                  Resultado
-
-                </th>
-
-                <th>
-
-                  Multiplicador
-
-                </th>
-
-                <th>
-
-                  LDAP
-
-                </th>
-
-                <th>
-
-                  Status na Base
-
-                </th>
-
-                <th>
-
-                  No Oficial
-
-                </th>
-
-                <th>
-
-                  Team Leader Base
-
-                </th>
-
-                <th>
-
-                  Turno Base
-
-                </th>
-
-                <th>
-
-                  Team Leader Oficial
-
-                </th>
-
-                <th>
-
-                  Área Oficial
-
-                </th>
-
+                <th>Resultado</th>
+                <th>Multiplicador</th>
+                <th>LDAP</th>
+                <th>Status Programa</th>
+                <th>Status CAD</th>
+                <th>No Oficial</th>
+                <th>Team Leader Base</th>
+                <th>Turno Base</th>
+                <th>Team Leader Oficial</th>
+                <th>Área Oficial</th>
               </tr>
-
 
             </thead>
 
-
             <tbody id="corpoTabelaValidacao">
-
 
               <tr class="sem-dados">
 
-
-                <td colspan="9">
-
+                <td colspan="10">
                   Carregando validação...
-
                 </td>
-
 
               </tr>
 
-
             </tbody>
-
 
           </table>
 
-
         </div>
 
+      </section>
+
+    </section>
+
+
+    <!-- ===================================================
+         FOLGAS
+    ==================================================== -->
+
+    <section
+      id="aba-folgas"
+      class="conteudo-aba"
+    >
+
+      <section class="boas-vindas">
+
+        <div>
+
+          <span class="tag-programa">
+            ESCALA DE FOLGAS
+          </span>
+
+          <h2>
+            Calendário Anual
+          </h2>
+
+          <p>
+            Consulte a distribuição anual das folgas por turma.
+          </p>
+
+        </div>
 
       </section>
 
 
-    </section>
+      <section class="secao-dashboard secao-calendario">
 
+        <div class="secao-cabecalho">
+
+          <div>
+
+            <span class="secao-tag">
+              CONSULTA VISUAL
+            </span>
+
+            <h3>
+              Calendário de Folgas
+            </h3>
+
+            <p class="secao-descricao">
+              A imagem é carregada diretamente do arquivo do Google Drive.
+            </p>
+
+          </div>
+
+          <a
+            class="botao-abrir-calendario"
+            href="https://drive.google.com/file/d/1a55ygbGLGkMNJDOylxoYARBtXHtCd7fT/view"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Abrir no Drive ↗
+          </a>
+
+        </div>
+
+
+        <div class="calendario-wrapper">
+
+          <img
+            id="imagemCalendarioFolgas"
+            class="imagem-calendario"
+            src="https://drive.google.com/thumbnail?id=1a55ygbGLGkMNJDOylxoYARBtXHtCd7fT&sz=w2000"
+            alt="Calendário anual de folgas das turmas A, B, C e D"
+          >
+
+          <div
+            id="erroCalendario"
+            class="erro-calendario"
+            hidden
+          >
+
+            Não foi possível carregar a imagem automaticamente.
+
+            <a
+              href="https://drive.google.com/file/d/1a55ygbGLGkMNJDOylxoYARBtXHtCd7fT/view"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Abrir calendário no Google Drive
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
 
 
     <!-- ===================================================
@@ -1838,166 +1176,108 @@
       class="conteudo-aba"
     >
 
-
       <section class="boas-vindas">
-
 
         <div>
 
-
           <span class="tag-programa">
-
             CONSULTA
-
           </span>
 
-
           <h2>
-
             Base de Multiplicadores
-
           </h2>
 
-
           <p>
-
             Consulte os dados individuais dos multiplicadores.
-
           </p>
 
-
         </div>
-
 
       </section>
 
 
-
-      <!-- =================================================
-           FILTRO CONSULTA
-      ================================================== -->
-
       <section class="filtros-bloco">
-
 
         <div class="grupo-filtro">
 
-
           <span class="filtro-titulo">
-
             Visualizar turno:
-
           </span>
 
-
           <div class="botoes-turno-consulta">
-
 
             <button
               class="botao-turno-consulta ativo"
               data-turno-consulta="todos"
             >
-
               Todos
-
             </button>
-
 
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T1"
             >
-
               1º Turno
-
             </button>
-
 
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T2"
             >
-
               2º Turno
-
             </button>
-
 
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T3"
             >
-
               3º Turno
-
             </button>
-
 
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T4"
             >
-
               4º Turno
-
             </button>
-
 
             <button
               class="botao-turno-consulta"
               data-turno-consulta="T5"
             >
-
               5º Turno
-
             </button>
-
 
           </div>
 
-
         </div>
-
 
       </section>
 
 
-
       <section class="secao-dashboard">
-
 
         <div class="secao-cabecalho secao-consulta">
 
-
           <div>
 
-
             <span class="secao-tag">
-
               DETALHAMENTO
-
             </span>
 
-
             <h3>
-
               Multiplicadores
-
             </h3>
-
 
           </div>
 
 
           <div class="busca">
 
-
             <span>
-
               🔎
-
             </span>
-
 
             <input
               type="text"
@@ -2005,59 +1285,42 @@
               placeholder="Buscar nome, LDAP, líder ou processo..."
             >
 
-
           </div>
-
 
         </div>
 
 
-
         <div class="filtros-status">
-
 
           <button
             class="botao-status ativo"
             data-status="principal"
           >
-
             Visão Principal
-
           </button>
-
 
           <button
             class="botao-status"
             data-status="ativo"
           >
-
             Ativos
-
           </button>
-
 
           <button
             class="botao-status"
             data-status="ativo-escola"
           >
-
             Ativo Escola
-
           </button>
-
 
           <button
             class="botao-status consulta-inativos"
             data-status="inativos"
           >
-
             Consultar Inativos
-
           </button>
 
-
         </div>
-
 
 
         <div
@@ -2065,144 +1328,51 @@
           class="tabela-container"
         >
 
-
           <table id="tabelaConsulta">
-
 
             <thead>
 
-
               <tr>
-
-                <th>
-
-                  Multiplicador
-
-                </th>
-
-                <th>
-
-                  Team Leader
-
-                </th>
-
-                <th>
-
-                  Status Rep
-
-                </th>
-
-                <th>
-
-                  Status Programa
-
-                </th>
-
-                <th>
-
-                  Turno
-
-                </th>
-
-                <th>
-
-                  Cargo
-
-                </th>
-
-                <th>
-
-                  LDAP
-
-                </th>
-
-                <th>
-
-                  Área Macro
-
-                </th>
-
-                <th>
-
-                  Sub Área
-
-                </th>
-
-                <th>
-
-                  Processo
-
-                </th>
-
-                <th>
-
-                  Escala
-
-                </th>
-
-                <th>
-
-                  Decola
-
-                </th>
-
-                <th>
-
-                  Bolha Multi
-
-                </th>
-
-                <th>
-
-                  Data de Formação
-
-                </th>
-
-                <th>
-
-                  Motivo
-
-                </th>
-
+                <th>Multiplicador</th>
+                <th>Team Leader</th>
+                <th>Status Rep</th>
+                <th>Status Programa</th>
+                <th>Turno</th>
+                <th>Cargo</th>
+                <th>LDAP</th>
+                <th>Área Macro</th>
+                <th>Sub Área</th>
+                <th>Processo</th>
+                <th>Escala</th>
+                <th>Decola</th>
+                <th>Bolha Multi</th>
+                <th>Data de Formação</th>
+                <th>Motivo</th>
               </tr>
-
 
             </thead>
 
-
             <tbody id="tabelaMultiplicadores">
-
 
               <tr class="sem-dados">
 
-
                 <td colspan="15">
-
                   Carregando dados...
-
                 </td>
-
 
               </tr>
 
-
             </tbody>
-
 
           </table>
 
-
         </div>
-
 
       </section>
 
-
     </section>
 
-
   </main>
-
 
 
   <!-- =====================================================
@@ -2211,42 +1381,26 @@
 
   <footer class="footer">
 
-
     <div>
 
-
       <strong>
-
         Programa Multiplicadores
-
       </strong>
 
-
       <span>
-
         SP10
-
       </span>
-
 
     </div>
 
-
     <p>
-
       Dashboard de acompanhamento e gestão
-
     </p>
-
 
   </footer>
 
 
-
-  <script src="script.js">
-
-  </script>
-
+  <script src="script.js"></script>
 
 </body>
 
